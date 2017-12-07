@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'org.greenrobot.greendao' // apply plugin
 
 android {
     compileSdkVersion 26
@@ -25,4 +26,27 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
+
+    /*butterKnife*/
+    compile 'com.jakewharton:butterknife:8.8.1'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
+    /* 图片glide */
+    implementation 'com.github.bumptech.glide:glide:4.4.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.4.0'
+    /*EventBus*/
+    compile 'org.greenrobot:eventbus:3.1.1'
+    /*greendao*/
+    compile 'org.greenrobot:greendao:3.2.2'
+    /*rxjava2*/
+  //  compile "io.reactivex.rxjava2:rxjava:2.2.0-SNAPSHOT"
+    /*retrofit*/
+    compile 'com.squareup.retrofit2:retrofit:2.3.0'
+    /*logger*/
+    compile 'com.orhanobut:logger:2.1.1'
+    /*easypermissions*/
+//    compile 'pub.devrel:easypermissions:1.1.1'
+    compile 'pub.devrel:easypermissions:0.4.0'
+    /*gson*/
+    compile 'com.google.code.gson:gson:2.8.2'
+
 }
