@@ -10,6 +10,10 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        ndk {
+            // 设置支持的SO库架构
+            abiFilters 'armeabi' //, 'x86', 'armeabi-v7a', 'x86_64', 'arm64-v8a'
+        }
     }
     buildTypes {
         release {
@@ -38,15 +42,32 @@ dependencies {
     /*greendao*/
     compile 'org.greenrobot:greendao:3.2.2'
     /*rxjava2*/
-//    compile "io.reactivex.rxjava2:rxjava:2.2.0-SNAPSHOT"
+    compile 'io.reactivex.rxjava2:rxjava:x.y.z'
     /*retrofit*/
     compile 'com.squareup.retrofit2:retrofit:2.3.0'
     /*logger*/
     compile 'com.orhanobut:logger:2.1.1'
     /*easypermissions*/
     implementation 'pub.devrel:easypermissions:1.1.0'
-//    compile 'pub.devrel:easypermissions:0.4.0'
+
+    /*PermissionsDispatcher*/
+    compile("com.github.hotchemi:permissionsdispatcher:3.0.1") {
+        // if you don't use android.app.Fragment you can exclude support for them
+        exclude module: "support-v13"
+    }
+    annotationProcessor "com.github.hotchemi:permissionsdispatcher-processor:3.0.1"
+
+
     /*gson*/
     compile 'com.google.code.gson:gson:2.8.2'
+    /*收集错误日志*/
+    compile 'com.tencent.bugly:crashreport:latest.release' //其中latest.release指代最新Bugly SDK版本号，也可以指定明确的版本号，例如2.1.9
+    compile 'com.tencent.bugly:nativecrashreport:latest.release' //其中latest.release指代最新Bugly NDK版本号，也可以指定明确的版本号，例如3.0
+
+    /*RxAndroid: Reactive Extensions for Android*/
+    compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
+    // Because RxAndroid releases are few and far between, it is recommended you also
+    // explicitly depend on RxJava's latest version for bug fixes and new features.
+    compile 'io.reactivex.rxjava2:rxjava:2.1.7'
 
 }

@@ -20,6 +20,19 @@
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
 
+# 所以使用proguard时，我们需要有个配置文件告诉proguard 那些java 元素是不能混淆的。----------
+
+# proguard 配置最常用的配置选项
+
+# -dontwarn 缺省proguard 会检查每一个引用是否正确，但是第三方库里面往往有些不会用到的类，没有正确引用。如果不配置的话，系统就会报错。
+
+# -keep 指定的类和类成员被保留作为 入口 。
+
+# -keepclassmembers 指定的类成员被保留。
+
+# -keepclasseswithmembers 指定的类和类成员被保留，假如指定的类成员存在的话。
+
+
 # -------------系统类不需要混淆 --------------------------
 -keep public class * extends Android.app.Fragment
 -keep public class * extends Android.app.Activity
@@ -117,6 +130,29 @@ public static java.lang.String TABLENAME;
     @pub.devrel.easypermissions.AfterPermissionGranted <methods>;
 }
 
+# PermissionsDispatcher ----
+-dontwarn permissions.dispatcher.**
+-keep public class permissions.dispatcher.**{*;}
+
 # Gson混淆脚本 ----
 -keep class com.google.gson.stream.** {*;}
 -keep class com.youyou.uuelectric.renter.Network.user.** {*;}
+
+# Bugly ----
+-dontwarn com.tencent.bugly.**
+-keep public class com.tencent.bugly.**{*;}
+
+# Loggger ----
+-dontwarn com.orhanobut.logger.**
+-keep public class com.orhanobut.logger.**{*;}
+
+# reactivex.rxjava2:rxandroid ----
+-dontwarn io.reactivex.android.**
+-dontwarn io.reactivex.**
+-keep public class io.reactivex.android.**{*;}
+-keep public class io.reactivex.**{*;}
+
+# rxjava ----
+-dontwarn io.reactivex.**
+-keep public class io.reactivex.**{*;}
+
