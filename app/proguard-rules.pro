@@ -150,5 +150,9 @@ public static java.lang.String TABLENAME;
 -dontwarn io.reactivex.android.**
 -dontwarn io.reactivex.**
 -keep public class io.reactivex.android.**{*;}
--keep public io.reactivex.**{*;}
+-keep public class io.reactivex.**{*;}
+
+# rxjava ----
+-dontwarn io.reactivex.**
+-keep public class io.reactivex.**{*;}
 
