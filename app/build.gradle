@@ -23,6 +23,19 @@ android {
     }
 }
 
+/*针对greenDao的一些配置*/
+greendao {
+    schemaVersion 1
+    //The current version of the database schema. This is used by the *OpenHelpers classes to migrate between schema versions. If you change your entity/database schema, this value has to be increased. Defaults to 1.
+    daoPackage "com.haxi.mh.gen"
+    // The package name for generated DAOs, DaoMaster, and DaoSession. Defaults to the package name of your source entities
+    //targetGenDir
+    //The location where generated sources should be stored at. Defaults to the generated source folder inside the build directory ( build/generated/source/greendao).
+    generateTests true // Set to true to automatically generate unit tests.
+//    targetGenDirTests
+// The base directory where generated unit tests should be stored at. Defaults to src/androidTest/java.
+}
+
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'com.android.support:appcompat-v7:26.1.0'
@@ -57,12 +70,13 @@ dependencies {
     }
     annotationProcessor "com.github.hotchemi:permissionsdispatcher-processor:3.0.1"
 
-
     /*gson*/
     compile 'com.google.code.gson:gson:2.8.2'
     /*收集错误日志*/
-    compile 'com.tencent.bugly:crashreport:latest.release' //其中latest.release指代最新Bugly SDK版本号，也可以指定明确的版本号，例如2.1.9
-    compile 'com.tencent.bugly:nativecrashreport:latest.release' //其中latest.release指代最新Bugly NDK版本号，也可以指定明确的版本号，例如3.0
+    compile 'com.tencent.bugly:crashreport:latest.release'
+    //其中latest.release指代最新Bugly SDK版本号，也可以指定明确的版本号，例如2.1.9
+    compile 'com.tencent.bugly:nativecrashreport:latest.release'
+    //其中latest.release指代最新Bugly NDK版本号，也可以指定明确的版本号，例如3.0
 
     /*RxAndroid: Reactive Extensions for Android*/
     compile 'io.reactivex.rxjava2:rxandroid:2.0.1'

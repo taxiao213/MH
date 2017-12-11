@@ -1,0 +1,7 @@
+Alias key_mh
+password mh123456
+
+1.全局的Application
+2.注册bugly
+3.初始化logger
+4.在项目中build.gradle 配置greenDao

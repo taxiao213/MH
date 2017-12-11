@@ -1,7 +1,9 @@
-package com.haxi.mh;
+package com.haxi.mh.ui.activity;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+
+import com.haxi.mh.R;
 
 public class MainActivity extends AppCompatActivity {
 
