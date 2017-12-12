@@ -156,3 +156,9 @@ public static java.lang.String TABLENAME;
 -dontwarn io.reactivex.**
 -keep public class io.reactivex.**{*;}
 
+# facebook.stetho 查看数据库 拦截网络请求 ----
+-dontwarn com.facebook.stetho.**
+-keep public class com.facebook.stetho.**{*;}
+
+
+
