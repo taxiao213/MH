@@ -7,7 +7,7 @@ import android.view.MotionEvent;
 import android.view.inputmethod.InputMethodManager;
 
 import com.haxi.mh.model.MessageEvent;
-import com.haxi.mh.ui.ActivityManager;
+import com.haxi.mh.utils.ui.ActivityManager;
 import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
 
 import org.greenrobot.eventbus.EventBus;
@@ -60,6 +60,7 @@ public abstract class BaseActivity extends RxAppCompatActivity {
 
     /**
      * 隐藏输入法
+     *
      * @param event
      * @return
      */

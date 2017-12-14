@@ -156,6 +156,14 @@ public static java.lang.String TABLENAME;
 -dontwarn io.reactivex.**
 -keep public class io.reactivex.**{*;}
 
+# rxlifecycle2 ----
+-dontwarn com.trello.rxlifecycle2.**
+-dontwarn com.trello.rxlifecycle2.android.**
+-dontwarn com.trello.rxlifecycle2.components.**
+-keep public class com.trello.rxlifecycle2.**{*;}
+-keep public class com.trello.rxlifecycle2.android.**{*;}
+-keep public class com.trello.rxlifecycle2.components.**{*;}
+
 # facebook.stetho 查看数据库 拦截网络请求 ----
 -dontwarn com.facebook.stetho.**
 -keep public class com.facebook.stetho.**{*;}

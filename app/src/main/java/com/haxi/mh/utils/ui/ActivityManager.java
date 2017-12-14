@@ -1,4 +1,4 @@
-package com.haxi.mh.ui;
+package com.haxi.mh.utils.ui;
 
 import android.app.Activity;
 
