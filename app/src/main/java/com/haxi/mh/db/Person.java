@@ -1,4 +1,4 @@
-package com.haxi.mh.model;
+package com.haxi.mh.db;
 
 import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Generated;
@@ -6,7 +6,8 @@ import org.greenrobot.greendao.annotation.Id;
 
 /**
  * 测试数据库greenDao
- * Created by Han on 2017/12/11.
+ * Created by Han on 2017/12/11
+ * Email:yin13753884368@163.com
  */
 @Entity
 public class Person {
