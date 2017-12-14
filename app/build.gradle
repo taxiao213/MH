@@ -28,17 +28,23 @@ android {
     }
 }
 
-/*针对greenDao的一些配置*/
+/* 针对greenDao的一些配置 */
 greendao {
-    schemaVersion 1
+
+    schemaVersion 1 //数据库版本
     //The current version of the database schema. This is used by the *OpenHelpers classes to migrate between schema versions. If you change your entity/database schema, this value has to be increased. Defaults to 1.
-    daoPackage 'com.haxi.mh.gen'
+
+    daoPackage 'com.haxi.mh'
     // The package name for generated DAOs, DaoMaster, and DaoSession. Defaults to the package name of your source entities
-    //targetGenDir
+
+    //targetGenDir  //生成的根目录
     //The location where generated sources should be stored at. Defaults to the generated source folder inside the build directory ( build/generated/source/greendao).
-    generateTests true // Set to true to automatically generate unit tests.
-//    targetGenDirTests
+
+    generateTests true // Set to true to automatically generate unit tests. 是否进行单元测试
+
+//    targetGenDirTests //生成的单元测试根目录
 // The base directory where generated unit tests should be stored at. Defaults to src/androidTest/java.
+
 }
 
 dependencies {
@@ -49,49 +55,56 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
 
-    /*butterKnife*/
+    /* butterKnife */
     compile 'com.jakewharton:butterknife:8.8.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
-    /* 图片glide */
+
+    /* gson */
+    compile 'com.google.code.gson:gson:2.8.2'
+
+    /* Glide */
     implementation 'com.github.bumptech.glide:glide:4.4.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.4.0'
-    /*EventBus*/
-    compile 'org.greenrobot:eventbus:3.1.1'
-    /*greendao*/
-    compile 'org.greenrobot:greendao:3.2.2'
-    /*rxjava2*/
-    compile 'io.reactivex.rxjava2:rxjava:x.y.z'
-    /*retrofit*/
-    compile 'com.squareup.retrofit2:retrofit:2.3.0'
-    /*logger*/
-    compile 'com.orhanobut:logger:2.1.1'
-    /*easypermissions*/
-    implementation 'pub.devrel:easypermissions:1.1.0'
 
-    /*PermissionsDispatcher*/
+    /* EventBus */
+    compile 'org.greenrobot:eventbus:3.1.1'
+
+    /* greendao */
+    compile 'org.greenrobot:greendao:3.2.2'
+
+    /* rxjava2 */
+    compile 'io.reactivex.rxjava2:rxjava:x.y.z'
+
+    /* retrofit */
+    compile 'com.squareup.retrofit2:retrofit:2.3.0'
+
+    /* RxAndroid: Reactive Extensions for Android */
+    compile 'io.reactivex.rxjava2:rxandroid:2.0.1' // Because RxAndroid releases are few and far between, it is recommended you also
+    compile 'io.reactivex.rxjava2:rxjava:2.1.7' // explicitly depend on RxJava's latest version for bug fixes and new features.
+
+    /* rxlifecycle2 */
+    compile 'com.trello.rxlifecycle2:rxlifecycle:2.2.1'
+    compile 'com.trello.rxlifecycle2:rxlifecycle-components:2.2.1' // If you want pre-written Activities and Fragments you can subclass as providers
+
+    /* logger */
+    compile 'com.orhanobut:logger:2.1.1'
+
+    //运行时权限
+    /* easypermissions */
+    implementation 'pub.devrel:easypermissions:1.1.0'
+    /* PermissionsDispatcher */
     compile("com.github.hotchemi:permissionsdispatcher:3.0.1") {
-        // if you don't use android.app.Fragment you can exclude support for them
-        exclude module: "support-v13"
+        exclude module: "support-v13" // if you don't use android.app.Fragment you can exclude support for them
     }
     annotationProcessor "com.github.hotchemi:permissionsdispatcher-processor:3.0.1"
 
-    /*gson*/
-    compile 'com.google.code.gson:gson:2.8.2'
-    /*收集错误日志*/
-    compile 'com.tencent.bugly:crashreport:latest.release'
-    //其中latest.release指代最新Bugly SDK版本号，也可以指定明确的版本号，例如2.1.9
-    compile 'com.tencent.bugly:nativecrashreport:latest.release'
-    //其中latest.release指代最新Bugly NDK版本号，也可以指定明确的版本号，例如3.0
+    /* 收集错误日志 */
+    compile 'com.tencent.bugly:crashreport:latest.release' //其中latest.release指代最新Bugly SDK版本号，也可以指定明确的版本号，例如2.1.9
+    compile 'com.tencent.bugly:nativecrashreport:latest.release'   //其中latest.release指代最新Bugly NDK版本号，也可以指定明确的版本号，例如3.0
 
-    /*RxAndroid: Reactive Extensions for Android*/
-    compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
-    // Because RxAndroid releases are few and far between, it is recommended you also
-    // explicitly depend on RxJava's latest version for bug fixes and new features.
-    compile 'io.reactivex.rxjava2:rxjava:2.1.7'
-
-    /*debug 在线查看app数据库*/
+    /* debug 在线查看app数据库 */
     debugCompile 'com.amitshekhar.android:debug-db:1.0.0'
 
-    /*facebook.stetho 查看数据库 拦截网络请求*/
+    /* facebook.stetho 查看数据库 拦截网络请求 */
     compile 'com.facebook.stetho:stetho:1.5.0'
 }

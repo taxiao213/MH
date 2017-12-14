@@ -10,12 +10,13 @@ import com.tencent.bugly.crashreport.CrashReport;
 /**
  * 1.获取主线程 名称 id
  * 2.获取上下文
- * Created by Han on 2017/12/11.
+ * Created by Han on 2017/12/11
+ * Email:yin13753884368@163.com
  */
 
 public class MyApplication extends Application {
     //获取上下文
-    private static MyApplication mContext;
+    public static MyApplication mContext;
     //获取主线程 名称
     private static String mThreadName;
     //获取主线程 id
