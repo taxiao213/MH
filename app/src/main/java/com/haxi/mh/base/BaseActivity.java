@@ -53,7 +53,7 @@ public abstract class BaseActivity extends RxAppCompatActivity {
     protected abstract void getData();
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    protected void onMessageEvent(MessageEvent event) {
+    public void onMessageEvent(MessageEvent event) {
 
     }
 
