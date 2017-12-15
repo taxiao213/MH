@@ -1,6 +1,7 @@
 package com.haxi.mh;
 
 import android.app.Application;
+import android.os.Handler;
 
 import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.Logger;
@@ -21,6 +22,8 @@ public class MyApplication extends Application {
     private static String mThreadName;
     //获取主线程 id
     private static long mTthreadId;
+    // 获取到主线程的handler
+    private static Handler mMainThreadHandler = null;
 
     @Override
     public void onCreate() {
@@ -29,12 +32,13 @@ public class MyApplication extends Application {
         Thread thread = Thread.currentThread();
         mThreadName = thread.getName();
         mTthreadId = thread.getId();
-
+        mMainThreadHandler = new Handler();
         //注册Bugly
         CrashReport.initCrashReport(getApplicationContext(), "d540dcf53e", true);
 
         //初始化Logger
         Logger.addLogAdapter(new AndroidLogAdapter());
+        //        Logger.clearLogAdapters(); //清除log
     }
 
     /**
@@ -62,6 +66,14 @@ public class MyApplication extends Application {
      */
     public static long getMainThreadId() {
         return mTthreadId;
+    }
+
+    /**
+     * 获取主线程
+     * @return
+     */
+    public static Handler getMainThreadHandler() {
+        return mMainThreadHandler;
     }
 
 }

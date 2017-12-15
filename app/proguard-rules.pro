@@ -168,5 +168,11 @@ public static java.lang.String TABLENAME;
 -dontwarn com.facebook.stetho.**
 -keep public class com.facebook.stetho.**{*;}
 
+# 格式化拼音 ----
+-dontwarn net.sourceforge.pinyin4j.**
+-dontwarn com.hp.hpl.sparta.**
+-keep public class net.sourceforge.pinyin4j.**{*;}
+-keep public class com.hp.hpl.sparta.**{*;}
+
 
 

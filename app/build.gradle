@@ -9,7 +9,7 @@ android {
         minSdkVersion 15
         targetSdkVersion 26
         versionCode 1
-        versionName "1.0"
+        versionName "1.0.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         ndk {
             // 设置支持的SO库架构
@@ -107,4 +107,7 @@ dependencies {
 
     /* facebook.stetho 查看数据库 拦截网络请求 */
     compile 'com.facebook.stetho:stetho:1.5.0'
+
+    /* 格式化拼音 */
+    compile 'com.belerweb:pinyin4j:2.5.1'
 }
