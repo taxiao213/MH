@@ -38,6 +38,13 @@ public abstract class BaseActivity extends RxAppCompatActivity {
         EventBus.getDefault().register(this);
         ActivityManager.getInstances().add(this);
         getData();
+        //沉浸式状态栏
+        //        if (Build.VERSION.SDK_INT>=Build.VERSION_CODES.KITKAT){
+        //            //透明状态栏
+        //            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        //            //透明导航栏
+        //            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+        //        }
     }
 
     /**
