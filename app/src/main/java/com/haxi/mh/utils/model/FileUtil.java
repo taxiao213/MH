@@ -1,4 +1,4 @@
-package com.haxi.mh.utils;
+package com.haxi.mh.utils.model;
 
 import android.os.Environment;
 import android.util.Log;

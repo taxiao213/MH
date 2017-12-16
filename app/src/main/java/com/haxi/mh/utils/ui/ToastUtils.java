@@ -1,4 +1,4 @@
-package com.haxi.mh.utils;
+package com.haxi.mh.utils.ui;
 
 import android.support.design.widget.Snackbar;
 import android.view.View;

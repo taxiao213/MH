@@ -124,6 +124,10 @@ public static java.lang.String TABLENAME;
 # retrofit网络请求 ----
 -dontwarn okio.**
 -dontwarn javax.annotation.**
+-dontwarn retrofit2.converter.gson.**
+-dontwarn retrofit2.adapter.rxjava2.**
+-keep retrofit2.converter.gson.**{*;}
+-keep retrofit2.adapter.rxjava2.**{*;}
 
 # easypermissions ----
 -keepclassmembers class * {
@@ -135,8 +139,8 @@ public static java.lang.String TABLENAME;
 -keep public class permissions.dispatcher.**{*;}
 
 # Gson混淆脚本 ----
--keep class com.google.gson.stream.** {*;}
--keep class com.youyou.uuelectric.renter.Network.user.** {*;}
+-keep class com.google.gson.stream.**{*;}
+-keep class com.youyou.uuelectric.renter.Network.user.**{*;}
 
 # Bugly ----
 -dontwarn com.tencent.bugly.**
