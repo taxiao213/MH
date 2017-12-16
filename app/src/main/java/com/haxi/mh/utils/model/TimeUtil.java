@@ -1,10 +1,10 @@
-package com.haxi.mh.utils;
+package com.haxi.mh.utils.model;
 
 import android.os.CountDownTimer;
 import android.support.annotation.NonNull;
 import android.widget.TextView;
 
-import com.haxi.mh.R;
+import com.haxi.mh.utils.ui.UIUtil;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

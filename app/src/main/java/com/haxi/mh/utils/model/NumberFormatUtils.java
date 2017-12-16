@@ -1,4 +1,4 @@
-package com.haxi.mh.utils;
+package com.haxi.mh.utils.model;
 
 import java.text.DecimalFormat;
 

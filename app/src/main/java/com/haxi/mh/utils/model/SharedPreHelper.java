@@ -1,4 +1,4 @@
-package com.haxi.mh.utils;
+package com.haxi.mh.utils.model;
 
 import android.content.Context;
 import android.content.SharedPreferences;
