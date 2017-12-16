@@ -129,6 +129,10 @@ public static java.lang.String TABLENAME;
 -keep retrofit2.converter.gson.**{*;}
 -keep retrofit2.adapter.rxjava2.**{*;}
 
+# OKHttp3拦截器
+-dontwarn okhttp3.logging.**
+-keep okhttp3.logging.**{*;}
+
 # easypermissions ----
 -keepclassmembers class * {
     @pub.devrel.easypermissions.AfterPermissionGranted <methods>;
