@@ -32,7 +32,7 @@ public class RxRetrofitApp {
     }
 
     public void setDebug() {
-        Debug = true;
+       Debug = true;
     }
 
 }
