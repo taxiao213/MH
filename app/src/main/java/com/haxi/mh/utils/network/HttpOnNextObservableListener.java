@@ -14,6 +14,7 @@ public interface HttpOnNextObservableListener {
 
     /**
      * ober成功回调
+     *
      * @param observable
      * @param method
      */

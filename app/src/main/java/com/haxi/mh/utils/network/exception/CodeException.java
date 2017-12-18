@@ -22,29 +22,29 @@ public class CodeException {
     public static final int NETWORD_ERROR = 0x101;
 
     /**
-     * http错误
-     */
-    public static final int HTTP_ERROR = 0x102;
-
-    /**
-     * Gson解析错误
-     */
-    public static final int JSON_ERROR = 0x103;
-
-    /**
-     * 未知错误
-     */
-    public static final int UNKNOWN_ERROR = 0x104;
-
-    /**
      * 运行时异常-包含自定义异常
      */
     public static final int RUNTIME_ERROR = 0x105;
 
     /**
+     * 连接错误
+     */
+    public static final int HTTP_ERROR = 0x102;
+
+    /**
+     * json解析错误
+     */
+    public static final int JSON_ERROR = 0x103;
+
+    /**
      * 无法解析该域名
      */
-    public static final int UNKOWNHOST_ERROR = 0x106;
+    public static final int UNKOWNHOST_ERROR = 0x104;
+
+    /**
+     * 未知错误
+     */
+    public static final int UNKNOWN_ERROR = 0x106;
 
     // 定义适用于参数的注解，限定取值范围为{NETWORD_ERROR, HTTP_ERROR, RUNTIME_ERROR, UNKNOWN_ERROR, JSON_ERROR, UNKOWNHOST_ERROR}
     @IntDef({NETWORD_ERROR, HTTP_ERROR, RUNTIME_ERROR, UNKNOWN_ERROR, JSON_ERROR, UNKOWNHOST_ERROR})
