@@ -1,4 +1,4 @@
-package com.haxi.mh.utils.network.exception;
+package com.haxi.mh.network.exception;
 
 import io.reactivex.Observable;
 import io.reactivex.functions.Function;
@@ -8,6 +8,7 @@ import io.reactivex.functions.Function;
  * Created by Han on 2017/12/11
  * Email:yin13753884368@163.com
  * CSDN:http://blog.csdn.net/yin13753884368/article
+ * Github:https://github.com/yin13753884368
  */
 
 public class ExceptionFunction implements Function<Throwable, Observable> {

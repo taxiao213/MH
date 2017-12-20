@@ -1,4 +1,4 @@
-package com.haxi.mh.utils.network;
+package com.haxi.mh.network.manager;
 
 import io.reactivex.Observable;
 import retrofit2.Retrofit;
@@ -8,17 +8,22 @@ import retrofit2.Retrofit;
  * Created by Han on 2017/12/16
  * Email:yin13753884368@163.com
  * CSDN:http://blog.csdn.net/yin13753884368/article
+ * Github:https://github.com/yin13753884368
  */
 public abstract class BaseApi {
     /*请求超时时间 默认6秒*/
     private int connectTime = 6;
+    /*有网情况下的本地缓存时间默认60秒*/
+    private int cookieNetWorkTime = 60;
+    /*无网络的情况下本地缓存时间默认30天*/
+    private int cookieNoNetWorkTime = 24 * 60 * 60 * 30;
     /*baseUrl*/
     private String baseUrl;
-    /*方法-如果需要缓存必须设置这个参数；不需要不用設置*/
+    /*方法-如果需要缓存必须设置这个参数；保证唯一,不需要不用設置*/
     private String method = "";
-    /*设置是否显示加载圈,默认显示*/
+    /*设置是否显示加载框,默认显示*/
     private boolean isShowProgress = true;
-    /*设置是否能取消加载圈,默认能取消*/
+    /*设置是否能取消加载框,默认能取消*/
     private boolean isCancle = false;
     /*设置是否有缓存,默认没有*/
     private boolean isCache = false;
@@ -27,6 +32,11 @@ public abstract class BaseApi {
     /*延迟时间*/
     private long delay = 100;
 
+    /**
+     * retrofit网络请求
+     * @param retrofit
+     * @return
+     */
     protected abstract Observable getObservable(Retrofit retrofit);
 
     /**
@@ -34,14 +44,39 @@ public abstract class BaseApi {
      *
      * @param connectTime
      */
-    public void setConnectTime(int connectTime) {
+    protected void setConnectTime(int connectTime) {
         this.connectTime = connectTime;
     }
 
-    public int getConnectTime() {
+    protected int getConnectTime() {
         return connectTime;
     }
 
+    /**
+     * 返回 无网情况下的本地缓存时间
+     *
+     * @return
+     */
+    protected int getCookieNoNetWorkTime() {
+        return cookieNoNetWorkTime;
+    }
+
+    protected void setCookieNoNetWorkTime(int cookieNoNetWorkTime) {
+        this.cookieNoNetWorkTime = cookieNoNetWorkTime;
+    }
+
+    /**
+     * 返回 有网情况下的本地缓存时间
+     *
+     * @return
+     */
+    protected int getCookieNetWorkTime() {
+        return cookieNetWorkTime;
+    }
+
+    protected void setCookieNetWorkTime(int cookieNetWorkTime) {
+        this.cookieNetWorkTime = cookieNetWorkTime;
+    }
 
     /**
      * 设置baseUrl
@@ -56,22 +91,30 @@ public abstract class BaseApi {
         return baseUrl;
     }
 
+    /**
+     * 如果需要缓存，返回url
+     *
+     * @return
+     */
+    protected String getUrl() {
+        return (baseUrl + method);
+    }
 
     /**
-     * 设置是否显示加载圈,默认显示
+     * 设置是否显示加载框,默认显示
      *
      * @param showProgress
      */
-    public void setShowProgress(boolean showProgress) {
+    protected void setShowProgress(boolean showProgress) {
         isShowProgress = showProgress;
     }
 
-    public boolean isShowProgress() {
+    protected boolean isShowProgress() {
         return isShowProgress;
     }
 
     /**
-     * 设置是否能取消加载圈,默认能取消
+     * 设置是否能取消加载框,默认能取消
      *
      * @param isCancle
      */
@@ -79,7 +122,7 @@ public abstract class BaseApi {
         this.isCancle = isCancle;
     }
 
-    public boolean isCache() {
+    protected boolean isCache() {
         return isCache;
     }
 
@@ -92,7 +135,7 @@ public abstract class BaseApi {
         this.isCache = isCache;
     }
 
-    public boolean isCancle() {
+    protected boolean isCancle() {
         return isCancle;
     }
 
@@ -102,11 +145,11 @@ public abstract class BaseApi {
      *
      * @param count
      */
-    public void setCount(int count) {
+    protected void setCount(int count) {
         this.count = count;
     }
 
-    public int getCount() {
+    protected int getCount() {
         return count;
     }
 
@@ -116,19 +159,19 @@ public abstract class BaseApi {
      *
      * @param delay
      */
-    public void setDelay(long delay) {
+    protected void setDelay(long delay) {
         this.delay = delay;
     }
 
-    public long getDelay() {
+    protected long getDelay() {
         return delay;
     }
 
-    public String getMethod() {
+    protected String getMethod() {
         return method;
     }
 
-    public void setMethod(String method) {
+    protected void setMethod(String method) {
         this.method = method;
     }
 }

@@ -1,4 +1,4 @@
-package com.haxi.mh.utils.network;
+package com.haxi.mh.network;
 
 import io.reactivex.Observable;
 import retrofit2.http.Field;
@@ -10,6 +10,7 @@ import retrofit2.http.POST;
  * Created by Han on 2017/12/18
  * Email:yin13753884368@163.com
  * CSDN:http://blog.csdn.net/yin13753884368/article
+ * Github:https://github.com/yin13753884368
  */
 
 public interface HttpService {

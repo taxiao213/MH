@@ -1,4 +1,8 @@
-package com.haxi.mh.utils.network;
+package com.haxi.mh.network;
+
+import com.haxi.mh.network.manager.BaseApi;
+
+import java.util.Map;
 
 import io.reactivex.Observable;
 import retrofit2.Retrofit;
@@ -8,11 +12,11 @@ import retrofit2.Retrofit;
  * Created by Han on 2017/12/18
  * Email:yin13753884368@163.com
  * CSDN:http://blog.csdn.net/yin13753884368/article
+ * Github:https://github.com/yin13753884368
  */
 
 public class HttpRequestApi extends BaseApi {
 
-    private boolean progress;
 
     /**
      * 创建HttpRequestApi
@@ -27,6 +31,11 @@ public class HttpRequestApi extends BaseApi {
      * 接口编号
      */
     private int apiType;
+
+    /**
+     * 接口为Map
+     */
+    private Map<String, Object> mParams;
 
     //登录账号
     private String account;
@@ -49,9 +58,10 @@ public class HttpRequestApi extends BaseApi {
      * @return
      */
     public HttpRequestApi login(String account, String passWord) {
-        setShowProgress(true);//设置是否显示加载圈
-        setCancle(false);//设置是否能取消加载圈
+        setShowProgress(true);//设置是否显示加载框
+        setCancle(false);//设置是否能取消加载框
         setCache(false);//设置是否有缓存
+        setBaseUrl("http://www.zkhonry.com:9000/zkhonry-mobile-interface/");
         this.account = account;
         this.passWord = passWord;
         return this;

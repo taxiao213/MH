@@ -1,11 +1,13 @@
-package com.haxi.mh.utils.network;
+package com.haxi.mh.network.manager;
 
 import android.text.TextUtils;
 
+import com.haxi.mh.network.listener.HttpOnNextListener;
+import com.haxi.mh.network.listener.HttpOnNextObservableListener;
 import com.haxi.mh.utils.model.LogUtils;
-import com.haxi.mh.utils.network.exception.ExceptionFunction;
-import com.haxi.mh.utils.network.exception.ResulteFunction;
-import com.haxi.mh.utils.network.exception.RetryNetworkException;
+import com.haxi.mh.network.exception.ExceptionFunction;
+import com.haxi.mh.network.exception.ResulteFunction;
+import com.haxi.mh.network.exception.RetryNetworkException;
 import com.trello.rxlifecycle2.android.ActivityEvent;
 import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
 
@@ -27,6 +29,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * Created by Han on 2017/12/16
  * Email:yin13753884368@163.com
  * CSDN:http://blog.csdn.net/yin13753884368/article
+ * Github:https://github.com/yin13753884368
  */
 
 public class HttpsManager {
@@ -48,7 +51,7 @@ public class HttpsManager {
         this.rxAppCompatActivity = rxAppCompatActivity;
     }
 
-    private void doHttpDeal(BaseApi baseApi) {
+    public void doHttpDeal(BaseApi baseApi) {
         Retrofit retrofit = getRetrofit(baseApi.getConnectTime(), baseApi.getBaseUrl());
         requestHttp(baseApi.getObservable(retrofit), baseApi);
     }
@@ -108,11 +111,13 @@ public class HttpsManager {
                 .unsubscribeOn(Schedulers.io())
                 //回调在主线程
                 .observeOn(AndroidSchedulers.mainThread());
+        //回调
         if (null != onNextObservableListener && null != onNextObservableListener.get()) {
             onNextObservableListener.get().onNext(observable, baseApi.getMethod());
         }
 
         if (null != onNextListener) {
+            //显示进度加载框
             ProgressObserver observer = new ProgressObserver(baseApi, onNextListener, rxAppCompatActivity);
             observable.subscribe(observer);
         }

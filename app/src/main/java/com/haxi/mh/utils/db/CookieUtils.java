@@ -3,10 +3,10 @@ package com.haxi.mh.utils.db;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.haxi.mh.CookieResulteDao;
 import com.haxi.mh.DaoMaster;
 import com.haxi.mh.DaoSession;
-import com.haxi.mh.PersonDao;
-import com.haxi.mh.model.db.Person;
+import com.haxi.mh.network.cookie.CookieResulte;
 import com.haxi.mh.utils.ui.UIUtil;
 
 import org.greenrobot.greendao.query.QueryBuilder;
@@ -14,36 +14,36 @@ import org.greenrobot.greendao.query.QueryBuilder;
 import java.util.List;
 
 /**
- * greenDao数据库工具类
+ * greenDao数据库工具类 读取缓存Cookie
  * Created by Han on 2017/12/18
  * Email:yin13753884368@163.com
  * CSDN:http://blog.csdn.net/yin13753884368/article
  * Github:https://github.com/yin13753884368
  */
 
-public class PersonUtils {
+public class CookieUtils {
 
-    private static PersonUtils person;
-    private String DB_NAME = "person_db";
+    private static CookieUtils cookieUtils;
+    private String DB_NAME = "cookie_db";
     private DaoMaster.DevOpenHelper openHelper = null;
     private final Context context;
     private SQLiteDatabase readableDatabase;
     private SQLiteDatabase writableDatabase;
 
-    public PersonUtils() {
+    public CookieUtils() {
         context = UIUtil.getContext();
         openHelper = new DaoMaster.DevOpenHelper(context, DB_NAME);
     }
 
-    public static PersonUtils getInstance() {
-        if (person == null) {
-            synchronized (PersonUtils.class) {
-                if (person == null) {
-                    person = new PersonUtils();
+    public static CookieUtils getInstance() {
+        if (cookieUtils == null) {
+            synchronized (CookieUtils.class) {
+                if (cookieUtils == null) {
+                    cookieUtils = new CookieUtils();
                 }
             }
         }
-        return person;
+        return cookieUtils;
     }
 
     /**
@@ -77,7 +77,7 @@ public class PersonUtils {
     private DaoSession getDaoSession() {
         try {
             if (writableDatabase == null) {
-                synchronized (PersonUtils.this) {
+                synchronized (CookieUtils.this) {
                     if (writableDatabase == null) {
                         DaoMaster.DevOpenHelper devOpenHelper = new DaoMaster.DevOpenHelper(context, DB_NAME);
                         writableDatabase = devOpenHelper.getWritableDatabase();
@@ -93,15 +93,15 @@ public class PersonUtils {
 
 
     /**
-     * 保存联系人
+     * 保存缓存Cookie
      *
      * @param info
      */
-    public void save(Person info) {
+    public void save(CookieResulte info) {
         try {
             if (info != null) {
                 DaoSession daoSession = getDaoSession();
-                daoSession.getPersonDao().insert(info);
+                daoSession.getCookieResulteDao().insert(info);
             }
         } catch (Exception e) {
 
@@ -110,44 +110,44 @@ public class PersonUtils {
 
 
     /**
-     * 删除联系人
+     * 删除缓存Cookie
      *
      * @param info
      */
-    public void delete(Person info) {
+    public void delete(CookieResulte info) {
         try {
             if (info != null) {
                 DaoSession daoSession = getDaoSession();
-                daoSession.getPersonDao().delete(info);
+                daoSession.getCookieResulteDao().delete(info);
             }
         } catch (Exception e) {
         }
     }
 
     /**
-     * 更新联系人
+     * 更新缓存Cookie
      *
      * @param info
      */
-    public void update(Person info) {
+    public void update(CookieResulte info) {
         try {
             if (info != null) {
                 DaoSession daoSession = getDaoSession();
-                daoSession.getPersonDao().update(info);
+                daoSession.getCookieResulteDao().update(info);
             }
         } catch (Exception e) {
         }
     }
 
     /**
-     * 查询所有联系人
+     * 查询所有缓存Cookie
      *
      * @return
      */
-    public List<Person> queryAll() {
+    public List<CookieResulte> queryAll() {
         try {
             DaoSession daoSession = getDaoSession();
-            QueryBuilder<Person> builder = daoSession.getPersonDao().queryBuilder();
+            QueryBuilder<CookieResulte> builder = daoSession.getCookieResulteDao().queryBuilder();
             return builder.list();
         } catch (Exception e) {
             return null;
@@ -155,38 +155,21 @@ public class PersonUtils {
     }
 
     /**
-     * 根据name 查询
+     * 根据url 查询
      *
-     * @param name
+     * @param url
      * @return
      */
-    public List<Person> queryByNodeLevel(String name) {
+    public CookieResulte queryByUrl(String url) {
         try {
             DaoSession daoSession = getDaoSession();
-            QueryBuilder<Person> builder = daoSession.getPersonDao().queryBuilder();
-            builder.where(PersonDao.Properties.Name.eq(name));
-            return builder.list();
-        } catch (Exception e) {
-            return null;
-        }
-    }
-
-    /**
-     * 根据ID 查询升序排列
-     *
-     * @param ID
-     * @return
-     */
-    public List<Person> queryByID(Long ID) {
-        try {
-            if (ID == null || ID.equals("")) {
+            QueryBuilder<CookieResulte> builder = daoSession.getCookieResulteDao().queryBuilder();
+            builder.where(CookieResulteDao.Properties.Url.eq(url));
+            if (builder != null && builder.list().size() > 0) {
+                return builder.list().get(0);
+            } else {
                 return null;
             }
-            DaoSession daoSession = getDaoSession();
-            QueryBuilder<Person> builder = daoSession.getPersonDao().queryBuilder();
-            builder.where(PersonDao.Properties.Id.eq(ID));
-            builder.orderAsc(PersonDao.Properties.Id);
-            return builder.list();
         } catch (Exception e) {
             return null;
         }

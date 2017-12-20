@@ -1,12 +1,12 @@
-package com.haxi.mh.utils.network.exception;
+package com.haxi.mh.network.exception;
 
 /**
  * 自定义运行时异常
  * Created by Han on 2017/12/18
  * Email:yin13753884368@163.com
  * CSDN:http://blog.csdn.net/yin13753884368/article
+ * Github:https://github.com/yin13753884368
  */
-
 public class CustomTimeException extends RuntimeException {
     /*未知错误*/
     public static final int UNKOWN_ERROR = 0x1002;

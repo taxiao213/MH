@@ -62,5 +62,8 @@
     <color name="grey_f7">#f7f7f7</color>
     <color name="grey_f8">#f8f8f8</color>
 
+    <!--加载框-->
+    <color name="kprogresshud_default_color">#00ffffff</color>
+    <color name="kprogresshud_grey_color">#99666666</color>
 
 </resources>

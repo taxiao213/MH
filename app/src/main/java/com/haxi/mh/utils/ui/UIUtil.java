@@ -1,12 +1,20 @@
 package com.haxi.mh.utils.ui;
 
 import android.app.Activity;
+import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
+import android.location.LocationManager;
+import android.net.Uri;
 import android.os.Build;
+import android.os.Environment;
 import android.os.Handler;
 import android.support.annotation.StringRes;
 import android.support.v4.app.ActivityCompat;
@@ -21,13 +29,18 @@ import android.widget.TextView;
 
 import com.haxi.mh.MyApplication;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.Method;
+import java.util.Properties;
 
 
 /**
  * UI工具类,对一些界面数据的获取与操作
  * Created by Han on 2017/12/11
  * Email:yin13753884368@163.com
+ * CSDN:http://blog.csdn.net/yin13753884368/article
+ * Github:https://github.com/yin13753884368
  */
 public class UIUtil {
 
@@ -257,6 +270,37 @@ public class UIUtil {
         return dialog;
     }
 
+    /**
+     * 判断SDCard是否存在,并可写
+     *
+     * @return
+     */
+    public static boolean checkSDCard() {
+        String flag = Environment.getExternalStorageState();
+        return Environment.MEDIA_MOUNTED.equals(flag);
+    }
+
+    /**
+     * 是否横屏
+     *
+     * @param context
+     * @return true为横屏，false为竖屏
+     */
+    public static boolean isLandscape(Context context) {
+        return context.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE;
+    }
+
+    /**
+     * 判断是否是平板
+     * 这个方法是从 Google I/O App for Android 的源码里找来的，非常准确。
+     *
+     * @param context
+     * @return
+     */
+    public static boolean isTablet(Context context) {
+        return (context.getResources().getConfiguration().screenLayout
+                & Configuration.SCREENLAYOUT_SIZE_MASK) >= Configuration.SCREENLAYOUT_SIZE_LARGE;
+    }
 
     public static boolean checkDeviceHasNavigationBar(Context context) {
         boolean hasNavigationBar = false;
@@ -360,6 +404,117 @@ public class UIUtil {
         Resources res = getResources();
         int picid = res.getIdentifier(resourceName, "drawable", getContext().getPackageName());
         return picid;
+    }
+
+
+    /**
+     * 获得当前的版本信息
+     *
+     * @return
+     */
+    public static String[] getVersionInfo() {
+        String[] version = new String[2];
+        Context context = getContext();
+        PackageManager packageManager = context.getPackageManager();
+        try {
+            PackageInfo packageInfo = packageManager.getPackageInfo(context.getPackageName(), 0);
+            version[0] = String.valueOf(packageInfo.versionCode);
+            version[1] = packageInfo.versionName;
+            return version;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        return version;
+    }
+
+    /**
+     * 是否开启 GPS
+     *
+     * @return
+     */
+    public static boolean isOpenGPS() {
+        Context context = getContext();
+        LocationManager locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+        boolean isGPSEnable = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+        boolean isNPEnable = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+        return isGPSEnable || isNPEnable;
+    }
+
+    /**
+     * 开启GPS
+     *
+     * @param context
+     */
+    public static void openGPS(Context context) {
+        Intent GPSIntent = new Intent();
+        GPSIntent.setClassName("com.android.settings",
+                "com.android.settings.widget.SettingsAppWidgetProvider");
+        GPSIntent.addCategory("android.intent.category.ALTERNATIVE");
+        GPSIntent.setData(Uri.parse("custom:3"));
+        try {
+            PendingIntent.getBroadcast(getContext(), 0, GPSIntent, 0).send();
+        } catch (PendingIntent.CanceledException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 短信分享
+     *
+     * @param mContext
+     * @param smstext  短信分享内容
+     * @return
+     */
+    public static Boolean sendSms(Context mContext, String smstext) {
+        Uri smsToUri = Uri.parse("smsto:");
+        Intent mIntent = new Intent(Intent.ACTION_SENDTO, smsToUri);
+        mIntent.putExtra("sms_body", smstext);
+        mContext.startActivity(mIntent);
+        return null;
+    }
+
+    /**
+     * 邮件分享
+     *
+     * @param mContext
+     * @param title    邮件的标题
+     * @param text     邮件的内容
+     * @return
+     */
+    public static void sendMail(Context mContext, String title, String text) {
+        // 调用系统发邮件
+        Intent emailIntent = new Intent(Intent.ACTION_SEND);
+        // 设置文本格式
+        emailIntent.setType("text/plain");
+        // 设置对方邮件地址
+        emailIntent.putExtra(Intent.EXTRA_EMAIL, "");
+        // 设置标题内容
+        emailIntent.putExtra(Intent.EXTRA_SUBJECT, title);
+        // 设置邮件文本内容
+        emailIntent.putExtra(Intent.EXTRA_TEXT, text);
+        mContext.startActivity(Intent.createChooser(emailIntent, "Choose Email Client"));
+    }
+
+    /**
+     * 根据key获取config.properties里面的值
+     *
+     * @param context
+     * @param key
+     * @return
+     */
+    public static String getProperty(Context context, String key) {
+        try {
+            Properties props = new Properties();
+            InputStream input = context.getAssets().open("config.properties");
+            if (input != null) {
+                props.load(input);
+                return props.getProperty(key);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            return "";
+        }
+        return "";
     }
 }
 

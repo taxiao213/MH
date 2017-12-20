@@ -1,4 +1,4 @@
-package com.haxi.mh.utils.network;
+package com.haxi.mh.network.listener;
 
 
 import io.reactivex.Observable;
@@ -8,6 +8,7 @@ import io.reactivex.Observable;
  * Created by Han on 2017/12/16
  * Email:yin13753884368@163.com
  * CSDN:http://blog.csdn.net/yin13753884368/article
+ * Github:https://github.com/yin13753884368
  */
 
 public interface HttpOnNextObservableListener {

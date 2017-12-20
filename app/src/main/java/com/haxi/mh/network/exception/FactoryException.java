@@ -1,4 +1,4 @@
-package com.haxi.mh.utils.network.exception;
+package com.haxi.mh.network.exception;
 
 
 import org.json.JSONException;
@@ -17,6 +17,7 @@ import retrofit2.adapter.rxjava2.HttpException;
  * Created by Han on 2017/12/16
  * Email:yin13753884368@163.com
  * CSDN:http://blog.csdn.net/yin13753884368/article
+ * Github:https://github.com/yin13753884368
  */
 
 public class FactoryException {

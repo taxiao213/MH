@@ -1,4 +1,4 @@
-package com.haxi.mh.utils.network.exception;
+package com.haxi.mh.network.exception;
 
 import java.net.ConnectException;
 import java.net.SocketException;
@@ -17,6 +17,7 @@ import io.reactivex.schedulers.Schedulers;
  * Created by Han on 2017/12/18
  * Email:yin13753884368@163.com
  * CSDN:http://blog.csdn.net/yin13753884368/article
+ * Github:https://github.com/yin13753884368
  */
 
 public class RetryNetworkException implements Function<Observable<? extends Throwable>, Observable<?>> {

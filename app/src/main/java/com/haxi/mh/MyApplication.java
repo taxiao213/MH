@@ -3,7 +3,7 @@ package com.haxi.mh;
 import android.app.Application;
 import android.os.Handler;
 
-import com.haxi.mh.utils.network.RxRetrofitApp;
+import com.haxi.mh.network.manager.RxRetrofitApp;
 import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.Logger;
 import com.tencent.bugly.crashreport.CrashReport;
@@ -14,6 +14,8 @@ import com.tencent.bugly.crashreport.CrashReport;
  * 2.获取上下文
  * Created by Han on 2017/12/11
  * Email:yin13753884368@163.com
+ * CSDN:http://blog.csdn.net/yin13753884368/article
+ * Github:https://github.com/yin13753884368
  */
 
 public class MyApplication extends Application {
