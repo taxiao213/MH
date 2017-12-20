@@ -1,4 +1,4 @@
-package com.haxi.mh.utils.ui.pross;
+package com.haxi.mh.utils.ui.progress;
 
 import android.content.Context;
 import android.support.annotation.NonNull;

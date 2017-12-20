@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 
-package com.haxi.mh.utils.ui.pross;
+package com.haxi.mh.utils.ui.progress;
 
 import android.app.Dialog;
 import android.content.Context;
