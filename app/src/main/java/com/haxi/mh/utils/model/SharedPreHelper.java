@@ -11,6 +11,8 @@ import java.io.File;
  * SharedPreferences 存储数据
  * Created by Han on 2017/12/11
  * Email:yin13753884368@163.com
+ * CSDN:http://blog.csdn.net/yin13753884368/article
+ * Github:https://github.com/yin13753884368
  */
 public class SharedPreHelper {
 

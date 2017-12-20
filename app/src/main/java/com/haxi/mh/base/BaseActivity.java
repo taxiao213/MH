@@ -18,9 +18,11 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
 /**
- * 基类
+ * Activity基类
  * Created by Han on 2017/12/13
  * Email:yin13753884368@163.com
+ * CSDN:http://blog.csdn.net/yin13753884368/article
+ * Github:https://github.com/yin13753884368
  */
 
 public abstract class BaseActivity extends RxAppCompatActivity {
@@ -32,7 +34,7 @@ public abstract class BaseActivity extends RxAppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(getLayoutRes());
         bind = ButterKnife.bind(this);
-        mActivity = this;
+        this.mActivity = this;
         //竖屏
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         EventBus.getDefault().register(this);
