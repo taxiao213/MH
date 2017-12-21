@@ -2,16 +2,14 @@ package com.haxi.mh.network.manager;
 
 import android.text.TextUtils;
 
-import com.haxi.mh.network.listener.HttpOnNextListener;
-import com.haxi.mh.network.listener.HttpOnNextObservableListener;
-import com.haxi.mh.utils.model.LogUtils;
 import com.haxi.mh.network.exception.ExceptionFunction;
 import com.haxi.mh.network.exception.ResulteFunction;
 import com.haxi.mh.network.exception.RetryNetworkException;
+import com.haxi.mh.network.listener.HttpOnNextListener;
+import com.haxi.mh.utils.model.LogUtils;
 import com.trello.rxlifecycle2.android.ActivityEvent;
 import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
 
-import java.lang.ref.SoftReference;
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observable;
@@ -22,7 +20,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
-import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.converter.scalars.ScalarsConverterFactory;
 
 /**
  * http交互处理类
@@ -35,14 +33,11 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class HttpsManager {
 
     private HttpOnNextListener onNextListener;
-    /*软引用对象*/
-    private SoftReference<HttpOnNextObservableListener> onNextObservableListener;
     /*rxlifecycle2*/
     private RxAppCompatActivity rxAppCompatActivity;
 
 
-    public HttpsManager(HttpOnNextObservableListener onNextObservableListener, RxAppCompatActivity rxAppCompatActivity) {
-        this.onNextObservableListener = new SoftReference(onNextObservableListener);
+    public HttpsManager(RxAppCompatActivity rxAppCompatActivity) {
         this.rxAppCompatActivity = rxAppCompatActivity;
     }
 
@@ -76,19 +71,27 @@ public class HttpsManager {
                 .readTimeout(60, TimeUnit.SECONDS)//读取超时时间
                 .writeTimeout(60, TimeUnit.SECONDS);//写入超时时间
 
-        //增加请求和响应拦截器
+        //请求接口返回数据拦截器
         if (RxRetrofitApp.isDebug()) {
             builder.addInterceptor(getHttpLoggingInterceptor());
         }
 
         /**
          * 创建Retrofit对象
+         *   //增加返回值为Gson的支持(以实体类返回)
+         *   //增加返回值为String的支持
+         *   //增加返回值为Oservable<T>的支持
+         *   addConverterFactory只能选用一个
          */
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(bserUrl)
-                .addCallAdapterFactory(RxJava2CallAdapterFactory.createWithScheduler(Schedulers.io()))
-                .addConverterFactory(GsonConverterFactory.create())
                 .client(builder.build())
+                //增加返回值为Oservable<T>的支持
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.createWithScheduler(Schedulers.io()))
+                //增加返回值为Gson的支持(以实体类返回)
+                //.addConverterFactory(GsonConverterFactory.create())
+                //增加返回值为String的支持
+                .addConverterFactory(ScalarsConverterFactory.create())
+                .baseUrl(bserUrl)
                 .build();
         return retrofit;
     }
@@ -111,10 +114,6 @@ public class HttpsManager {
                 .unsubscribeOn(Schedulers.io())
                 //回调在主线程
                 .observeOn(AndroidSchedulers.mainThread());
-        //回调
-        if (null != onNextObservableListener && null != onNextObservableListener.get()) {
-            onNextObservableListener.get().onNext(observable, baseApi.getMethod());
-        }
 
         if (null != onNextListener) {
             //显示进度加载框
@@ -126,7 +125,7 @@ public class HttpsManager {
 
 
     /**
-     * 日志输出
+     * 请求接口返回数据拦截器
      *
      * @return
      */
@@ -143,7 +142,7 @@ public class HttpsManager {
                 String s = message.substring(0, 1);
                 if ("{".equals(s) || "[".equals(s)) {
                     //输出日志
-                    LogUtils.e("HttpsManager--->>>日志输出--->>>" + message);
+                    LogUtils.e("接口返回数据--->>> " + message);
                 }
             }
         });

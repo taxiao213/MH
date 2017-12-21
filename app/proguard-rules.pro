@@ -125,8 +125,10 @@ public static java.lang.String TABLENAME;
 -dontwarn okio.**
 -dontwarn javax.annotation.**
 -dontwarn retrofit2.converter.gson.**
+-dontwarn retrofit2.converter.scalars.**
 -dontwarn retrofit2.adapter.rxjava2.**
 -keep retrofit2.converter.gson.**{*;}
+-keep retrofit2.converter.scalars.**{*;}
 -keep retrofit2.adapter.rxjava2.**{*;}
 
 # OKHttp3拦截器

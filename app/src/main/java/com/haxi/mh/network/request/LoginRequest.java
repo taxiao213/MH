@@ -25,7 +25,7 @@ public class LoginRequest extends BaseHttpRequest<String> {
 
     public LoginRequest(RxAppCompatActivity rxAppCompatActivity) {
         super(rxAppCompatActivity);
-        this.account = "100135";
+        this.account = "100124";
         this.passWord = "1";
     }
 
@@ -44,7 +44,7 @@ public class LoginRequest extends BaseHttpRequest<String> {
 
     @Override
     public void onError(ApiException e) {
-
+        LogUtils.e(e.toString());
     }
 
     @Override

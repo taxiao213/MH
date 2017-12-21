@@ -42,7 +42,6 @@ public class ProgressObserver<T> implements Observer<T> {
         this.api = api;
         this.mSubscriberOnNextListener = listenerSoftReference;
         this.mActivity = mActivity;
-        setShowPorgress(api.isShowProgress());
         if (api.isShowProgress()) {
             initProgressDialog(api.isCancle());
         }
@@ -53,14 +52,10 @@ public class ProgressObserver<T> implements Observer<T> {
      * 初始化加载框
      */
     private void initProgressDialog(boolean cancel) {
-        if (dialog != null && !dialog.isShowing()) {
-            dialog.show();
-        } else if (dialog == null && mActivity != null) {
+        if (dialog == null && mActivity != null) {
             dialog = new ProgressDialog(mActivity);
             dialog.setCancelable(cancel);
-            dialog.show();
         }
-
     }
 
 
@@ -68,12 +63,10 @@ public class ProgressObserver<T> implements Observer<T> {
      * 显示加载框
      */
     private void showProgressDialog() {
-        if (!isShowPorgress())
-            return;
-        if (dialog == null || mActivity == null)
-            return;
-        if (!dialog.isShowing()) {
-            dialog.show();
+        if (dialog != null && !dialog.isShowing()) {
+            if (api.isShowProgress()) {
+                dialog.show();
+            }
         }
     }
 
@@ -82,24 +75,9 @@ public class ProgressObserver<T> implements Observer<T> {
      * 隐藏
      */
     private void dismissProgressDialog() {
-        if (!isShowPorgress())
-            return;
         if (dialog != null && dialog.isShowing()) {
             dialog.dismiss();
         }
-    }
-
-    public boolean isShowPorgress() {
-        return showPorgress;
-    }
-
-    /**
-     * 是否需要显示进度条
-     *
-     * @param showPorgress
-     */
-    public void setShowPorgress(boolean showPorgress) {
-        this.showPorgress = showPorgress;
     }
 
 
@@ -108,7 +86,7 @@ public class ProgressObserver<T> implements Observer<T> {
      * 显示ProgressDialog
      */
     @Override
-    public void onSubscribe(Disposable d) {
+    public void onSubscribe(Disposable disposable) {
         showProgressDialog();
         /*缓存并且有网*/
         if (api.isCache() && NetUtils.isNetworkConnected(mActivity)) {
@@ -120,7 +98,9 @@ public class ProgressObserver<T> implements Observer<T> {
                     if (mSubscriberOnNextListener != null) {
                         mSubscriberOnNextListener.onNext(cookieResulte.getResulte(), api.getMethod());
                     }
-                    d.dispose();//取消订阅
+                    if (disposable != null) {
+                        disposable.dispose();//取消订阅
+                    }
                     onComplete();
                 }
             }
@@ -156,6 +136,7 @@ public class ProgressObserver<T> implements Observer<T> {
     /**
      * 对错误进行统一处理
      * 隐藏ProgressDialog
+     * onError()后不会走onComplete()
      *
      * @param e
      */

@@ -34,6 +34,7 @@ public abstract class BaseApi {
 
     /**
      * retrofit网络请求
+     *
      * @param retrofit
      * @return
      */
@@ -114,12 +115,12 @@ public abstract class BaseApi {
     }
 
     /**
-     * 设置是否能取消加载框,默认能取消
+     * 设置是否有缓存,默认没有
      *
-     * @param isCancle
+     * @param isCache
      */
-    protected void setCache(boolean isCancle) {
-        this.isCancle = isCancle;
+    protected void setCache(boolean isCache) {
+        this.isCache = isCache;
     }
 
     protected boolean isCache() {
@@ -127,18 +128,17 @@ public abstract class BaseApi {
     }
 
     /**
-     * 设置是否有缓存,默认没有
+     * 设置是否能取消加载框,默认能取消
      *
-     * @param isCache
+     * @param isCancle
      */
-    protected void setCancle(boolean isCache) {
-        this.isCache = isCache;
+    protected void setCancle(boolean isCancle) {
+        this.isCancle = isCancle;
     }
 
     protected boolean isCancle() {
         return isCancle;
     }
-
 
     /**
      * 重试次数
