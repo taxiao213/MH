@@ -1,6 +1,8 @@
 package com.haxi.mh.network.manager;
 
 
+import com.haxi.mh.utils.model.LogUtils;
+
 import java.io.IOException;
 
 import okhttp3.FormBody;
@@ -36,18 +38,22 @@ public class LoggingInterceptor implements Interceptor {
         Request request = chain.request();
         Request.Builder newBuilder = request.newBuilder();//用来追加参数
         FormBody formBody = new FormBody.Builder()
-                .add("user_token", user_token)
-                .add("user_only_account", user_only_account)
+                //                .add("user_token", user_token)
+                //                .add("user_only_account", user_only_account)
                 .build();
         String bodyToString = bodyToString(request.body());
         bodyToString += ((bodyToString.length() > 0) ? "&" : "") + bodyToString(formBody);
         Request build = newBuilder.post(RequestBody.create(MediaType.parse("application/x-www-form-urlencoded;charset=UTF-8"), bodyToString))
                 .build();
+
+        LogUtils.e("接口--->>>" + " 请求方式 method== " + build.method() + " , url== " + build.url() + "?" + bodyToString(build.body()));
+
         return chain.proceed(build);
     }
 
     /**
      * 将公共参数拼装
+     *
      * @param request
      * @return
      */
@@ -60,8 +66,8 @@ public class LoggingInterceptor implements Interceptor {
             else
                 return "";
             return buffer.readUtf8();
-        } catch (final IOException e) {
-            return "did not work";
+        } catch (Exception e) {
+            return "参数拼接错误";
         }
     }
 

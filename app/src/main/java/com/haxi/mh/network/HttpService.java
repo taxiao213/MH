@@ -1,6 +1,7 @@
 package com.haxi.mh.network;
 
 import io.reactivex.Observable;
+import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.POST;
@@ -18,7 +19,11 @@ public interface HttpService {
     //登录接口
     @FormUrlEncoded
     @POST("userLogin/login.action")
-    Observable<String> login(@Field("account") String account, @Field("passwd") String passWord);
+    Observable<String> login(@Field("account") String account, @Field("passwd") String passWord); //登录接口
+
+    @FormUrlEncoded
+    @POST("userLogin/login.action")
+    Call<CC>  logins(@Field("account") String account, @Field("passwd") String passWord);
 
 
 }

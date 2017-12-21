@@ -78,8 +78,9 @@ dependencies {
 
     /* retrofit */
     compile 'com.squareup.retrofit2:retrofit:2.3.0'
-    compile 'com.squareup.retrofit2:converter-gson:2.3.0'
-    compile 'com.squareup.retrofit2:adapter-rxjava2:2.3.0'
+    compile 'com.squareup.retrofit2:converter-gson:2.3.0'//增加返回值为Gson的支持(以实体类返回)
+    compile 'com.squareup.retrofit2:converter-scalars:2.3.0'//增加返回值为String的支持
+    compile 'com.squareup.retrofit2:adapter-rxjava2:2.3.0'//增加返回值为Oservable<T>的支持
     compile 'com.squareup.okhttp3:logging-interceptor:3.9.1'//okhttp3拦截器
 
     /* RxAndroid: Reactive Extensions for Android */
