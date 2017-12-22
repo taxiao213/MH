@@ -157,14 +157,17 @@ dependencies {
     /* Walle（瓦力）：Android Signature V2 Scheme签名下的新一代渠道包打包神器 */
     compile 'com.meituan.android.walle:library:1.1.5'
 
+    /* 友盟统计 */
+    compile 'com.umeng.analytics:analytics:latest.integration'
+
 }
 
 
 walle {
     // 指定渠道包的输出路径
-    apkOutputFolder = new File("${project.buildDir}/outputs/channels");
+    apkOutputFolder = new File("${project.buildDir}/outputs/channels")
     // 定制渠道包的APK的文件名称
-    apkFileNameFormat = '${appName}-${packageName}-${channel}-${buildType}-v${versionName}-${versionCode}-${buildTime}.apk';
+    apkFileNameFormat = '${appName}-${packageName}-${channel}-${buildType}-v${versionName}-${versionCode}-${buildTime}.apk'
     // 渠道配置文件
     channelFile = new File("${project.getProjectDir()}/channel")
 }
