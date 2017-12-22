@@ -16,16 +16,35 @@ android {
             abiFilters 'armeabi' //, 'x86', 'armeabi-v7a', 'x86_64', 'arm64-v8a'
         }
     }
+
+    //签名 引用位置
+    signingConfigs {
+        config {
+            storeFile file("E:\\project\\MH\\MH.jks")
+            storePassword "mh123456"
+            keyAlias "key_mh"
+            keyPassword "mh123456"
+            v2SigningEnabled true
+        }
+    }
+
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.config
+        }
+
+        debug {
+            signingConfig signingConfigs.config
         }
 
         debug { //在线查看app数据库 amitshekhar.android:debug
             resValue("string", "PORT_NUMBER", "9000")
         }
     }
+
+
 }
 
 /* 针对greenDao的一些配置 */

@@ -37,7 +37,7 @@ public class FactoryException {
         ApiException apiException = new ApiException(e);
         if (e instanceof HttpException) {
              /*网络异常*/
-            apiException.setCode(CodeException.NETWORD_ERROR);
+            apiException.setCode(CodeException.NET_ERROR);
             apiException.setDisplayMessage(HTTPEXCEPTION_MSG);
         } else if (e instanceof CustomTimeException) {
              /*自定义运行时异常*/

@@ -20,35 +20,35 @@ public class CodeException {
     /**
      * 网络错误
      */
-    public static final int NETWORD_ERROR = 0x101;
+    public static final int NET_ERROR = 0x101;
 
     /**
      * 运行时异常-包含自定义异常
      */
-    public static final int RUNTIME_ERROR = 0x105;
+    public static final int RUNTIME_ERROR = 0x102;
 
     /**
      * 连接错误
      */
-    public static final int HTTP_ERROR = 0x102;
+    public static final int HTTP_ERROR = 0x103;
 
     /**
      * json解析错误
      */
-    public static final int JSON_ERROR = 0x103;
+    public static final int JSON_ERROR = 0x104;
 
     /**
      * 无法解析该域名
      */
-    public static final int UNKOWNHOST_ERROR = 0x104;
+    public static final int UNKOWNHOST_ERROR = 0x105;
 
     /**
      * 未知错误
      */
     public static final int UNKNOWN_ERROR = 0x106;
 
-    // 定义适用于参数的注解，限定取值范围为{NETWORD_ERROR, HTTP_ERROR, RUNTIME_ERROR, UNKNOWN_ERROR, JSON_ERROR, UNKOWNHOST_ERROR}
-    @IntDef({NETWORD_ERROR, HTTP_ERROR, RUNTIME_ERROR, UNKNOWN_ERROR, JSON_ERROR, UNKOWNHOST_ERROR})
+    // 定义适用于参数的注解，限定取值范围为{NET_ERROR, HTTP_ERROR, RUNTIME_ERROR, UNKNOWN_ERROR, JSON_ERROR, UNKOWNHOST_ERROR}
+    @IntDef({NET_ERROR, HTTP_ERROR, RUNTIME_ERROR, UNKNOWN_ERROR, JSON_ERROR, UNKOWNHOST_ERROR})
     @Retention(RetentionPolicy.SOURCE)
 
 
