@@ -15,6 +15,7 @@ import com.haxi.mh.utils.ui.progress.ProgressDialog;
 import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 
 /**
@@ -33,14 +34,14 @@ public class ProgressObserver<T> implements Observer<T> {
     /*加载框可自己定义*/
     private ProgressDialog dialog;
     /*回调接口*/
-    private HttpOnNextListener mSubscriberOnNextListener;
+    private HttpOnNextListener mHttpOnNextListener;
     /*请求数据*/
     private BaseApi api;
 
 
-    public ProgressObserver(BaseApi api, HttpOnNextListener listenerSoftReference, Context mActivity) {
+    public ProgressObserver(BaseApi api, HttpOnNextListener mHttpOnNextListener, Context mActivity) {
         this.api = api;
-        this.mSubscriberOnNextListener = listenerSoftReference;
+        this.mHttpOnNextListener = mHttpOnNextListener;
         this.mActivity = mActivity;
         if (api.isShowProgress()) {
             initProgressDialog(api.isCancle());
@@ -90,13 +91,13 @@ public class ProgressObserver<T> implements Observer<T> {
         showProgressDialog();
         /*缓存并且有网*/
         if (api.isCache() && NetUtils.isNetworkConnected(mActivity)) {
-             /*获取缓存数据*/
+            /*获取缓存数据*/
             CookieResulte cookieResulte = CookieUtils.getInstance().queryByUrl(api.getUrl());
             if (cookieResulte != null) {
                 long time = (System.currentTimeMillis() - cookieResulte.getTime()) / 1000;//(单位是秒)
                 if (time < api.getCookieNetWorkTime()) {
-                    if (mSubscriberOnNextListener != null) {
-                        mSubscriberOnNextListener.onNext(cookieResulte.getResulte(), api.getMethod());
+                    if (mHttpOnNextListener != null) {
+                        mHttpOnNextListener.onNext(cookieResulte.getResulte(), api.getMethod());
                     }
                     if (disposable != null) {
                         disposable.dispose();//取消订阅
@@ -128,8 +129,8 @@ public class ProgressObserver<T> implements Observer<T> {
                 CookieUtils.getInstance().update(resulte);
             }
         }
-        if (mSubscriberOnNextListener != null) {
-            mSubscriberOnNextListener.onNext((String) t, api.getMethod());
+        if (mHttpOnNextListener != null) {
+            mHttpOnNextListener.onNext((String) t, api.getMethod());
         }
     }
 
@@ -163,7 +164,7 @@ public class ProgressObserver<T> implements Observer<T> {
      * 获取cache数据
      */
     private void getCache() {
-        Observable.just(api.getUrl()).subscribe(new Observer<String>() {
+        Observable.just(api.getUrl()).subscribeOn(Schedulers.io()).subscribe(new Observer<String>() {
             Disposable disposable = null;
 
             @Override
@@ -176,28 +177,36 @@ public class ProgressObserver<T> implements Observer<T> {
                 /*获取缓存数据*/
                 CookieResulte cookieResulte = CookieUtils.getInstance().queryByUrl(s);
                 if (cookieResulte == null) {
-                    throw new CustomTimeException(CustomTimeException.NO_CACHE_ERROR);
-                }
-                long time = (System.currentTimeMillis() - cookieResulte.getTime()) / 1000;//(单位是秒)
-                if (time < api.getCookieNoNetWorkTime()) {
-                    if (mSubscriberOnNextListener != null) {
-                        mSubscriberOnNextListener.onNext(cookieResulte.getResulte(), api.getMethod());
-                    }
+                    CustomTimeException exception = new CustomTimeException(CustomTimeException.NO_CACHE_ERROR);
+                    mHttpOnNextListener.onError(new ApiException(exception, CodeException.RUNTIME_ERROR, exception.getApiExceptionMessage(CustomTimeException.NO_CACHE_ERROR)));
                 } else {
-                    CookieUtils.getInstance().delete(cookieResulte);
-                    throw new CustomTimeException(CustomTimeException.CHACHE_TIMEOUT_ERROR);
+                    long time = (System.currentTimeMillis() - cookieResulte.getTime()) / 1000;//(单位是秒)
+                    if (time < api.getCookieNoNetWorkTime()) {
+                        if (mHttpOnNextListener != null) {
+                            mHttpOnNextListener.onNext(cookieResulte.getResulte(), api.getMethod());
+                        }
+                    } else {
+                        CookieUtils.getInstance().delete(cookieResulte);
+                        CustomTimeException exception = new CustomTimeException(CustomTimeException.CHACE_TIMEOUT_ERROR);
+                        mHttpOnNextListener.onError(new ApiException(exception, CodeException.RUNTIME_ERROR, exception.getApiExceptionMessage(CustomTimeException.CHACE_TIMEOUT_ERROR)));
+                    }
                 }
+
             }
 
             @Override
             public void onError(Throwable e) {
                 errorDo(e);
-                disposable.dispose();
+                if (disposable != null) {
+                    disposable.dispose();
+                }
             }
 
             @Override
             public void onComplete() {
-                //                disposable.dispose();
+                if (disposable != null) {
+                    disposable.dispose();
+                }
             }
         });
 
@@ -212,16 +221,15 @@ public class ProgressObserver<T> implements Observer<T> {
     private void errorDo(Throwable e) {
         if (mActivity == null)
             return;
-        HttpOnNextListener httpOnNextListener = mSubscriberOnNextListener;
-        if (httpOnNextListener == null)
+        if (mHttpOnNextListener == null)
             return;
         if (e instanceof ApiException) {
-            httpOnNextListener.onError((ApiException) e);
+            mHttpOnNextListener.onError((ApiException) e);
         } else if (e instanceof CustomTimeException) {
             CustomTimeException exception = (CustomTimeException) e;
-            httpOnNextListener.onError(new ApiException(exception, CodeException.RUNTIME_ERROR, exception.getMessage()));
+            mHttpOnNextListener.onError(new ApiException(exception, CodeException.RUNTIME_ERROR, exception.getMessage()));
         } else {
-            httpOnNextListener.onError(new ApiException(e, CodeException.UNKNOWN_ERROR, e.getMessage()));
+            mHttpOnNextListener.onError(new ApiException(e, CodeException.UNKNOWN_ERROR, e.getMessage()));
         }
     }
 

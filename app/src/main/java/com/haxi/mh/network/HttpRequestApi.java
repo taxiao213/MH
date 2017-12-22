@@ -49,6 +49,11 @@ public class HttpRequestApi extends BaseApi {
      */
     public static final int LOGIN = 1001;
 
+    /**
+     * 获取菜谱
+     */
+    public static final int GET_MENU = 1002;
+
 
     /**
      * 登录
@@ -60,10 +65,25 @@ public class HttpRequestApi extends BaseApi {
     public HttpRequestApi login(String account, String passWord) {
         setShowProgress(true);//设置是否显示加载框
         setCancle(false);//设置是否能取消加载框
-        setCache(false);//设置是否有缓存
+        setCache(true);//设置是否有缓存
         setBaseUrl("http://www.zkhonry.com:9000/zkhonry-mobile-interface/");
         this.account = account;
         this.passWord = passWord;
+        return this;
+    }
+
+    /**
+     * 获取菜单
+     *
+     * @param map
+     * @return
+     */
+    public HttpRequestApi getMenu(Map<String, Object> map) {
+        setShowProgress(true);
+        setCache(false);
+        setCancle(false);
+        setBaseUrl("https://way.jd.com/");
+        this.mParams = map;
         return this;
     }
 
@@ -73,6 +93,8 @@ public class HttpRequestApi extends BaseApi {
         switch (apiType) {
             case LOGIN:
                 return service.login(account, passWord);
+            case GET_MENU:
+                return service.getMenu(mParams);
             default:
                 return null;
         }

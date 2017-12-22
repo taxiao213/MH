@@ -14,6 +14,7 @@ buildscript {
 
         classpath 'org.greenrobot:greendao-gradle-plugin:3.2.2' // add plugin
 
+        classpath 'com.meituan.android.walle:plugin:1.1.5' //Walle（瓦力）：Android Signature V2 Scheme签名下的新一代渠道包打包神器
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }

@@ -46,7 +46,9 @@ public class LoggingInterceptor implements Interceptor {
         Request build = newBuilder.post(RequestBody.create(MediaType.parse("application/x-www-form-urlencoded;charset=UTF-8"), bodyToString))
                 .build();
 
-        LogUtils.e("接口--->>>" + " 请求方式 method== " + build.method() + " , url== " + build.url() + "?" + bodyToString(build.body()));
+        if (RxRetrofitApp.isDebug()) {
+            LogUtils.e("接口--->>>" + " 请求方式 method== " + build.method() + " , url== " + build.url() + "?" + bodyToString(build.body()));
+        }
 
         return chain.proceed(build);
     }

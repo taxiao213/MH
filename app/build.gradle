@@ -1,6 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'org.greenrobot.greendao' // apply plugin
-
+apply plugin: 'walle'
 android {
     compileSdkVersion 26
     buildToolsVersion "26.0.2"
@@ -16,16 +16,41 @@ android {
             abiFilters 'armeabi' //, 'x86', 'armeabi-v7a', 'x86_64', 'arm64-v8a'
         }
     }
+
+    //签名 引用位置
+    signingConfigs {
+        config {
+            storeFile file("E:\\project\\MH\\MH.jks")
+            storePassword "mh123456"
+            keyAlias "key_mh"
+            keyPassword "mh123456"
+            v2SigningEnabled true
+        }
+    }
+
     buildTypes {
+
         release {
-            minifyEnabled false
+            //混淆
+            minifyEnabled true
+            //移除无用的resource文件
+            shrinkResources true
+            //Zipalign优化
+            zipAlignEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.config
+        }
+
+        debug {
+            signingConfig signingConfigs.config
         }
 
         debug { //在线查看app数据库 amitshekhar.android:debug
             resValue("string", "PORT_NUMBER", "9000")
         }
     }
+
+
 }
 
 /* 针对greenDao的一些配置 */
@@ -128,4 +153,21 @@ dependencies {
 
     /* 格式化拼音 */
     compile 'com.belerweb:pinyin4j:2.5.1'
+
+    /* Walle（瓦力）：Android Signature V2 Scheme签名下的新一代渠道包打包神器 */
+    compile 'com.meituan.android.walle:library:1.1.5'
+
+    /* 友盟统计 */
+    compile 'com.umeng.analytics:analytics:latest.integration'
+
+}
+
+
+walle {
+    // 指定渠道包的输出路径
+    apkOutputFolder = new File("${project.buildDir}/outputs/channels")
+    // 定制渠道包的APK的文件名称
+    apkFileNameFormat = '${appName}-${packageName}-${channel}-${buildType}-v${versionName}-${versionCode}-${buildTime}.apk'
+    // 渠道配置文件
+    channelFile = new File("${project.getProjectDir()}/channel")
 }

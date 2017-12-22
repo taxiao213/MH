@@ -16,7 +16,8 @@ public abstract class BaseApi {
     /*有网情况下的本地缓存时间默认60秒*/
     private int cookieNetWorkTime = 60;
     /*无网络的情况下本地缓存时间默认30天*/
-    private int cookieNoNetWorkTime = 24 * 60 * 60 * 30;
+//    private int cookieNoNetWorkTime = 24 * 60 * 60 * 30;
+    private int cookieNoNetWorkTime = 60;
     /*baseUrl*/
     private String baseUrl;
     /*方法-如果需要缓存必须设置这个参数；保证唯一,不需要不用設置*/

@@ -1,8 +1,10 @@
 package com.haxi.mh.network;
 
+import java.util.Map;
+
 import io.reactivex.Observable;
-import retrofit2.Call;
 import retrofit2.http.Field;
+import retrofit2.http.FieldMap;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.POST;
 
@@ -21,9 +23,10 @@ public interface HttpService {
     @POST("userLogin/login.action")
     Observable<String> login(@Field("account") String account, @Field("passwd") String passWord); //登录接口
 
+    //获取菜单
     @FormUrlEncoded
-    @POST("userLogin/login.action")
-    Call<CC>  logins(@Field("account") String account, @Field("passwd") String passWord);
+    @POST("jisuapi/search")
+    Observable<String> getMenu(@FieldMap Map<String, Object> map);
 
 
 }

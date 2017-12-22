@@ -142,7 +142,9 @@ public class HttpsManager {
                 String s = message.substring(0, 1);
                 if ("{".equals(s) || "[".equals(s)) {
                     //输出日志
-                    LogUtils.e("接口返回数据--->>> " + message);
+                    if (RxRetrofitApp.isDebug()) {
+                        LogUtils.e("接口返回数据--->>> " + message);
+                    }
                 }
             }
         });
