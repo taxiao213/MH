@@ -232,5 +232,5 @@ public static java.lang.String TABLENAME;
 -keep public class net.sourceforge.pinyin4j.**{*;}
 -keep public class com.hp.hpl.sparta.**{*;}
 
-#---------------------------------3.第三方包-------------------------------
+#---------------------------------------------------------------------
 
