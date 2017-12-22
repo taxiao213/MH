@@ -33,7 +33,22 @@
 # -keepclasseswithmembers 指定的类和类成员被保留，假如指定的类成员存在的话。
 
 
-# -------------系统类不需要混淆 --------------------------
+#---------------------------------1.基本不用动区域----------------------------------
+-optimizationpasses 5 #代码混淆的压缩比例，值在0-7之间
+-dontusemixedcaseclassnames #混淆后类名都为小写
+-dontskipnonpubliclibraryclasses #指定不去忽略非公共的库的类
+-dontskipnonpubliclibraryclassmembers #指定不去忽略非公共的库的类的成员
+-dontpreverify #不做预校验的操作
+-verbose  #生成原类名和混淆后的类名的映射文件
+-printmapping proguardMapping.txt #生成原类名和混淆后的类名的映射文件
+-optimizations !code/simplification/cast,!field/*,!class/merging/* #指定混淆是采用的算法
+-keepattributes *Annotation*,InnerClasses #不混淆Annotation
+-keepattributes Signature #不混淆泛型
+-keepattributes SourceFile,LineNumberTable #抛出异常时保留代码行号
+#----------------------------------------------------------------------------
+
+
+# -------------------------------默认保留区 --------------------------
 -keep public class * extends Android.app.Fragment
 -keep public class * extends Android.app.Activity
 -keep public class * extends Android.app.Application
@@ -42,47 +57,87 @@
 -keep public class * extends Android.content.ContentProvider
 -keep public class * extends Android.app.backup.BackupAgentHelper
 -keep public class * extends Android.preference.Preference
--keep public class * extends Android.support.**
+-keep public class * extends android.view.View
 -keep public class com.Android.vending.licensing.ILicensingService
+-keep public class * extends Android.support.** {*;}
 
 -keepclasseswithmembernames class * { # 保持native方法不被混淆
     native <methods>;
 }
--keepclasseswithmembernames class * { # 保持自定义控件不被混淆
-    public <init>(Android.content.Context, Android.util.AttributeSet);
-}
--keepclasseswithmembernames class * { # 保持自定义控件不被混淆
-    public <init>(Android.content.Context, Android.util.AttributeSet, int);
+-keepclassmembers class * extends android.app.Activity{
+    public void *(android.view.View);
 }
 -keepclassmembers enum * { # 保持枚举enum类不被混淆
     public static **[] values();
     public static ** valueOf(java.lang.String);
 }
--keep class * implements Android.os.Parcelable { # 保持Parcelable不被混淆
-  public static final Android.os.Parcelable$Creator *;
+-keep public class * extends android.view.View{ # 保持自定义控件不被混淆
+    *** get*();
+    void set*(***);
+    public <init>(android.content.Context);
+    public <init>(android.content.Context, android.util.AttributeSet);
+    public <init>(android.content.Context, android.util.AttributeSet, int);
 }
+-keepclasseswithmembers class * { # 保持自定义控件不被混淆
+    public <init>(android.content.Context, android.util.AttributeSet);
+    public <init>(android.content.Context, android.util.AttributeSet, int);
+}
+-keep class * implements android.os.Parcelable { # 保持Parcelable不被混淆
+  public static final android.os.Parcelable$Creator *;
+}
+-keepclassmembers class * implements java.io.Serializable {
+    static final long serialVersionUID;
+    private static final java.io.ObjectStreamField[] serialPersistentFields;
+    private void writeObject(java.io.ObjectOutputStream);
+    private void readObject(java.io.ObjectInputStream);
+    java.lang.Object writeReplace();
+    java.lang.Object readResolve();
+}
+-keep class **.R$* {
+ *;
+}
+-keepclassmembers class * {
+    void *(**On*Event);
+}
+#----------------------------------------------------------------------------
 
-# --------- 忽略异常提示 --------------------
--dontwarn butterknife.internal.**
--dontwarn com.alipay.**
--dontwarn com.mikepenz.**
--dontwarn org.apache.**
--dontwarn com.amap.**
--dontwarn com.Android.volley.**
--dontwarn com.rey.**
--dontwarn com.testin.**
--dontwarn jp.wasabeef.**
+#---------------------------------webview------------------------------------
+-keepclassmembers class fqcn.of.javascript.interface.for.Webview {
+   public *;
+}
+-keepclassmembers class * extends android.webkit.WebViewClient {
+    public void *(android.webkit.WebView, java.lang.String, android.graphics.Bitmap);
+    public boolean *(android.webkit.WebView, java.lang.String);
+}
+-keepclassmembers class * extends android.webkit.WebViewClient {
+    public void *(android.webkit.WebView, jav.lang.String);
+}
+#----------------------------------------------------------------------------
+
+
+# --------- 忽略异常提示 -----------------------------------------------------
 -dontwarn org.codehaus.**
--dontwarn java.nio.**
--dontwarn java.lang.invoke.**
+#----------------------------------------------------------------------------
 
-# ---------- 保持代码 --------------
 
+
+
+#---------------------------------2.实体类---------------------------------
+
+#-keep class com.demo.login.bean.** { *; }
+
+#-------------------------------------------------------------------------
+
+
+
+
+
+#---------------------------------3.第三方包-------------------------------
 
 # butterknife混淆脚本 ----
 -dontwarn butterknife.internal.**
 -keep class **$$ViewInjector { *; }
--keepnames class * { @butterknife.InjectView *;}
+#-keepnames class * { @butterknife.InjectView *;}
 
 # Glide图片框架 ----
 -keep public class * implements com.bumptech.glide.module.GlideModule
@@ -177,5 +232,5 @@ public static java.lang.String TABLENAME;
 -keep public class net.sourceforge.pinyin4j.**{*;}
 -keep public class com.hp.hpl.sparta.**{*;}
 
-
+#---------------------------------3.第三方包-------------------------------
 
