@@ -1,6 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'org.greenrobot.greendao' // apply plugin
-
+apply plugin: 'walle'
 android {
     compileSdkVersion 26
     buildToolsVersion "26.0.2"
@@ -29,8 +29,14 @@ android {
     }
 
     buildTypes {
+
         release {
+            //混淆
             minifyEnabled true
+            //移除无用的resource文件
+            shrinkResources true
+            //Zipalign优化
+            zipAlignEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.config
         }
@@ -147,4 +153,18 @@ dependencies {
 
     /* 格式化拼音 */
     compile 'com.belerweb:pinyin4j:2.5.1'
+
+    /* Walle（瓦力）：Android Signature V2 Scheme签名下的新一代渠道包打包神器 */
+    compile 'com.meituan.android.walle:library:1.1.5'
+
+}
+
+
+walle {
+    // 指定渠道包的输出路径
+    apkOutputFolder = new File("${project.buildDir}/outputs/channels");
+    // 定制渠道包的APK的文件名称
+    apkFileNameFormat = '${appName}-${packageName}-${channel}-${buildType}-v${versionName}-${versionCode}-${buildTime}.apk';
+    // 渠道配置文件
+    channelFile = new File("${project.getProjectDir()}/channel")
 }

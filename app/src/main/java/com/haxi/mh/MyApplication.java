@@ -3,7 +3,6 @@ package com.haxi.mh;
 import android.app.Application;
 import android.os.Handler;
 
-import com.haxi.mh.network.manager.RxRetrofitApp;
 import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.Logger;
 import com.tencent.bugly.crashreport.CrashReport;
@@ -41,10 +40,10 @@ public class MyApplication extends Application {
 
         //初始化Logger
         Logger.addLogAdapter(new AndroidLogAdapter());
-        //        Logger.clearLogAdapters(); //清除log
+        Logger.clearLogAdapters(); //清除log
 
         //设置后http请求会被拦截并且输出
-        RxRetrofitApp.getInstances().setDebug();
+//        RxRetrofitApp.getInstances().setDebug();
     }
 
     /**

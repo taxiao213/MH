@@ -26,7 +26,7 @@
 
 # -dontwarn 缺省proguard 会检查每一个引用是否正确，但是第三方库里面往往有些不会用到的类，没有正确引用。如果不配置的话，系统就会报错。
 
-# -keep 指定的类和类成员被保留作为 入口 。
+# -keep 指定的类和类成员被保留作为入口 。
 
 # -keepclassmembers 指定的类成员被保留。
 
@@ -72,14 +72,11 @@
 -dontwarn com.rey.**
 -dontwarn com.testin.**
 -dontwarn jp.wasabeef.**
+-dontwarn org.codehaus.**
+-dontwarn java.nio.**
+-dontwarn java.lang.invoke.**
 
 # ---------- 保持代码 --------------
--keep class com.youyou.uuelectric.renter.Utils.** {*;}
--keep class it.neokree.** {*;}
--keep class org.apache.** {*;}
--keep class com.iflytek.** {*;}
--keep class com.google.protobuf.** { *; }
--keep class com.youyou.uuelectric.renter.pay.** {*;}
 
 
 # butterknife混淆脚本 ----
@@ -96,7 +93,7 @@
 }
 
 # for DexGuard only
--keepresourcexmlelements manifest/application/meta-data@value=GlideModule
+#-keepresourcexmlelements manifest/application/meta-data@value=GlideModule
 
 # eventbus避免混淆 ----
 -keepattributes *Annotation*
@@ -127,13 +124,9 @@ public static java.lang.String TABLENAME;
 -dontwarn retrofit2.converter.gson.**
 -dontwarn retrofit2.converter.scalars.**
 -dontwarn retrofit2.adapter.rxjava2.**
--keep retrofit2.converter.gson.**{*;}
--keep retrofit2.converter.scalars.**{*;}
--keep retrofit2.adapter.rxjava2.**{*;}
 
 # OKHttp3拦截器
 -dontwarn okhttp3.logging.**
--keep okhttp3.logging.**{*;}
 
 # easypermissions ----
 -keepclassmembers class * {
