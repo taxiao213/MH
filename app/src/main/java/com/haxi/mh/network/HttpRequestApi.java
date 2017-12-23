@@ -114,7 +114,7 @@ public class HttpRequestApi extends BaseApi {
                 return service.login(account, passWord);
             case GET_MENU:
                 return service.getMenu(mParams);
-                case GET_MENUS:
+            case GET_MENUS:
                 return service.getMenus(mParams);
             default:
                 return null;
