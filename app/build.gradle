@@ -10,6 +10,8 @@ android {
         targetSdkVersion 26
         versionCode 1
         versionName "1.0.0"
+        // dex突破65535的限制
+        multiDexEnabled true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         ndk {
             // 设置支持的SO库架构
@@ -49,14 +51,32 @@ android {
             resValue("string", "PORT_NUMBER", "9000")
         }
     }
+//传统打包
+//    flavorDimensions "fruit"
+//    productFlavors{
+//        mh{
+//           dimension "fruit"
+//        }
+//    }
 
+
+    //使用友盟打包
     flavorDimensions "fruit"
-    productFlavors{
-        mh{
-           dimension "fruit"
+//    productFlavors {
+//        honry {
+//            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "honry"]
+//        }
+//    }
+    productFlavors {
+        wandoujia {}
+        baidu {}
+        c360 {}
+        uc {}
+
+        productFlavors.all { flavor ->
+            flavor.manifestPlaceholders = [UMENG_CHANNEL_VALUE: name]
         }
     }
-
 
 }
 
@@ -174,7 +194,8 @@ walle {
     // 指定渠道包的输出路径
     apkOutputFolder = new File("${project.buildDir}/outputs/channels")
     // 定制渠道包的APK的文件名称
-    apkFileNameFormat = '${appName}-${packageName}-${channel}-${buildType}-v${versionName}-${versionCode}-${buildTime}.apk'
+//    apkFileNameFormat = '${appName}-${packageName}-${channel}-${buildType}-v${versionName}-${versionCode}-${buildTime}.apk'
+    apkFileNameFormat = '${appName}-${channel}-${buildType}.apk'
     // 渠道配置文件
     channelFile = new File("${project.getProjectDir()}/channel")
 }
