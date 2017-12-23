@@ -21,12 +21,17 @@ public interface HttpService {
     //登录接口
     @FormUrlEncoded
     @POST("userLogin/login.action")
-    Observable<String> login(@Field("account") String account, @Field("passwd") String passWord); //登录接口
+    Observable<String> login(@Field("account") String account, @Field("passwd") String passWord);
 
     //获取菜单
     @FormUrlEncoded
     @POST("jisuapi/search")
     Observable<String> getMenu(@FieldMap Map<String, Object> map);
+
+    //获取菜单
+    @FormUrlEncoded
+    @POST("jisuapi/search")
+    Observable<String> getMenus(@FieldMap Map<String, Object> map);
 
 
 }

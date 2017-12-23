@@ -49,7 +49,7 @@ public class MainActivity extends BaseActivity {
     }
 
 
-    @OnClick({R.id.button, R.id.button2, R.id.button3})
+    @OnClick({R.id.button, R.id.button2, R.id.button3, R.id.button4})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.button:
@@ -107,6 +107,35 @@ public class MainActivity extends BaseActivity {
                 };
 
                 request.requestBack();
+                break;
+
+            case R.id.button4:
+                BaseHttpRequest<String> requests = new BaseHttpRequest<String>(mActivity) {
+                    @Override
+                    protected HttpRequestApi reuqest() {
+                        return new HttpRequestApi(HttpRequestApi.GET_MENU).getMenus(mParams);
+                    }
+
+                    @Override
+                    public void onNext(String resulte, String method) {
+                        try {
+                            JSONObject object = new JSONObject(resulte);
+                            LogUtils.e(object.toString());
+                        } catch (JSONException e) {
+
+
+                        }
+                    }
+
+                    @Override
+                    public void onError(ApiException e) {
+
+                    }
+                };
+                requests.addParams("keyword", "花生");
+                requests.addParams("num", "2");
+                requests.addParams("appkey", "d7630c3957c9c26ec931f096dadf0247");
+                requests.requestBack();
                 break;
 
         }

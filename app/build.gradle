@@ -50,6 +50,13 @@ android {
         }
     }
 
+    flavorDimensions "fruit"
+    productFlavors{
+        mh{
+           dimension "fruit"
+        }
+    }
+
 
 }
 
