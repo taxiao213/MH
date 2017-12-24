@@ -232,5 +232,7 @@ public static java.lang.String TABLENAME;
 -keep public class net.sourceforge.pinyin4j.**{*;}
 -keep public class com.hp.hpl.sparta.**{*;}
 
+#友盟统计
+-keep class com.umeng.analytics.** {*;}
 #---------------------------------------------------------------------
 

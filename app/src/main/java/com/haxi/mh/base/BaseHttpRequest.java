@@ -41,7 +41,7 @@ public abstract class BaseHttpRequest<T> implements HttpOnNextListener {
      * @param value
      * @return
      */
-    protected BaseHttpRequest addParams(String key, String value) {
+    public BaseHttpRequest addParams(String key, String value) {
         if (mParams == null) {
             synchronized (BaseHttpRequest.this) {
                 if (mParams == null) {
