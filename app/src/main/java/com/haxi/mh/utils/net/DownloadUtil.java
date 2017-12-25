@@ -30,7 +30,11 @@ public class DownloadUtil {
 
     public static DownloadUtil get() {
         if (downloadUtil == null) {
-            downloadUtil = new DownloadUtil();
+            synchronized (DownloadUtil.class) {
+                if (downloadUtil == null) {
+                    downloadUtil = new DownloadUtil();
+                }
+            }
         }
         return downloadUtil;
     }
@@ -86,13 +90,15 @@ public class DownloadUtil {
                         listener.onDownloadFailed();
                     } finally {
                         try {
-                            if (is != null)
+                            if (is != null) {
                                 is.close();
+                            }
                         } catch (IOException e) {
                         }
                         try {
-                            if (fos != null)
+                            if (fos != null) {
                                 fos.close();
+                            }
                         } catch (IOException e) {
                         }
                     }
