@@ -10,7 +10,7 @@ import android.util.AttributeSet;
 import com.haxi.mh.R;
 
 /**
- * 进度圈
+ * 自定义进度圈
  * Created by Han on 2017/12/18
  * Email:yin13753884368@163.com
  * CSDN:http://blog.csdn.net/yin13753884368/article
@@ -18,9 +18,9 @@ import com.haxi.mh.R;
  */
 public class SpinView extends AppCompatImageView {
 
-    private float mRotateDegrees;
+    private float mRotateAngle;//旋转角度
     private int mFrameTime;
-    private boolean mNeedToUpdateView;
+    private boolean mNeedToUpdateView;//是否要更新view
     private Runnable mUpdateViewRunnable;
 
     public SpinView(Context context) {
@@ -34,13 +34,13 @@ public class SpinView extends AppCompatImageView {
     }
 
     private void init() {
-        setImageResource(R.drawable.kprogresshud_spinner);
+        setImageResource(R.drawable.progress_spinner);
         mFrameTime = 1000 / 12;
         mUpdateViewRunnable = new Runnable() {
             @Override
             public void run() {
-                mRotateDegrees += 30;
-                mRotateDegrees = mRotateDegrees < 360 ? mRotateDegrees : mRotateDegrees - 360;
+                mRotateAngle += 30;
+                mRotateAngle = mRotateAngle < 360 ? mRotateAngle : mRotateAngle - 360;
                 invalidate();
                 if (mNeedToUpdateView) {
                     postDelayed(this, mFrameTime);
@@ -55,7 +55,7 @@ public class SpinView extends AppCompatImageView {
 
     @Override
     protected void onDraw(Canvas canvas) {
-        canvas.rotate(mRotateDegrees, getWidth() / 2, getHeight() / 2);
+        canvas.rotate(mRotateAngle, getWidth() / 2, getHeight() / 2);
         super.onDraw(canvas);
     }
 

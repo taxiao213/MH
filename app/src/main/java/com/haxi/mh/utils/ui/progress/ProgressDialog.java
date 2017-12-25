@@ -25,6 +25,10 @@ public class ProgressDialog extends BaseProgressDialog {
     private boolean isWait = true;
     private boolean canCancle;
 
+    public ProgressDialog(Context context) {
+        super(context);
+    }
+
     public ProgressDialog(Context context, boolean isWait) {
         super(context);
         this.isWait = isWait;
@@ -41,9 +45,6 @@ public class ProgressDialog extends BaseProgressDialog {
         return mIndeterminateView;
     }
 
-    public ProgressDialog(Context context) {
-        super(context);
-    }
 
     private void dismissLong() {
         Timer timer = new Timer();
@@ -60,8 +61,9 @@ public class ProgressDialog extends BaseProgressDialog {
     @Override
     public void show() {
         super.show();
-        if (isWait)
+        if (isWait) {
             dismissLong();
+        }
     }
 
     public void showNoClick() {

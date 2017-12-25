@@ -9,6 +9,7 @@ import android.view.inputmethod.InputMethodManager;
 import com.haxi.mh.model.MessageEvent;
 import com.haxi.mh.utils.ui.ActivityManager;
 import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
+import com.umeng.analytics.MobclickAgent;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -81,6 +82,18 @@ public abstract class BaseActivity extends RxAppCompatActivity {
             return mInputMethodManager.hideSoftInputFromWindow(this.getCurrentFocus().getWindowToken(), 0);
         }
         return super.onTouchEvent(event);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MobclickAgent.onResume(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(this);
     }
 
     @Override
