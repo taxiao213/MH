@@ -1,7 +1,9 @@
 package com.haxi.mh;
 
 import android.app.Application;
+import android.content.Context;
 import android.os.Handler;
+import android.support.multidex.MultiDex;
 
 import com.haxi.mh.network.manager.RxRetrofitApp;
 import com.orhanobut.logger.AndroidLogAdapter;
@@ -49,6 +51,12 @@ public class MyApplication extends Application {
 
         //友盟统计
         MobclickAgent.setScenarioType(mContext, MobclickAgent.EScenarioType.E_UM_NORMAL);
+    }
+
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(base);
+        MultiDex.install(base);
     }
 
     /**

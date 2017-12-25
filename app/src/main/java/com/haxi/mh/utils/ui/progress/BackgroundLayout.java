@@ -7,7 +7,6 @@ import android.content.Context;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Build;
 import android.util.AttributeSet;
-import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
 import com.haxi.mh.R;
@@ -15,8 +14,8 @@ import com.haxi.mh.utils.ui.UIUtil;
 
 
 /**
- * 一个背景的layout,继承于 {@link FrameLayout}
- * 功能：可通过 {@link #setBaseColor(int)} 设置背景颜色和 {@link #setCornerRadius(float)} 设置圆角
+ * 一个背景的layout,继承于 {@link LinearLayout}
+ * 功能：可通过 {@link #setBaseColor(int)} 设置背景颜色和 {@link #setCornerRadius(int)} 设置圆角
  * Created by Han on 2017/12/18
  * Email:yin13753884368@163.com
  * CSDN:http://blog.csdn.net/yin13753884368/article
@@ -44,7 +43,7 @@ public class BackgroundLayout extends LinearLayout {
     }
 
     private void init() {
-        int color = getContext().getResources().getColor(R.color.kprogresshud_default_color);
+        int color = getContext().getResources().getColor(R.color.progress_default_color);
         initBackground(color, mCornerRadius);
     }
 

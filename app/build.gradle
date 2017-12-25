@@ -10,13 +10,19 @@ android {
         targetSdkVersion 26
         versionCode 1
         versionName "1.0.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         // dex突破65535的限制
         multiDexEnabled true
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         ndk {
             // 设置支持的SO库架构
             abiFilters 'armeabi' //, 'x86', 'armeabi-v7a', 'x86_64', 'arm64-v8a'
         }
+    }
+
+    //分包兼容低版本
+    dexOptions {
+        javaMaxHeapSize "4g"
+        jumboMode = true
     }
 
     //签名 引用位置
@@ -51,6 +57,7 @@ android {
             resValue("string", "PORT_NUMBER", "9000")
         }
     }
+
 //传统打包
 //    flavorDimensions "fruit"
 //    productFlavors{
@@ -107,7 +114,8 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
-
+    /* multidex兼容包，配合AndroidStudio实现了一个APK包含多个dex的功能 */
+    compile 'com.android.support:multidex:1.0.1'
     /* butterKnife */
     compile 'com.jakewharton:butterknife:8.8.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
@@ -173,7 +181,7 @@ dependencies {
     //其中latest.release指代最新Bugly NDK版本号，也可以指定明确的版本号，例如3.0
 
     /* debug 在线查看app数据库 */
-    debugCompile 'com.amitshekhar.android:debug-db:1.0.0'
+    debugCompile 'com.amitshekhar.android:debug-db:1.0.1'
 
     /* facebook.stetho 查看数据库 拦截网络请求 */
     compile 'com.facebook.stetho:stetho:1.5.0'

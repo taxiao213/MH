@@ -26,7 +26,7 @@ import com.haxi.mh.utils.ui.UIUtil;
  */
 public abstract class BaseProgressDialog extends Dialog {
 
-    private static final float DIM_AMOUNT = 0;//黑暗度 0 - 1.0
+    private static final float DIM_AMOUNT = 0;//黑暗度 0 - 1.0 设置Dialog 周围的颜色 系统默认的是半透明的灰色，值设为0则为完全透明
     private static final int BACKGROUND_WIDTH = 0;
     private static final int BACKGROUND_HEIGHT = 0;
 
@@ -38,7 +38,7 @@ public abstract class BaseProgressDialog extends Dialog {
 
     public BaseProgressDialog(Context context) {
         super(context);
-        mRootVew = getLayoutInflater().inflate(R.layout.kprogresshud_hud, null, false);
+        mRootVew = getLayoutInflater().inflate(R.layout.progress_layout, null, false);
         setWindowDimAmount(DIM_AMOUNT);
         initViews();
     }
@@ -55,7 +55,7 @@ public abstract class BaseProgressDialog extends Dialog {
         window.setBackgroundDrawable(new ColorDrawable(0));
         window.addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
         WindowManager.LayoutParams layoutParams = window.getAttributes();
-        layoutParams.dimAmount = dimAmount;//设置黑暗度
+        layoutParams.dimAmount = dimAmount;//设置Dialog 周围的颜色 系统默认的是半透明的灰色，值设为0则为完全透明
         window.setAttributes(layoutParams);
     }
 
@@ -64,9 +64,7 @@ public abstract class BaseProgressDialog extends Dialog {
         mCustomViewContainer = (FrameLayout) mRootVew.findViewById(R.id.container);
         mLabelText = (TextView) mRootVew.findViewById(R.id.label);
         mDetailsText = (TextView) mRootVew.findViewById(R.id.details_label);
-
         updateBackgroundSize(BACKGROUND_WIDTH, BACKGROUND_HEIGHT);
-
         addViewToFrame(setContentView());
 
     }
@@ -144,6 +142,11 @@ public abstract class BaseProgressDialog extends Dialog {
         }
     }
 
+    /**
+     * 设置标题
+     * @param label
+     * @return
+     */
     public BaseProgressDialog setLabel(String label) {
         if (label != null) {
             mLabelText.setText(label);
@@ -154,6 +157,11 @@ public abstract class BaseProgressDialog extends Dialog {
         return this;
     }
 
+    /**
+     * 设置详情
+     * @param detailsLabel
+     * @return
+     */
     public BaseProgressDialog setDetailsLabel(String detailsLabel) {
         if (detailsLabel != null) {
             mDetailsText.setText(detailsLabel);
@@ -163,6 +171,7 @@ public abstract class BaseProgressDialog extends Dialog {
         }
         return this;
     }
+
 
     public void setSize(int width, int height) {
         if (mBackgroundLayout != null) {
