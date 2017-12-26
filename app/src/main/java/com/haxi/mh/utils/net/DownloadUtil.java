@@ -1,6 +1,5 @@
 package com.haxi.mh.utils.net;
 
-import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
@@ -109,20 +108,6 @@ public class DownloadUtil {
 
     }
 
-    /**
-     * @param saveDir
-     * @return
-     * @throws IOException 判断下载目录是否存在
-     */
-    private String isExistDir(String saveDir) throws IOException {
-        // 下载位置
-        File downloadFile = new File(Environment.getExternalStorageDirectory(), saveDir);
-        if (!downloadFile.mkdirs()) {
-            downloadFile.createNewFile();
-        }
-        String savePath = downloadFile.getAbsolutePath();
-        return savePath;
-    }
 
     /**
      * @param url

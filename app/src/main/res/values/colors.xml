@@ -3,7 +3,8 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
-    <color name="blue">@android:color/holo_blue_light</color>
+    <!--系统主题色-->
+    <color name="myThemeColor">#1296DB</color>
 
     <color name="white_trans_95">#0cffffff</color>
     <color name="white_trans_90">#19ffffff</color>
@@ -65,5 +66,9 @@
     <!--加载框-->
     <color name="progress_default_color">#00ffffff</color>
     <color name="progress_grey_color">#99666666</color>
+
+    <!--RadioButton-->
+    <color name="radio_button_normal">#BFBFBF</color>
+    <color name="radio_button_select">@color/myThemeColor</color>
 
 </resources>
