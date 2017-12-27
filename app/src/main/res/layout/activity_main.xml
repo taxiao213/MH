@@ -20,19 +20,24 @@
         android:background="@color/grey_ab"/>
 
     <RadioGroup
+        android:id="@+id/rg"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/y40"
+        android:layout_height="wrap_content"
         android:gravity="center"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:paddingBottom="4dp"
+        android:paddingTop="4dp">
 
         <RadioButton
+            android:id="@+id/rb_homepage"
             style="@style/myRadioButton"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:drawableTop="@drawable/homepager_selector"
+            android:drawableTop="@drawable/homepage_selector"
             android:text="@string/homepager_name"/>
 
         <RadioButton
+            android:id="@+id/rb_homecreatetask"
             style="@style/myRadioButton"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -40,6 +45,7 @@
             android:text="@string/homecreatetask_name"/>
 
         <RadioButton
+            android:id="@+id/rb_homemanage"
             style="@style/myRadioButton"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -47,6 +53,7 @@
             android:text="@string/homemanage_name"/>
 
         <RadioButton
+            android:id="@+id/rb_homepeople"
             style="@style/myRadioButton"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
