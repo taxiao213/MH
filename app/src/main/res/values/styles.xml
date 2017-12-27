@@ -19,5 +19,6 @@
         <item name="android:textColor">@color/radio_button_selector</item>
         <item name="android:layout_weight">1</item>
         <item name="android:button">@null</item>
+        <item name="android:background">@null</item>
     </style>
 </resources>
