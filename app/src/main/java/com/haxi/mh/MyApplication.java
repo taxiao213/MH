@@ -40,7 +40,7 @@ public class MyApplication extends Application {
         mTthreadId = thread.getId();
         mMainThreadHandler = new Handler();
         //注册Bugly
-        CrashReport.initCrashReport(getApplicationContext(), "d540dcf53e", true);
+        CrashReport.initCrashReport(getApplicationContext(), "58aa13feb7", true);
 
         //初始化Logger
         Logger.addLogAdapter(new AndroidLogAdapter());
