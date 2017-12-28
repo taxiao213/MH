@@ -29,6 +29,7 @@ public class PersonUtils {
     private final Context context;
     private SQLiteDatabase readableDatabase;
     private SQLiteDatabase writableDatabase;
+    private DaoSession daoSession;
 
     public PersonUtils() {
         context = UIUtil.getContext();
@@ -53,6 +54,13 @@ public class PersonUtils {
      */
     private SQLiteDatabase getWritableDatabase() {
         try {
+            if (openHelper == null) {
+                synchronized (PersonUtils.class) {
+                    if (openHelper == null) {
+                        openHelper = new DaoMaster.DevOpenHelper(context, DB_NAME);
+                    }
+                }
+            }
             writableDatabase = openHelper.getWritableDatabase();
             return writableDatabase;
         } catch (Exception e) {
@@ -67,6 +75,13 @@ public class PersonUtils {
      */
     private SQLiteDatabase getReadableDatabase() {
         try {
+            if (openHelper == null) {
+                synchronized (PersonUtils.class) {
+                    if (openHelper == null) {
+                        openHelper = new DaoMaster.DevOpenHelper(context, DB_NAME);
+                    }
+                }
+            }
             readableDatabase = openHelper.getReadableDatabase();
             return readableDatabase;
         } catch (Exception e) {
@@ -91,6 +106,41 @@ public class PersonUtils {
         }
     }
 
+    /**
+     * 关闭数据库的操作，使用完毕数据库，必须执行此操作。
+     */
+    public void closeConnection() {
+        closeHelper();
+        colseDaoSession();
+    }
+
+    /**
+     * 关闭helper
+     */
+    public void closeHelper() {
+        try {
+            if (openHelper != null) {
+                openHelper.close();
+                openHelper = null;
+            }
+        } catch (Exception e) {
+
+        }
+    }
+
+    /**
+     * 关闭Session会话层
+     */
+    public void colseDaoSession() {
+        try {
+            if (daoSession != null) {
+                daoSession.clear();
+                daoSession = null;
+            }
+        } catch (Exception e) {
+
+        }
+    }
 
     /**
      * 保存联系人
@@ -100,8 +150,15 @@ public class PersonUtils {
     public void save(Person info) {
         try {
             if (info != null) {
-                DaoSession daoSession = getDaoSession();
+                if (daoSession == null) {
+                    synchronized (PersonUtils.class) {
+                        if (daoSession == null) {
+                            daoSession = getDaoSession();
+                        }
+                    }
+                }
                 daoSession.getPersonDao().insert(info);
+                closeConnection();
             }
         } catch (Exception e) {
 
@@ -117,8 +174,15 @@ public class PersonUtils {
     public void delete(Person info) {
         try {
             if (info != null) {
-                DaoSession daoSession = getDaoSession();
+                if (daoSession == null) {
+                    synchronized (PersonUtils.class) {
+                        if (daoSession == null) {
+                            daoSession = getDaoSession();
+                        }
+                    }
+                }
                 daoSession.getPersonDao().delete(info);
+                closeConnection();
             }
         } catch (Exception e) {
         }
@@ -132,8 +196,15 @@ public class PersonUtils {
     public void update(Person info) {
         try {
             if (info != null) {
-                DaoSession daoSession = getDaoSession();
+                if (daoSession == null) {
+                    synchronized (PersonUtils.class) {
+                        if (daoSession == null) {
+                            daoSession = getDaoSession();
+                        }
+                    }
+                }
                 daoSession.getPersonDao().update(info);
+                closeConnection();
             }
         } catch (Exception e) {
         }
@@ -146,8 +217,15 @@ public class PersonUtils {
      */
     public List<Person> queryAll() {
         try {
-            DaoSession daoSession = getDaoSession();
+            if (daoSession == null) {
+                synchronized (PersonUtils.class) {
+                    if (daoSession == null) {
+                        daoSession = getDaoSession();
+                    }
+                }
+            }
             QueryBuilder<Person> builder = daoSession.getPersonDao().queryBuilder();
+            closeConnection();
             return builder.list();
         } catch (Exception e) {
             return null;
@@ -162,9 +240,16 @@ public class PersonUtils {
      */
     public List<Person> queryByNodeLevel(String name) {
         try {
-            DaoSession daoSession = getDaoSession();
+            if (daoSession == null) {
+                synchronized (PersonUtils.class) {
+                    if (daoSession == null) {
+                        daoSession = getDaoSession();
+                    }
+                }
+            }
             QueryBuilder<Person> builder = daoSession.getPersonDao().queryBuilder();
             builder.where(PersonDao.Properties.Name.eq(name));
+            closeConnection();
             return builder.list();
         } catch (Exception e) {
             return null;
@@ -182,10 +267,17 @@ public class PersonUtils {
             if (ID == null || ID.equals("")) {
                 return null;
             }
-            DaoSession daoSession = getDaoSession();
+            if (daoSession == null) {
+                synchronized (PersonUtils.class) {
+                    if (daoSession == null) {
+                        daoSession = getDaoSession();
+                    }
+                }
+            }
             QueryBuilder<Person> builder = daoSession.getPersonDao().queryBuilder();
             builder.where(PersonDao.Properties.Id.eq(ID));
             builder.orderAsc(PersonDao.Properties.Id);
+            closeConnection();
             return builder.list();
         } catch (Exception e) {
             return null;
