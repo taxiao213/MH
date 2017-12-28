@@ -17,7 +17,7 @@
         android:allowBackup="true"
         android:icon="@mipmap/mh_icon"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@mipmap/mh_icon"
         android:supportsRtl="true"
         android:theme="@style/noActionBarTheme">
         <!--友盟 ${UMENG_CHANNEL_VALUE}-->
