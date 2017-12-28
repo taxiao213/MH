@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">MH</string>
+    <string name="app_name">扫描王</string>
     <string name="homepager_name">首页</string>
     <string name="homecreatetask_name">文档</string>
     <string name="homemanage_name">发现</string>
