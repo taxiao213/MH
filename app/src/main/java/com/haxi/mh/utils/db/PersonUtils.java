@@ -11,6 +11,7 @@ import com.haxi.mh.utils.ui.UIUtil;
 
 import org.greenrobot.greendao.query.QueryBuilder;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -94,8 +95,7 @@ public class PersonUtils {
             if (writableDatabase == null) {
                 synchronized (PersonUtils.this) {
                     if (writableDatabase == null) {
-                        DaoMaster.DevOpenHelper devOpenHelper = new DaoMaster.DevOpenHelper(context, DB_NAME);
-                        writableDatabase = devOpenHelper.getWritableDatabase();
+                        writableDatabase = getWritableDatabase();
                     }
                 }
             }
@@ -107,7 +107,7 @@ public class PersonUtils {
     }
 
     /**
-     * 关闭数据库的操作，使用完毕数据库，必须执行此操作。
+     * 关闭数据库会报错。。一般无需关闭
      */
     public void closeConnection() {
         closeHelper();
@@ -147,7 +147,7 @@ public class PersonUtils {
      *
      * @param info
      */
-    public void save(Person info) {
+    public void save(final Person info) {
         try {
             if (info != null) {
                 if (daoSession == null) {
@@ -158,7 +158,6 @@ public class PersonUtils {
                     }
                 }
                 daoSession.getPersonDao().insert(info);
-                closeConnection();
             }
         } catch (Exception e) {
 
@@ -171,7 +170,7 @@ public class PersonUtils {
      *
      * @param info
      */
-    public void delete(Person info) {
+    public void delete(final Person info) {
         try {
             if (info != null) {
                 if (daoSession == null) {
@@ -182,7 +181,6 @@ public class PersonUtils {
                     }
                 }
                 daoSession.getPersonDao().delete(info);
-                closeConnection();
             }
         } catch (Exception e) {
         }
@@ -193,7 +191,7 @@ public class PersonUtils {
      *
      * @param info
      */
-    public void update(Person info) {
+    public void update(final Person info) {
         try {
             if (info != null) {
                 if (daoSession == null) {
@@ -204,7 +202,6 @@ public class PersonUtils {
                     }
                 }
                 daoSession.getPersonDao().update(info);
-                closeConnection();
             }
         } catch (Exception e) {
         }
@@ -217,6 +214,7 @@ public class PersonUtils {
      */
     public List<Person> queryAll() {
         try {
+            ArrayList<Person> list = new ArrayList<>();
             if (daoSession == null) {
                 synchronized (PersonUtils.class) {
                     if (daoSession == null) {
@@ -225,8 +223,8 @@ public class PersonUtils {
                 }
             }
             QueryBuilder<Person> builder = daoSession.getPersonDao().queryBuilder();
-            closeConnection();
-            return builder.list();
+            list.addAll(builder.list());
+            return list;
         } catch (Exception e) {
             return null;
         }
@@ -249,7 +247,6 @@ public class PersonUtils {
             }
             QueryBuilder<Person> builder = daoSession.getPersonDao().queryBuilder();
             builder.where(PersonDao.Properties.Name.eq(name));
-            closeConnection();
             return builder.list();
         } catch (Exception e) {
             return null;
@@ -277,7 +274,6 @@ public class PersonUtils {
             QueryBuilder<Person> builder = daoSession.getPersonDao().queryBuilder();
             builder.where(PersonDao.Properties.Id.eq(ID));
             builder.orderAsc(PersonDao.Properties.Id);
-            closeConnection();
             return builder.list();
         } catch (Exception e) {
             return null;

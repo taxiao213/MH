@@ -10,6 +10,7 @@ import com.haxi.mh.base.BaseFragment;
 import com.haxi.mh.model.db.Person;
 import com.haxi.mh.utils.db.PersonUtils;
 import com.haxi.mh.utils.model.LogUtils;
+import com.haxi.mh.utils.ui.UIUtil;
 
 import java.util.List;
 
@@ -40,6 +41,12 @@ public class HomePageFragment extends BaseFragment {
     @Override
     protected int getLayoutRes() {
         return R.layout.fragment_homepage;
+    }
+
+    @Override
+    protected void initView() {
+        titleBack.setVisibility(View.GONE);
+        titleTv.setText(UIUtil.getString(R.string.homepager_name));
     }
 
     @Override

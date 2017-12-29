@@ -36,6 +36,7 @@ public abstract class BaseFragment extends Fragment {
         View view = inflater.inflate(getLayoutRes(), container, false);
         bind = ButterKnife.bind(this, view);
         mActivity = (BaseActivity) getActivity();
+        initView();
         initData();
         return view;
     }
@@ -46,6 +47,11 @@ public abstract class BaseFragment extends Fragment {
      * @return
      */
     protected abstract int getLayoutRes();
+
+    /**
+     * 初始化View
+     */
+    protected abstract void initView();
 
     /**
      * 初始化数据
