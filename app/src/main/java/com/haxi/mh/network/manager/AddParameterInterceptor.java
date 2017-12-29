@@ -21,16 +21,16 @@ import okio.Buffer;
  * Github:https://github.com/yin13753884368
  */
 
-public class LoggingInterceptor implements Interceptor {
+public class AddParameterInterceptor implements Interceptor {
     private String user_token;
     private String user_only_account;
 
-    public LoggingInterceptor(String user_token, String user_only_account) {
+    public AddParameterInterceptor(String user_token, String user_only_account) {
         this.user_token = user_token;
         this.user_only_account = user_only_account;
     }
 
-    public LoggingInterceptor() {
+    public AddParameterInterceptor() {
     }
 
     @Override

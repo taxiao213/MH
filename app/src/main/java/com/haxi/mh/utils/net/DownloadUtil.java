@@ -27,7 +27,7 @@ public class DownloadUtil {
     private static DownloadUtil downloadUtil;
     private final OkHttpClient okHttpClient;
 
-    public static DownloadUtil get() {
+    public static DownloadUtil getInstance() {
         if (downloadUtil == null) {
             synchronized (DownloadUtil.class) {
                 if (downloadUtil == null) {

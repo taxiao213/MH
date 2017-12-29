@@ -9,8 +9,14 @@ package com.haxi.mh.constant;
  */
 
 public class Constant {
+    /* fragment切换的tag */
     public static final String TAG_FRAGMENT1 = "fragment1";
     public static final String TAG_FRAGMENT2 = "fragment2";
     public static final String TAG_FRAGMENT3 = "fragment3";
     public static final String TAG_FRAGMENT4 = "fragment4";
+
+    /* face++网络请求base */
+    public static final String BASE_URL = "https://api-cn.faceplusplus.com/cardpp/v1/";
+    public static final String FACE_API_KEY = "fMOByyGzrehIRTb6BRRFJCjWE0oMCsVB";
+    public static final String FACE_API_SECRET = "-OQcEHIYrSjP_jkbCymFxTuw9pRIQRYP";
 }

@@ -65,7 +65,7 @@ public class HttpsManager {
          * 创建OKHttpClient对象
          */
         OkHttpClient.Builder builder = new OkHttpClient.Builder()
-                .addInterceptor(new LoggingInterceptor())//http请求拦截器 用来拼装公共参数
+                .addInterceptor(new AddParameterInterceptor())//http请求拦截器 用来拼装公共参数
                 .connectionPool(new ConnectionPool(100, 10, TimeUnit.MINUTES))//连接池
                 .connectTimeout(connectTime, TimeUnit.SECONDS)//请求超时时间
                 .readTimeout(60, TimeUnit.SECONDS)//读取超时时间
@@ -73,7 +73,7 @@ public class HttpsManager {
 
         //请求接口返回数据拦截器
         if (RxRetrofitApp.isDebug()) {
-            builder.addInterceptor(getHttpLoggingInterceptor());
+            builder.addInterceptor(RequestLoggingInterceptor.getInstace().getHttpLoggingInterceptor());
         }
 
         /**

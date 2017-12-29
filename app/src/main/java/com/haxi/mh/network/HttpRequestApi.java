@@ -53,10 +53,6 @@ public class HttpRequestApi extends BaseApi {
      * 获取菜谱
      */
     public static final int GET_MENU = 1002;
-    /**
-     * 获取菜谱
-     */
-    public static final int GET_MENUS = 1003;
 
 
     /**
@@ -91,20 +87,7 @@ public class HttpRequestApi extends BaseApi {
         return this;
     }
 
-    /**
-     * 获取菜单
-     *
-     * @param map
-     * @returns
-     */
-    public HttpRequestApi getMenus(Map<String, Object> map) {
-        setShowProgress(true);
-        setCache(false);
-        setCancle(false);
-        setBaseUrl("https://way.jd.com/");
-        this.mParams = map;
-        return this;
-    }
+
 
     @Override
     protected Observable getObservable(Retrofit retrofit) {
@@ -114,8 +97,6 @@ public class HttpRequestApi extends BaseApi {
                 return service.login(account, passWord);
             case GET_MENU:
                 return service.getMenu(mParams);
-            case GET_MENUS:
-                return service.getMenus(mParams);
             default:
                 return null;
         }
