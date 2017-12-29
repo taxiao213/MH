@@ -64,7 +64,7 @@ public class HomePageFragment extends BaseFragment {
                 break;
             case R.id.bt_02:
                 String rootPath = Environment.getExternalStorageDirectory().getAbsolutePath();
-                File file1 = new File(rootPath + "\\hrchat\\chatfile");
+                File file1 = new File(rootPath + "/hrchat/chatfile");
                 File file = null;
                 if (file1.exists()) {
                     file = new File(file1, "iv_2.png");
