@@ -17,6 +17,7 @@ public class Constant {
 
     /* face++网络请求base */
     public static final String BASE_URL = "https://api-cn.faceplusplus.com/cardpp/v1/";
+    public static final String BASE_BJ_URL = "http://www.zkhonry.com:9000/zkhonry-mobile-interface/";
     public static final String FACE_API_KEY = "fMOByyGzrehIRTb6BRRFJCjWE0oMCsVB";
     public static final String FACE_API_SECRET = "-OQcEHIYrSjP_jkbCymFxTuw9pRIQRYP";
 }

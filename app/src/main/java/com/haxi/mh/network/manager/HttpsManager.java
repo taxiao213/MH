@@ -73,7 +73,7 @@ public class HttpsManager {
 
         //请求接口返回数据拦截器
         if (RxRetrofitApp.isDebug()) {
-            builder.addInterceptor(RequestLoggingInterceptor.getInstace().getHttpLoggingInterceptor());
+            builder.addInterceptor(getHttpLoggingInterceptor());
         }
 
         /**

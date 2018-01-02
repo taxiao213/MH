@@ -5,14 +5,13 @@ import java.util.Map;
 
 import io.reactivex.Observable;
 import okhttp3.MultipartBody;
-import retrofit2.Call;
-import retrofit2.adapter.rxjava2.Result;
 import retrofit2.http.Field;
 import retrofit2.http.FieldMap;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
+import retrofit2.http.Query;
 
 /**
  * 用来创建Retrofit 的接口
@@ -34,10 +33,14 @@ public interface HttpService {
     @POST("jisuapi/search")
     Observable<String> getMenu(@FieldMap Map<String, Object> map);
 
-    //上传图片 OCR ID Card API
+    //上传图片 OCR ID Card API Call<Result<String>>
     @Multipart
     @POST("ocridcard")
-    Call<Result<String>> uploadPic(@Part List<MultipartBody.Part> partList);
+    Observable<String> uploadPic(@Query("api_key") String api_key, @Query("api_secret") String api_secret, @Part List<MultipartBody.Part> partList);
+
+    @Multipart
+    @POST("userLogin/login.action")
+    Observable<String> login(@Part List<MultipartBody.Part> partList);
 
 
 }

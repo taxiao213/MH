@@ -1,27 +1,32 @@
 package com.haxi.mh.utils.net;
 
+import android.text.TextUtils;
+
 import com.haxi.mh.constant.Constant;
 import com.haxi.mh.network.HttpService;
 import com.haxi.mh.network.manager.AddParameterInterceptor;
-import com.haxi.mh.network.manager.RequestLoggingInterceptor;
 import com.haxi.mh.network.manager.RxRetrofitApp;
 import com.haxi.mh.utils.model.LogUtils;
 
 import java.io.File;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
+import io.reactivex.Observable;
+import io.reactivex.Observer;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.ConnectionPool;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
+import okhttp3.Request;
 import okhttp3.RequestBody;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import okhttp3.Response;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
-import retrofit2.adapter.rxjava2.Result;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.scalars.ScalarsConverterFactory;
 
@@ -59,7 +64,7 @@ public class UploadUtil {
 
         //请求接口返回数据拦截器
         if (RxRetrofitApp.isDebug()) {
-            builder.addInterceptor(RequestLoggingInterceptor.getInstace().getHttpLoggingInterceptor());
+             builder.addInterceptor(getHttpLoggingInterceptor());
         }
 
         /**
@@ -103,37 +108,120 @@ public class UploadUtil {
         return getRetrofit().create(HttpService.class);
     }
 
-    private Call<Result<String>> uploadPic(List<MultipartBody.Part> partList) {
-        return getUploadService().uploadPic(partList);
+    private Observable<String> uploadPic(String api_key,String api_secret, List<MultipartBody.Part> partList) {
+        return getUploadService().uploadPic(api_key,api_secret,partList);
     }
 
     /**
-     * 上传图片
+     * 上传图片 multipart/form-data application/octet-stream
      */
     public void upload(File file) {
         MultipartBody.Builder builder = new MultipartBody.Builder()
-                .setType(MultipartBody.FORM)//表单类型
-                .addFormDataPart("api_key", Constant.FACE_API_KEY)
-                .addFormDataPart("api_secret", Constant.FACE_API_SECRET);
-        RequestBody body = RequestBody.create(MediaType.parse("multipart/form-data"), file);
+                .setType(MultipartBody.FORM);//表单类型
+//                .addFormDataPart("api_key", Constant.FACE_API_KEY)
+//                .addFormDataPart("api_secret", Constant.FACE_API_SECRET);
+        RequestBody body = RequestBody.create(MediaType.parse("application/octet-stream"), file);
         builder.addFormDataPart("image_file", file.getName(), body);//image_file 后台接收图片流的参数名
         List<MultipartBody.Part> parts = builder.build().parts();
+        Map<String, RequestBody> map = new HashMap<>();
+        map.put("api_key",RequestBody.create(MediaType.parse("multipart/form-data"),Constant.FACE_API_KEY));
+        map.put("api_secret",RequestBody.create(MediaType.parse("multipart/form-data"),Constant.FACE_API_SECRET));
         try {
-            uploadPic(parts).enqueue(new Callback<Result<String>>() {
+            uploadPic(Constant.FACE_API_KEY,Constant.FACE_API_SECRET,parts).subscribeOn(Schedulers.io()).subscribe(new Observer<String>() {
                 @Override
-                public void onResponse(Call<Result<String>> call, Response<Result<String>> response) {
-                    LogUtils.e("onResponse--->>" + response.body().toString());
+                public void onSubscribe(Disposable d) {
+
                 }
 
                 @Override
-                public void onFailure(Call<Result<String>> call, Throwable t) {
-                    LogUtils.e("onFailure--->>" + t.getMessage());
+                public void onNext(String s) {
+                    LogUtils.e("onNext--->>" + s);
+                }
+
+                @Override
+                public void onError(Throwable e) {
+                    LogUtils.e("onError--->>" + e.getMessage());
+                }
+
+                @Override
+                public void onComplete() {
+                    LogUtils.e("onComplete--->>");
                 }
             });
         } catch (Exception e) {
+            LogUtils.e("Exception--->>" + e.getMessage());
             e.printStackTrace();
         }
     }
 
 
+
+
+    /**
+     * OkHttpClient 上传文件的接口
+     *
+     * @param file  文件
+     * @return
+     */
+    public String uploadFile(File file) {
+        String url="https://api-cn.faceplusplus.com/cardpp/v1/ocridcard";
+        OkHttpClient mOkHttpClient = new OkHttpClient.Builder()
+                .addInterceptor(getHttpLoggingInterceptor())
+                .build();
+        RequestBody fileBody = RequestBody.create(MediaType.parse("application/octet-stream"), file);
+        MultipartBody.Builder builder = new MultipartBody.Builder()
+                .setType(MultipartBody.FORM)
+                .addFormDataPart("image_file", file.getName(), fileBody)
+                .addFormDataPart("api_key", Constant.FACE_API_KEY)
+                .addFormDataPart("api_secret", Constant.FACE_API_SECRET);
+
+        Request request = new Request.Builder()
+                .url(url)
+                .post(builder.build())
+                .build();
+
+        Response response = null;
+        try {
+            response = mOkHttpClient.newCall(request).execute();
+            if (response.isSuccessful()) {
+                LogUtils.e("response--->>>"+response.body().string());
+                return response.body().string();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (response != null && response.body() != null) {
+                response.body().close();
+            }
+        }
+        return null;
+    }
+
+    /**
+     * 请求接口返回数据拦截器
+     *
+     * @return
+     */
+    public HttpLoggingInterceptor getHttpLoggingInterceptor() {
+        //日志显示级别
+        HttpLoggingInterceptor.Level level = HttpLoggingInterceptor.Level.BODY;
+        //新建log拦截器
+        HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor(new HttpLoggingInterceptor.Logger() {
+            @Override
+            public void log(String message) {
+                if (TextUtils.isEmpty(message)) {
+                    return;
+                }
+                String s = message.substring(0, 1);
+                if ("{".equals(s) || "[".equals(s)) {
+                    //输出日志
+                    if (RxRetrofitApp.isDebug()) {
+                        LogUtils.e("接口返回数据--->>> " + message);
+                    }
+                }
+            }
+        });
+        loggingInterceptor.setLevel(level);
+        return loggingInterceptor;
+    }
 }

@@ -8,12 +8,11 @@ import android.widget.TextView;
 
 import com.haxi.mh.R;
 import com.haxi.mh.base.BaseFragment;
-import com.haxi.mh.model.db.Person;
-import com.haxi.mh.utils.db.PersonUtils;
 import com.haxi.mh.utils.net.UploadUtil;
 import com.haxi.mh.utils.ui.UIUtil;
 
 import java.io.File;
+import java.util.concurrent.Executors;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -37,6 +36,7 @@ public class HomePageFragment extends BaseFragment {
     Button bt01;
     @BindView(R.id.bt_02)
     Button bt02;
+    private File filew;
 
 
     @Override
@@ -56,21 +56,38 @@ public class HomePageFragment extends BaseFragment {
     }
 
 
-    @OnClick({R.id.bt_01, R.id.bt_02})
+    @OnClick({R.id.bt_01, R.id.bt_02, R.id.bt_03})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bt_01:
-                PersonUtils.getInstance().save(new Person(12l, "小花", "sss"));
+
                 break;
             case R.id.bt_02:
                 String rootPath = Environment.getExternalStorageDirectory().getAbsolutePath();
-                File file1 = new File(rootPath + "/hrchat/chatfile");
+                File file1 = new File(rootPath + "/hrchat/personIcon");
                 File file = null;
                 if (file1.exists()) {
-                    file = new File(file1, "iv_2.png");
+                    file = new File(file1, "050296.png");
                 }
                 if (file != null) {
                     UploadUtil.getInstance().upload(file);
+                }
+                break;
+            case R.id.bt_03:
+                String rootPathw = Environment.getExternalStorageDirectory().getAbsolutePath();
+                File file1w = new File(rootPathw + "/hrchat/personIcon");
+                filew = null;
+                if (file1w.exists()) {
+                    filew = new File(file1w, "050296.png");
+                }
+                if (filew != null) {
+                    Executors.newSingleThreadExecutor().execute(new Runnable() {
+                        @Override
+                        public void run() {
+                    UploadUtil.getInstance().uploadFile(filew);
+
+                        }
+                    });
                 }
                 break;
         }
