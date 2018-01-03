@@ -2,6 +2,8 @@ package com.haxi.mh;
 
 import android.app.Application;
 import android.content.Context;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
 import android.os.Handler;
 import android.support.multidex.MultiDex;
 
@@ -39,12 +41,16 @@ public class MyApplication extends Application {
         mThreadName = thread.getName();
         mTthreadId = thread.getId();
         mMainThreadHandler = new Handler();
+
+        //Bugly获取渠道号
+        CrashReport.UserStrategy strategy = new CrashReport.UserStrategy(mContext);
+        strategy.setAppChannel(getChannel());
         //注册Bugly
-        CrashReport.initCrashReport(getApplicationContext(), "58aa13feb7", true);
+        CrashReport.initCrashReport(getApplicationContext(), "58aa13feb7", true, strategy);
 
         //初始化Logger
         Logger.addLogAdapter(new AndroidLogAdapter());
-//        Logger.clearLogAdapters(); //清除log
+        //        Logger.clearLogAdapters(); //清除log
 
         //设置后http请求会被拦截并且输出
         RxRetrofitApp.getInstances().setDebug();
@@ -52,6 +58,7 @@ public class MyApplication extends Application {
         //友盟统计
         MobclickAgent.setScenarioType(mContext, MobclickAgent.EScenarioType.E_UM_NORMAL);
     }
+
 
     @Override
     protected void attachBaseContext(Context base) {
@@ -88,10 +95,31 @@ public class MyApplication extends Application {
 
     /**
      * 获取主线程
+     *
      * @return
      */
     public static Handler getMainThreadHandler() {
         return mMainThreadHandler;
     }
 
+    /**
+     * 获取渠道id
+     *
+     * @return
+     */
+    private String getChannel() {
+        if (mContext == null) {
+            return null;
+        }
+        String channel = null;
+        try {
+            ApplicationInfo info = mContext.getPackageManager().getApplicationInfo(mContext.getPackageName(), PackageManager.GET_META_DATA);
+            if (info != null && info.metaData != null) {
+                channel = info.metaData.getString("UMENG_CHANNEL");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return channel;
+    }
 }

@@ -20,6 +20,11 @@ public class HomeCreateTaskFragment extends BaseFragment {
     }
 
     @Override
+    protected void initView() {
+
+    }
+
+    @Override
     protected void initData() {
 
     }

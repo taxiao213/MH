@@ -19,7 +19,7 @@
         android:layout_centerInParent="true"
         android:text="@string/homepager_name"
         android:textColor="@color/black_trans_25"
-        android:textSize="18sp"/>
+        android:textSize="16sp"/>
 
     <View
         android:layout_width="match_parent"

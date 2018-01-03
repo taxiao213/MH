@@ -1,12 +1,16 @@
 package com.haxi.mh.network;
 
+import java.util.List;
 import java.util.Map;
 
 import io.reactivex.Observable;
+import okhttp3.MultipartBody;
 import retrofit2.http.Field;
 import retrofit2.http.FieldMap;
 import retrofit2.http.FormUrlEncoded;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.Part;
 
 /**
  * 用来创建Retrofit 的接口
@@ -28,10 +32,9 @@ public interface HttpService {
     @POST("jisuapi/search")
     Observable<String> getMenu(@FieldMap Map<String, Object> map);
 
-    //获取菜单
-    @FormUrlEncoded
-    @POST("jisuapi/search")
-    Observable<String> getMenus(@FieldMap Map<String, Object> map);
-
+    //上传图片 OCR ID Card API Call<Result<String>> 不能进行参数拼接
+    @Multipart
+    @POST("ocridcard")
+    Observable<String> uploadPic(@Part List<MultipartBody.Part> partList);
 
 }

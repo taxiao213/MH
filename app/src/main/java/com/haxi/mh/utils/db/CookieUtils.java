@@ -94,8 +94,7 @@ public class CookieUtils {
             if (writableDatabase == null) {
                 synchronized (CookieUtils.this) {
                     if (writableDatabase == null) {
-                        DaoMaster.DevOpenHelper devOpenHelper = new DaoMaster.DevOpenHelper(context, DB_NAME);
-                        writableDatabase = devOpenHelper.getWritableDatabase();
+                        writableDatabase = getWritableDatabase();
                     }
                 }
             }
@@ -107,7 +106,7 @@ public class CookieUtils {
     }
 
     /**
-     * 关闭数据库的操作，使用完毕数据库，必须执行此操作。
+     * 关闭数据库会报错。。一般无需关闭
      */
     public void closeConnection() {
         closeHelper();
@@ -158,7 +157,6 @@ public class CookieUtils {
                     }
                 }
                 daoSession.getCookieResulteDao().insert(info);
-                closeConnection();
             }
         } catch (Exception e) {
 
@@ -182,7 +180,6 @@ public class CookieUtils {
                     }
                 }
                 daoSession.getCookieResulteDao().delete(info);
-                closeConnection();
             }
         } catch (Exception e) {
         }
@@ -204,7 +201,6 @@ public class CookieUtils {
                     }
                 }
                 daoSession.getCookieResulteDao().update(info);
-                closeConnection();
             }
         } catch (Exception e) {
         }
@@ -225,7 +221,6 @@ public class CookieUtils {
                 }
             }
             QueryBuilder<CookieResulte> builder = daoSession.getCookieResulteDao().queryBuilder();
-            closeConnection();
             return builder.list();
         } catch (Exception e) {
             return null;
@@ -249,7 +244,6 @@ public class CookieUtils {
             }
             QueryBuilder<CookieResulte> builder = daoSession.getCookieResulteDao().queryBuilder();
             builder.where(CookieResulteDao.Properties.Url.eq(url));
-            closeConnection();
             if (builder != null && builder.list().size() > 0) {
                 return builder.list().get(0);
             } else {
