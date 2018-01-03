@@ -13,7 +13,11 @@ import com.haxi.mh.R;
 
 
 /**
- * Created by yin13 on 2016/12/15.
+ * 快速检索布局
+ * Created by Han on 2018/01/03
+ * Email:yin13753884368@163.com
+ * CSDN:http://blog.csdn.net/yin13753884368/article
+ * Github:https://github.com/yin13753884368
  */
 
 public class QuickIndexLayout extends LinearLayout {
