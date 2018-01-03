@@ -11,7 +11,6 @@ import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
-import retrofit2.http.Query;
 
 /**
  * 用来创建Retrofit 的接口
@@ -33,14 +32,9 @@ public interface HttpService {
     @POST("jisuapi/search")
     Observable<String> getMenu(@FieldMap Map<String, Object> map);
 
-    //上传图片 OCR ID Card API Call<Result<String>>
+    //上传图片 OCR ID Card API Call<Result<String>> 不能进行参数拼接
     @Multipart
     @POST("ocridcard")
-    Observable<String> uploadPic(@Query("api_key") String api_key, @Query("api_secret") String api_secret, @Part List<MultipartBody.Part> partList);
-
-    @Multipart
-    @POST("userLogin/login.action")
-    Observable<String> login(@Part List<MultipartBody.Part> partList);
-
+    Observable<String> uploadPic(@Part List<MultipartBody.Part> partList);
 
 }

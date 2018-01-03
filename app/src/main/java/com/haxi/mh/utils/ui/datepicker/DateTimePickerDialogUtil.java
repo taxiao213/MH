@@ -1,4 +1,4 @@
-package com.haxi.mh.utils.ui;
+package com.haxi.mh.utils.ui.datepicker;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -30,7 +30,7 @@ import io.reactivex.functions.Consumer;
  * CSDN:http://blog.csdn.net/yin13753884368/article
  * Github:https://github.com/yin13753884368
  */
-public class DateTimePickDialogUtil implements OnDateChangedListener, OnTimeChangedListener {
+public class DateTimePickerDialogUtil implements OnDateChangedListener, OnTimeChangedListener {
     private DatePicker datePicker;
     public TimePicker timePicker;
     private AlertDialog ad;
@@ -40,7 +40,7 @@ public class DateTimePickDialogUtil implements OnDateChangedListener, OnTimeChan
     public static Calendar calendar;
 
 
-    public DateTimePickDialogUtil(Activity activity) {
+    public DateTimePickerDialogUtil(Activity activity) {
         this.activity = activity;
     }
 

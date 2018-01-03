@@ -12,7 +12,6 @@ import com.haxi.mh.utils.net.UploadUtil;
 import com.haxi.mh.utils.ui.UIUtil;
 
 import java.io.File;
-import java.util.concurrent.Executors;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -36,7 +35,6 @@ public class HomePageFragment extends BaseFragment {
     Button bt01;
     @BindView(R.id.bt_02)
     Button bt02;
-    private File filew;
 
 
     @Override
@@ -74,21 +72,7 @@ public class HomePageFragment extends BaseFragment {
                 }
                 break;
             case R.id.bt_03:
-                String rootPathw = Environment.getExternalStorageDirectory().getAbsolutePath();
-                File file1w = new File(rootPathw + "/hrchat/personIcon");
-                filew = null;
-                if (file1w.exists()) {
-                    filew = new File(file1w, "050296.png");
-                }
-                if (filew != null) {
-                    Executors.newSingleThreadExecutor().execute(new Runnable() {
-                        @Override
-                        public void run() {
-                    UploadUtil.getInstance().uploadFile(filew);
 
-                        }
-                    });
-                }
                 break;
         }
     }

@@ -1,0 +1,108 @@
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="text_size">18dp</dimen>
+
+
+    <!-- layout padding -->
+    <dimen name="padding_layout_little">3dp</dimen>
+    <dimen name="padding_layout_small">5dp</dimen>
+    <dimen name="padding_layout_normal">10dp</dimen>
+    <dimen name="padding_layout_big">15dp</dimen>
+    <dimen name="padding_layout_large">20dp</dimen>
+
+    <!-- layout margin -->
+    <dimen name="margin_layout_little">2dp</dimen>
+    <dimen name="margin_layout_small">5dp</dimen>
+    <dimen name="margin_layout_normal">10dp</dimen>
+    <dimen name="margin_layout_big">15dp</dimen>
+    <dimen name="margin_layout_large">20dp</dimen>
+    <dimen name="margintop_layout">20dp</dimen>
+    <dimen name="margin_layout_gfsy">20dp</dimen>
+
+    <!-- layout gap -->
+    <dimen name="margin_top">30dp</dimen>
+
+    <!-- min height -->
+    <dimen name="minheight_layout_little">15dp</dimen>
+    <dimen name="minheight_layout_small">25dp</dimen>
+    <dimen name="minheight_layout_normal">35dp</dimen>
+    <dimen name="minheight_layout_big">45dp</dimen>
+    <dimen name="minheight_layout_large">55dp</dimen>
+    <dimen name="minheight_text_small">25dp</dimen>
+    <dimen name="minheight_text_normal">35dp</dimen>
+    <dimen name="minheight_text_large">45dp</dimen>
+
+    <!-- text padding -->
+    <dimen name="padding_text_small">5dp</dimen>
+
+    <!-- textsize -->
+    <dimen name="text_size_little">10sp</dimen>
+    <dimen name="text_size_smaller">12sp</dimen>
+    <dimen name="text_size_small">14sp</dimen>
+    <dimen name="text_size_normal">16sp</dimen>
+    <dimen name="text_size_big">18sp</dimen>
+    <dimen name="text_size_bigger">20sp</dimen>
+    <dimen name="text_size_large">22sp</dimen>
+    <dimen name="text_size_gfsy">22sp</dimen>
+
+    <!-- divider's height replaced with textview's height -->
+    <dimen name="divider_height_1dp">1dp</dimen>
+    <dimen name="divider_height_2dp">2dp</dimen>
+    <dimen name="divider_height_3dp">3dp</dimen>
+
+    <!-- navigation img_gfjs -->
+    <dimen name="img_gfjs_width">50dp</dimen>
+    <dimen name="img_gfjs_height">50dp</dimen>
+    <!-- book content padding -->
+    <dimen name="book_padding_deail">5dp</dimen>
+
+    <!-- fileselect -->
+    <dimen name="fileselect_icon_minwidth">50dp</dimen>
+    <dimen name="fileselect_item_minheight">50dp</dimen>
+
+    <!-- gridview horizontalSpacing verticalSpace -->
+    <dimen name="gridview_horizontalSpace">10dp</dimen>
+    <dimen name="gridview_verticalSpace">10dp</dimen>
+
+    <!-- custom_toast -->
+    <dimen name="minwidth_customtoast">120dp</dimen>
+    <!-- grzx array min width -->
+    <dimen name="minwidth_grzx_array">30dp</dimen>
+    <!-- checkbox -->
+    <dimen name="checkbox_width">20dp</dimen>
+
+
+    <dimen name="title_hight_layout">50dp</dimen>
+    <dimen name="small_space">8dp</dimen>
+    <!-- slidingmenu -->
+    <dimen name="slidingmenu_offset">100dp</dimen>
+    <dimen name="shadow_width">5dp</dimen>
+
+    <!-- AlertView -->
+    <!--标题文字大小-->
+    <dimen name="textSize_alert_title">22sp</dimen>
+    <dimen name="textSize_actionsheet_title">14sp</dimen>
+    <!--标题文字高度-->
+    <dimen name="height_alert_title">60dp</dimen>
+    <dimen name="height_actionsheet_title">40dp</dimen>
+    <!--消息文字大小-->
+    <dimen name="textSize_alert_msg">15sp</dimen>
+    <dimen name="textSize_actionsheet_msg">14sp</dimen>
+    <!--消息距离底部间距-->
+    <dimen name="marginBottom_alert_msg">25dp</dimen>
+    <dimen name="marginBottom_actionsheet_msg">14dp</dimen>
+    <!--窗口模式左右两边到屏幕的间距-->
+    <dimen name="margin_alert_left_right">40dp</dimen>
+    <dimen name="margin_actionsheet_left_right">10dp</dimen>
+    <!--线条粗细-->
+    <dimen name="size_divier">1dp</dimen>
+    <!--按钮的高度-->
+    <dimen name="height_alert_button">48dp</dimen>
+    <!--按钮文字大小-->
+    <dimen name="textSize_alert_button">18sp</dimen>
+    <!--圆角-->
+    <dimen name="radius_alertview">15px</dimen>
+    <dimen name="fab_margin">16dp</dimen>
+</resources>

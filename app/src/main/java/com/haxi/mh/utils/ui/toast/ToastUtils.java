@@ -1,8 +1,10 @@
-package com.haxi.mh.utils.ui;
+package com.haxi.mh.utils.ui.toast;
 
 import android.support.design.widget.Snackbar;
 import android.view.View;
 import android.widget.Toast;
+
+import com.haxi.mh.utils.ui.UIUtil;
 
 /**
  * 弹出吐司

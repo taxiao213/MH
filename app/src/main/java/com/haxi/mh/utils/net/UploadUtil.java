@@ -2,16 +2,19 @@ package com.haxi.mh.utils.net;
 
 import android.text.TextUtils;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.haxi.mh.constant.Constant;
+import com.haxi.mh.model.Test;
 import com.haxi.mh.network.HttpService;
-import com.haxi.mh.network.manager.AddParameterInterceptor;
 import com.haxi.mh.network.manager.RxRetrofitApp;
 import com.haxi.mh.utils.model.LogUtils;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.File;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observable;
@@ -46,48 +49,6 @@ public class UploadUtil {
 
     }
 
-    /**
-     * 获取Retrofit对象
-     *
-     * @return
-     */
-    private Retrofit getRetrofit() {
-        /**
-         * 创建OKHttpClient对象
-         */
-        OkHttpClient.Builder builder = new OkHttpClient.Builder()
-                .addInterceptor(new AddParameterInterceptor())//http请求拦截器 用来拼装公共参数
-                .connectionPool(new ConnectionPool(100, 10, TimeUnit.MINUTES))//连接池
-                .connectTimeout(6, TimeUnit.SECONDS)//请求超时时间
-                .readTimeout(60, TimeUnit.SECONDS)//读取超时时间
-                .writeTimeout(60, TimeUnit.SECONDS);//写入超时时间
-
-        //请求接口返回数据拦截器
-        if (RxRetrofitApp.isDebug()) {
-             builder.addInterceptor(getHttpLoggingInterceptor());
-        }
-
-        /**
-         * 创建Retrofit对象
-         *   //增加返回值为Gson的支持(以实体类返回)
-         *   //增加返回值为String的支持
-         *   //增加返回值为Oservable<T>的支持
-         *   addConverterFactory只能选用一个
-         */
-        //增加返回值为Oservable<T>的支持
-        //增加返回值为String的支持
-        Retrofit retrofit = new Retrofit.Builder()
-                .client(builder.build())
-                //增加返回值为Oservable<T>的支持
-                .addCallAdapterFactory(RxJava2CallAdapterFactory.createWithScheduler(Schedulers.io()))
-                //增加返回值为String的支持
-                .addConverterFactory(ScalarsConverterFactory.create())
-                .baseUrl(Constant.BASE_URL)
-                .build();
-
-        return retrofit;
-    }
-
     public static UploadUtil getInstance() {
         if (uploadUtil == null) {
             synchronized (UploadUtil.class) {
@@ -100,6 +61,47 @@ public class UploadUtil {
     }
 
     /**
+     * 获取Retrofit对象
+     *
+     * @return
+     */
+    private Retrofit getRetrofit() {
+        /**
+         * 创建OKHttpClient对象 上传文件拼装公共参数会报错
+         */
+        OkHttpClient.Builder builder = new OkHttpClient.Builder()
+                //  .addInterceptor(new AddParameterInterceptor())//http请求拦截器 上传文件拼装公共参数会报错
+                .connectionPool(new ConnectionPool(100, 10, TimeUnit.MINUTES))//连接池
+                .connectTimeout(6, TimeUnit.SECONDS)//请求超时时间
+                .readTimeout(60, TimeUnit.SECONDS)//读取超时时间
+                .writeTimeout(60, TimeUnit.SECONDS);//写入超时时间
+
+        //请求接口返回数据拦截器
+        if (RxRetrofitApp.isDebug()) {
+            builder.addInterceptor(getHttpLoggingInterceptor());
+        }
+
+        /**
+         * 创建Retrofit对象
+         *   //增加返回值为Gson的支持(以实体类返回)
+         *   //增加返回值为String的支持
+         *   //增加返回值为Oservable<T>的支持
+         *   addConverterFactory只能选用一个
+         */
+        Retrofit retrofit = new Retrofit.Builder()
+                .client(builder.build())
+                //增加返回值为Oservable<T>的支持
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.createWithScheduler(Schedulers.io()))
+                //增加返回值为String的支持
+                .addConverterFactory(ScalarsConverterFactory.create())
+                .baseUrl(Constant.BASE_URL)
+                .build();
+
+        return retrofit;
+    }
+
+
+    /**
      * 创建服务请求
      *
      * @return
@@ -108,34 +110,54 @@ public class UploadUtil {
         return getRetrofit().create(HttpService.class);
     }
 
-    private Observable<String> uploadPic(String api_key,String api_secret, List<MultipartBody.Part> partList) {
-        return getUploadService().uploadPic(api_key,api_secret,partList);
+    /**
+     * 传递请求参数
+     *
+     * @param partList
+     * @return
+     */
+    private Observable<String> uploadPic(List<MultipartBody.Part> partList) {
+        return getUploadService().uploadPic(partList);
     }
+
 
     /**
      * 上传图片 multipart/form-data application/octet-stream
      */
     public void upload(File file) {
-        MultipartBody.Builder builder = new MultipartBody.Builder()
-                .setType(MultipartBody.FORM);//表单类型
-//                .addFormDataPart("api_key", Constant.FACE_API_KEY)
-//                .addFormDataPart("api_secret", Constant.FACE_API_SECRET);
-        RequestBody body = RequestBody.create(MediaType.parse("application/octet-stream"), file);
-        builder.addFormDataPart("image_file", file.getName(), body);//image_file 后台接收图片流的参数名
-        List<MultipartBody.Part> parts = builder.build().parts();
-        Map<String, RequestBody> map = new HashMap<>();
-        map.put("api_key",RequestBody.create(MediaType.parse("multipart/form-data"),Constant.FACE_API_KEY));
-        map.put("api_secret",RequestBody.create(MediaType.parse("multipart/form-data"),Constant.FACE_API_SECRET));
+        MultipartBody builder = new MultipartBody.Builder()
+                .setType(MultipartBody.FORM)//表单类型
+                .addFormDataPart("api_key", Constant.FACE_API_KEY)
+                .addFormDataPart("api_secret", Constant.FACE_API_SECRET)
+                .addFormDataPart("image_file", file.getName(), RequestBody.create(MediaType.parse("multipart/form-data"), file))
+                .build();
+        List<MultipartBody.Part> parts = builder.parts();
         try {
-            uploadPic(Constant.FACE_API_KEY,Constant.FACE_API_SECRET,parts).subscribeOn(Schedulers.io()).subscribe(new Observer<String>() {
+            uploadPic(parts).subscribeOn(Schedulers.io()).subscribe(new Observer<String>() {
+                Disposable disposable = null;
+
                 @Override
                 public void onSubscribe(Disposable d) {
-
+                    disposable = d;
                 }
 
                 @Override
                 public void onNext(String s) {
                     LogUtils.e("onNext--->>" + s);
+                    try {
+                        JSONObject object = new JSONObject(s);
+                        if (object.has("image_id")) {
+                            String image_id = object.optString("image_id");
+                            LogUtils.e(image_id);
+                        }
+                        Test json = new Gson().fromJson(s, new TypeToken<Test>() {
+                        }.getType());
+                        LogUtils.e(json.toString());
+
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                 }
 
                 @Override
@@ -146,6 +168,8 @@ public class UploadUtil {
                 @Override
                 public void onComplete() {
                     LogUtils.e("onComplete--->>");
+                    disposable.dispose();
+                    disposable = null;
                 }
             });
         } catch (Exception e) {
@@ -155,16 +179,14 @@ public class UploadUtil {
     }
 
 
-
-
     /**
      * OkHttpClient 上传文件的接口
      *
-     * @param file  文件
+     * @param file 文件
      * @return
      */
     public String uploadFile(File file) {
-        String url="https://api-cn.faceplusplus.com/cardpp/v1/ocridcard";
+        String url = "https://api-cn.faceplusplus.com/cardpp/v1/ocridcard";
         OkHttpClient mOkHttpClient = new OkHttpClient.Builder()
                 .addInterceptor(getHttpLoggingInterceptor())
                 .build();
@@ -184,7 +206,7 @@ public class UploadUtil {
         try {
             response = mOkHttpClient.newCall(request).execute();
             if (response.isSuccessful()) {
-                LogUtils.e("response--->>>"+response.body().string());
+                LogUtils.e("response--->>>" + response.body().string());
                 return response.body().string();
             }
         } catch (Exception e) {
