@@ -198,7 +198,9 @@ public static java.lang.String TABLENAME;
 
 # Bugly ----
 -dontwarn com.tencent.bugly.**
+-dontwarn com.tencent.tinker.**
 -keep public class com.tencent.bugly.**{*;}
+-keep public class com.tencent.tinker.**{*;}
 
 # Loggger ----
 -dontwarn com.orhanobut.logger.**

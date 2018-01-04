@@ -10,10 +10,13 @@ import android.support.multidex.MultiDex;
 import com.haxi.mh.network.manager.RxRetrofitApp;
 import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.Logger;
+import com.tencent.bugly.Bugly;
+import com.tencent.bugly.beta.Beta;
 import com.tencent.bugly.crashreport.CrashReport;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.message.IUmengRegisterCallback;
 import com.umeng.message.PushAgent;
+
 
 
 /**
@@ -47,8 +50,11 @@ public class MyApplication extends Application {
         //Bugly获取渠道号
         CrashReport.UserStrategy strategy = new CrashReport.UserStrategy(mContext);
         strategy.setAppChannel(getChannel());
-        //注册Bugly
-        CrashReport.initCrashReport(getApplicationContext(), "58aa13feb7", true, strategy);
+        //注册Bugly 如果您之前使用过Bugly SDK，请将以下这句注释掉
+        //CrashReport.initCrashReport(getApplicationContext(), "58aa13feb7", true, strategy);
+        Bugly.init(getApplicationContext(), "58aa13feb7", true, strategy);
+        //参数1：isManual 用户手动点击检查，非用户点击操作请传false 参数2：isSilence 是否显示弹窗等交互，[true:没有弹窗和toast] [false:有弹窗或toast]
+        Beta.checkUpgrade(false,false);
 
         //初始化Logger
         Logger.addLogAdapter(new AndroidLogAdapter());
