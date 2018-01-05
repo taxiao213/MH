@@ -1,0 +1,83 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical"
+              tools:context=".utils.fileselector.FileSelectActivity">
+
+    <RelativeLayout
+        android:id="@+id/menu_rl"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:background="@color/chart_title">
+
+        <ImageView
+            android:id="@+id/img_title_back"
+            android:layout_width="45dp"
+            android:layout_height="match_parent"
+            android:padding="13dp"
+            android:src="@drawable/title_back"/>
+
+        <LinearLayout
+            android:id="@+id/todo_menu"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:orientation="vertical"
+            >
+
+            <TextView
+                android:id="@+id/mode_file"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="@string/mode_file"
+                android:textColor="@color/white"
+                android:textSize="18sp"/>
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/fileselector_ok"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            android:gravity="center_vertical"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:text="@string/action_fileselector_ok"
+            android:textColor="@color/white"
+            android:textSize="18sp"/>
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="@dimen/padding_layout_little">
+
+        <TextView
+            android:id="@+id/id_fileselect_folderpath"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:minHeight="@dimen/minheight_text_normal"
+            android:textSize="@dimen/text_size_small"/>
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/divider_height_1dp"
+        android:background="#cccccc"/>
+
+    <ListView
+        android:id="@+id/id_fileselect_listview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/padding_layout_small"
+        android:paddingRight="@dimen/padding_layout_small"/>
+
+</LinearLayout>

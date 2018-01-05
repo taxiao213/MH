@@ -70,7 +70,7 @@
     <dimen name="minwidth_customtoast">120dp</dimen>
     <!-- grzx array min width -->
     <dimen name="minwidth_grzx_array">30dp</dimen>
-    <!-- checkbox -->
+    <!--fileselect_checkboxkbox -->
     <dimen name="checkbox_width">20dp</dimen>
 
 
