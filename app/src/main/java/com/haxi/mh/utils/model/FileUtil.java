@@ -489,16 +489,16 @@ public class FileUtil {
         if (isExternalStorageReadable()) {
             FileOutputStream outStream = null;
             try {
-                File FileName = new File(Environment.getExternalStorageDirectory().toString() + "/my_test/");
+                File FileName = new File(Environment.getExternalStorageDirectory().toString());
                 if (!FileName.exists()) {
                     FileName.mkdirs();
                 }
-                File file = new File(FileName, filename + ".htm");
+                File file = new File(FileName, filename);
                 if (!file.exists()) {
                     file.createNewFile();
                 }
                 outStream = new FileOutputStream(file);
-                outStream.write(content.getBytes("gb2312"));
+                outStream.write(content.getBytes());
             } catch (Exception E) {
                 E.printStackTrace();
             } finally {
@@ -509,7 +509,6 @@ public class FileUtil {
 
                 }
             }
-
         }
     }
 
