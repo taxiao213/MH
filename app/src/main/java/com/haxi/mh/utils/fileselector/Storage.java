@@ -8,6 +8,7 @@ import java.io.Serializable;
 import java.util.Locale;
 
 /**
+ * 文件名称置换
  * Created by Han on 2018/1/5
  * Email:yin13753884368@163.com
  * CSDN:http://blog.csdn.net/yin13753884368/article

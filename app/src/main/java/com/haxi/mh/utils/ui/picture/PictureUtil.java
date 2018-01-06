@@ -84,15 +84,17 @@ public class PictureUtil {
     }
 
     /**
-     * 相册的选择 Matisse实现单选 多选 预览
+     * 知乎相册的选择 Matisse实现单选 多选 预览
+     * 在onActivityResult 返回
+     * 用法：List<Uri> mSelected = Matisse.obtainResult(data);
      */
-    public static void select(String domid) {
+    public static void select() {
         // 配置和启用
         Matisse.from((Activity) UIUtil.getContext())
                 .choose(MimeType.ofImage())
                 .countable(false)
-                .maxSelectable(9)
-                .gridExpectedSize(UIUtil.getScreenWidth() / 3)
+                .maxSelectable(9)//最大可以选择数
+                .gridExpectedSize(UIUtil.getScreenWidth() / 3)//一行展示的个数
                 .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED)
                 .thumbnailScale(1.0f)
                 .theme(R.style.Matisse_Dracula)

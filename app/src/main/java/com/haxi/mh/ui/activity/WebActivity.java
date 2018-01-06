@@ -4,7 +4,6 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.text.TextUtils;
 import android.view.View;
@@ -19,8 +18,6 @@ import android.widget.RelativeLayout;
 
 import com.haxi.mh.R;
 import com.haxi.mh.base.BaseActivity;
-import com.haxi.mh.utils.fileselector.FileSelectActivity;
-import com.haxi.mh.utils.fileselector.FileSelectConstant;
 import com.haxi.mh.utils.ui.progress.ProgressDialog;
 import com.haxi.mh.utils.ui.view.TextScrollView;
 
@@ -79,8 +76,6 @@ public class WebActivity extends BaseActivity implements EasyPermissions.Permiss
         dialog = new ProgressDialog(mActivity);
         creatWebView();
         if (type != null && type.equals("1")) {
-            mWebView.loadUrl("");
-        } else {
             mWebView.loadUrl("");
         }
     }
@@ -290,23 +285,9 @@ public class WebActivity extends BaseActivity implements EasyPermissions.Permiss
     }
 
 
-    /**
-     * 文件选择器
-     */
-    public void chooseFile(String domid) {
-
-        //自定义文件选择器
-        Intent intent = new Intent();
-        intent.setClass(getApplicationContext(), FileSelectActivity.class);
-        intent.putExtra(FileSelectConstant.SELECTOR_REQUEST_CODE_KEY, FileSelectConstant.SELECTOR_MODE_FILE);
-        intent.putExtra(FileSelectConstant.SELECTOR_IS_MULTIPLE, true);
-        startActivityForResult(intent, FILE_SELECT_CODE);
-    }
-
-
     @OnClick(R.id.web_title_back)
     public void onViewClicked() {
-        finish();
+        onBack(2);
     }
 
 

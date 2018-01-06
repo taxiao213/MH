@@ -2,7 +2,6 @@ package com.haxi.mh.utils.model;
 
 import android.os.Environment;
 
-import com.facebook.stetho.common.LogUtil;
 import com.haxi.mh.utils.fileselector.Storage;
 
 import java.io.BufferedReader;
@@ -16,7 +15,7 @@ import java.util.Locale;
 
 
 /**
- * SdCard相关工具类
+ * 获取内存卡所有文件路径
  * Created by Han on 2018/1/5
  * Email:yin13753884368@163.com
  * CSDN:http://blog.csdn.net/yin13753884368/article
@@ -38,7 +37,7 @@ public class SdCardUtil {
     }
 
     public static List<String> getAllSdcardPath() {
-        List<String> storageList = new ArrayList<String>();
+        List<String> storageList = new ArrayList<>();
 
         // 得到路径
         try {
@@ -94,8 +93,6 @@ public class SdCardUtil {
      * @return
      */
     public static List<Storage> getStorages() {
-        LogUtil.v("getStoragesByPaths()");
-
         List<Storage> storages = new ArrayList<Storage>();
         for (String storagePath : SdCardUtil.sdList) {
             File file = new File(storagePath);
@@ -115,8 +112,6 @@ public class SdCardUtil {
      * @return
      */
     public static String replaceAbsPathWithLocalName(String parentFolderPath) {
-        LogUtil.v("replaceAbsPathWithLocalName()");
-
         List<Storage> storageList = getStorages();
         for (Storage storage : storageList) {
             if (parentFolderPath.contains(storage.getAbsPath())) {
@@ -124,7 +119,6 @@ public class SdCardUtil {
             }
         }
         return parentFolderPath;
-
     }
 
     /**
