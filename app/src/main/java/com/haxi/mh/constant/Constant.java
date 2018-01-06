@@ -20,4 +20,15 @@ public class Constant {
     public static final String BASE_BJ_URL = "http://www.zkhonry.com:9000/zkhonry-mobile-interface/";
     public static final String FACE_API_KEY = "fMOByyGzrehIRTb6BRRFJCjWE0oMCsVB";
     public static final String FACE_API_SECRET = "-OQcEHIYrSjP_jkbCymFxTuw9pRIQRYP";
+
+    /* 文件后缀 */
+    public static String WORD = "doc,docx,dot,dotx,docm,dotm,rtf,wps,wpt,xml";
+    public static String EXCEL = "et,ett,excel,xls,xlsx,xlsm,xltx,xltm,xlsb,xlam,xlt";
+    public static String PPT = "dps,dpt,ppt,pptx,pptm,ppsx,potx,potm,ppam,pot,pps";
+    public static String TXT = "txt";
+    public static String PDF = "pdf";
+    public static String ZIP = "7z,rar,zip";
+    public static String PIC = "jpg,jpeg,png,gif,bmp,webp";
+    public static String VIDEO = "3gp,3gpp,3g2,3gpp2,avi,asx,flv,mpeg,mpe,mpg,mp1,mp2,mp4,m4v,mov,mkv,rm,rmvb,sf,ts,webm,wmv";
+    public static String MUSIC = "asf,aac,ape,flac,m4a,mp3,mmf,mid,ra,tti,wma,wav";
 }

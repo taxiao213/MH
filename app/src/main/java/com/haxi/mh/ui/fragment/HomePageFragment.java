@@ -72,7 +72,6 @@ public class HomePageFragment extends BaseFragment {
                 }
                 break;
             case R.id.bt_03:
-
                 break;
         }
     }

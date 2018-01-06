@@ -198,7 +198,9 @@ public static java.lang.String TABLENAME;
 
 # Bugly ----
 -dontwarn com.tencent.bugly.**
+-dontwarn com.tencent.tinker.**
 -keep public class com.tencent.bugly.**{*;}
+-keep public class com.tencent.tinker.**{*;}
 
 # Loggger ----
 -dontwarn com.orhanobut.logger.**
@@ -240,6 +242,42 @@ public static java.lang.String TABLENAME;
 -keep public class com.haxi.mh.R$*{
     public static final int *;
 }
+
+#友盟push
+-dontwarn com.taobao.**
+-dontwarn anet.channel.**
+-dontwarn anetwork.channel.**
+-dontwarn org.android.**
+-dontwarn org.apache.thrift.**
+-dontwarn com.xiaomi.**
+-dontwarn com.huawei.**
+
+-keepattributes *Annotation*
+
+-keep class com.taobao.** {*;}
+-keep class org.android.** {*;}
+-keep class anet.channel.** {*;}
+-keep class com.umeng.** {*;}
+-keep class com.xiaomi.** {*;}
+-keep class com.huawei.** {*;}
+-keep class org.apache.thrift.** {*;}
+
+-keep class com.alibaba.sdk.android.**{*;}
+-keep class com.ut.**{*;}
+-keep class com.ta.**{*;}
+
+-keep public class **.R$*{
+   public static final int *;
+}
+
+#（可选）避免Log打印输出
+-assumenosideeffects class android.util.Log {
+   public static *** v(...);
+   public static *** d(...);
+   public static *** i(...);
+   public static *** w(...);
+ }
+
 
 #---------------------------------------------------------------------
 

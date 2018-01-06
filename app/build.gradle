@@ -8,14 +8,14 @@ android {
         applicationId "com.haxi.mh"
         minSdkVersion 15
         targetSdkVersion 26
-        versionCode 1
-        versionName "1.0.0"
+        versionCode 2
+        versionName "1.0.1"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         // dex突破65535的限制
         multiDexEnabled true
         ndk {
             // 设置支持的SO库架构
-            abiFilters 'armeabi' //, 'x86', 'armeabi-v7a', 'x86_64', 'arm64-v8a'
+            abiFilters 'armeabi', 'x86' //, 'x86', 'armeabi-v7a', 'x86_64', 'arm64-v8a'
         }
     }
 
@@ -114,8 +114,10 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
+
     /* multidex兼容包，配合AndroidStudio实现了一个APK包含多个dex的功能 */
     compile 'com.android.support:multidex:1.0.1'
+
     /* butterKnife */
     compile 'com.jakewharton:butterknife:8.8.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
@@ -138,10 +140,18 @@ dependencies {
 
     /* retrofit */
     compile 'com.squareup.retrofit2:retrofit:2.3.0'
-    compile 'com.squareup.retrofit2:converter-gson:2.3.0'//增加返回值为Gson的支持(以实体类返回)
-    compile 'com.squareup.retrofit2:converter-scalars:2.3.0'//增加返回值为String的支持
-    compile 'com.squareup.retrofit2:adapter-rxjava2:2.3.0'//增加返回值为Oservable<T>的支持
-    compile 'com.squareup.okhttp3:logging-interceptor:3.9.1'//okhttp3拦截器
+    compile 'com.squareup.retrofit2:converter-gson:2.3.0'
+
+    //增加返回值为Gson的支持(以实体类返回)
+    compile 'com.squareup.retrofit2:converter-scalars:2.3.0'
+
+    //增加返回值为String的支持
+    compile 'com.squareup.retrofit2:adapter-rxjava2:2.3.0'
+
+    //增加返回值为Oservable<T>的支持
+    compile 'com.squareup.okhttp3:logging-interceptor:3.9.1'
+
+    //okhttp3拦截器
 
     /* RxAndroid: Reactive Extensions for Android */
     compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
@@ -172,13 +182,17 @@ dependencies {
     }
     annotationProcessor "com.github.hotchemi:permissionsdispatcher-processor:3.0.1"
 
-    /* 收集错误日志 */
-    compile 'com.tencent.bugly:crashreport:latest.release'
+    /* bugly收集错误日志 */
 
     //其中latest.release指代最新Bugly SDK版本号，也可以指定明确的版本号，例如2.1.9
-    compile 'com.tencent.bugly:nativecrashreport:latest.release'
+
+    //compile 'com.tencent.bugly:crashreport:latest.release'
 
     //其中latest.release指代最新Bugly NDK版本号，也可以指定明确的版本号，例如3.0
+    compile 'com.tencent.bugly:nativecrashreport:latest.release'
+
+    //其中latest.release指代最新版本号，也可以指定明确的版本号，例如1.3.4 包括crashreport
+    compile 'com.tencent.bugly:crashreport_upgrade:latest.release'
 
     /* debug 在线查看app数据库 */
     debugCompile 'com.amitshekhar.android:debug-db:1.0.1'
@@ -194,7 +208,8 @@ dependencies {
 
     /* 友盟统计 */
     compile 'com.umeng.analytics:analytics:latest.integration'
-
+    implementation project(':PushSDK')
+    implementation project(':matisse')
 }
 
 
