@@ -85,6 +85,18 @@ public class UIUtil {
         return (int) (px / scale + 0.5f);
     }
 
+    /**
+     * 获取手机屏幕宽和高
+     * @param context
+     * @return
+     */
+    public static int[] getScreenDispaly(Context context){
+        WindowManager wm=(WindowManager)context.getSystemService(Context.WINDOW_SERVICE);
+        int width=wm.getDefaultDisplay().getWidth();//手机屏幕的宽度
+        int height=wm.getDefaultDisplay().getHeight();//手机屏幕的高度
+        int result[] = {width,height};
+        return result;
+    }
 
     /**
      * 获取资源
