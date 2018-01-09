@@ -243,7 +243,7 @@ public static java.lang.String TABLENAME;
     public static final int *;
 }
 
-#友盟push
+# 友盟push
 -dontwarn com.taobao.**
 -dontwarn anet.channel.**
 -dontwarn anetwork.channel.**
@@ -277,6 +277,13 @@ public static java.lang.String TABLENAME;
    public static *** i(...);
    public static *** w(...);
  }
+
+# picasso
+-dontwarn com.squareup.picasso.**
+
+# matisse 第三方jar包屏蔽
+-dontwarn com.zhihu.matisse.**
+-keep class com.zhihu.matisse.** {*;}
 
 
 #---------------------------------------------------------------------

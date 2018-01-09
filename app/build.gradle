@@ -114,6 +114,7 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
+    compile 'com.android.support:recyclerview-v7:27.0.2'
 
     /* multidex兼容包，配合AndroidStudio实现了一个APK包含多个dex的功能 */
     compile 'com.android.support:multidex:1.0.1'
