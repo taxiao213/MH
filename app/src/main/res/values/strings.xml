@@ -15,4 +15,7 @@
     <string name="mode_folder_multi">文件夹多选</string>
     <string name="action_fileselector_ok">完成</string>
 
+    <!--开启相机-->
+    <string name="open_camera">This app needs access to your camera so you can take pictures...</string>
+
 </resources>

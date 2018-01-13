@@ -8,7 +8,6 @@ import android.os.Handler;
 import android.support.multidex.MultiDex;
 
 import com.haxi.mh.network.manager.RxRetrofitApp;
-import com.haxi.mh.utils.exception.HandlerException;
 import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.Logger;
 import com.tencent.bugly.Bugly;
@@ -49,7 +48,7 @@ public class MyApplication extends Application {
         mMainThreadHandler = new Handler();
 
         //捕获异常 与 bugly 不能同时开启
-        HandlerException.getInstance().init(mContext);
+        //HandlerException.getInstance().init(mContext);
 
         //Bugly获取渠道号
         CrashReport.UserStrategy strategy = new CrashReport.UserStrategy(mContext);
