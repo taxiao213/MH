@@ -2,7 +2,6 @@ package com.haxi.mh.ui.fragment;
 
 import android.Manifest;
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -14,10 +13,6 @@ import android.widget.TextView;
 import com.haxi.mh.R;
 import com.haxi.mh.base.BaseFragment;
 import com.haxi.mh.utils.model.LogUtils;
-import com.haxi.mh.utils.ui.UIUtil;
-import com.zhihu.matisse.Matisse;
-import com.zhihu.matisse.MimeType;
-import com.zhihu.matisse.engine.impl.GlideEngine;
 
 import java.io.File;
 import java.util.List;
@@ -91,18 +86,18 @@ public class HomeManageFragment extends BaseFragment implements EasyPermissions.
     private void select() {
         String[] perms = {Manifest.permission.WRITE_EXTERNAL_STORAGE};
         if (EasyPermissions.hasPermissions(mActivity, perms)) {
-            Matisse.from(mActivity)
-                    .choose(MimeType.ofImage())
-//                    .capture(true)
-//                    .captureStrategy(new CaptureStrategy(true,"com.haxi.mh.fileprovider"))
-                    .countable(false)
-                    .maxSelectable(9)//最大可以选择数
-                    .gridExpectedSize(UIUtil.getScreenWidth() / 3)//一行展示的个数
-                    .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED)
-                    .thumbnailScale(1.0f)
-                    .theme(R.style.Matisse_Dracula)
-                    .imageEngine(new GlideEngine())
-                    .forResult(REQUEST_CODE_CHOOSE);
+//            Matisse.from(mActivity)
+//                    .choose(MimeType.ofImage())
+////                    .capture(true)
+////                    .captureStrategy(new CaptureStrategy(true,"com.haxi.mh.fileprovider"))
+//                    .countable(false)
+//                    .maxSelectable(9)//最大可以选择数
+//                    .gridExpectedSize(UIUtil.getScreenWidth() / 3)//一行展示的个数
+//                    .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED)
+//                    .thumbnailScale(1.0f)
+//                    .theme(R.style.Matisse_Dracula)
+//                    .imageEngine(new GlideEngine())
+//                    .forResult(REQUEST_CODE_CHOOSE);
         } else {
             EasyPermissions.requestPermissions(this, "请允许权限读取图片", REQUEST_CHOOSE, perms);
         }

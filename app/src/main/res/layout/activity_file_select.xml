@@ -9,7 +9,7 @@
         android:id="@+id/menu_rl"
         android:layout_width="match_parent"
         android:layout_height="45dp"
-        android:background="@color/chart_title">
+        android:background="@color/myThemeColor">
 
         <ImageView
             android:id="@+id/img_title_back"
