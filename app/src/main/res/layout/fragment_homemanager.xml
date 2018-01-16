@@ -19,4 +19,10 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:text="打开相机"/>
+    <Button
+        android:id="@+id/select_file"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="选择文件"/>
 </LinearLayout>

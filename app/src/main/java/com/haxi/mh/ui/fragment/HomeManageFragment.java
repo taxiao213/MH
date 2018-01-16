@@ -1,7 +1,9 @@
 package com.haxi.mh.ui.fragment;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -12,9 +14,16 @@ import android.widget.TextView;
 
 import com.haxi.mh.R;
 import com.haxi.mh.base.BaseFragment;
+import com.haxi.mh.utils.fileselector.FileSelectActivity;
+import com.haxi.mh.utils.fileselector.FileSelectConstant;
 import com.haxi.mh.utils.model.LogUtils;
+import com.haxi.mh.utils.ui.UIUtil;
+import com.zhihu.matisse.Matisse;
+import com.zhihu.matisse.MimeType;
+import com.zhihu.matisse.engine.impl.GlideEngine;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -35,6 +44,7 @@ public class HomeManageFragment extends BaseFragment implements EasyPermissions.
     private static final int REQUEST_CHOOSE = 0x0002;
     private static final int RC_CAMERA_PERM = 0x0003;
     private static final int RC_CAMERA_CHOOSE = 0x0004;
+    private static final int FILE_SELECT_CODE = 0x101;
     @BindView(R.id.title_back)
     ImageView titleBack;
     @BindView(R.id.title_tv)
@@ -57,47 +67,70 @@ public class HomeManageFragment extends BaseFragment implements EasyPermissions.
     }
 
 
-    @OnClick({R.id.select_pic,R.id.select_camera})
+    @OnClick({R.id.select_pic, R.id.select_camera, R.id.select_file})
     public void onViewClicked(View view) {
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.select_pic:
                 select();
                 break;
             case R.id.select_camera:
                 openCamera();
                 break;
+            case R.id.select_file:
+                selectFile();
+                break;
         }
 
     }
+
+    /**
+     * 选择文件
+     */
+    private void selectFile() {
+
+
+        Intent intent = new Intent(mActivity, FileSelectActivity.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.putExtra(FileSelectConstant.SELECTOR_REQUEST_CODE_KEY, FileSelectConstant.SELECTOR_MODE_FILE);
+        intent.putExtra(FileSelectConstant.SELECTOR_IS_MULTIPLE, true);
+        startActivityForResult(intent, FILE_SELECT_CODE);
+
+    }
+
+
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode==REQUEST_CHOOSE){
-            LogUtils.e(REQUEST_CHOOSE+"");
+        if (requestCode == REQUEST_CODE_CHOOSE) {
+            LogUtils.e(REQUEST_CODE_CHOOSE + "....." + Matisse.obtainResult(data).toString());
         }
-        if (requestCode==RC_CAMERA_PERM){
-            LogUtils.e(RC_CAMERA_PERM+"");
+        if (requestCode == RC_CAMERA_PERM) {
+            LogUtils.e(RC_CAMERA_PERM + "");
+        }
+        if (requestCode == FILE_SELECT_CODE) {
+            if (resultCode == Activity.RESULT_OK) {
+                final ArrayList<String> uris = data.getStringArrayListExtra(FileSelectConstant.SELECTOR_BUNDLE_PATHS);
+                LogUtils.e(FILE_SELECT_CODE + uris.toString());
+            }
         }
 
     }
+
 
     @AfterPermissionGranted(REQUEST_CHOOSE)
     private void select() {
         String[] perms = {Manifest.permission.WRITE_EXTERNAL_STORAGE};
         if (EasyPermissions.hasPermissions(mActivity, perms)) {
-//            Matisse.from(mActivity)
-//                    .choose(MimeType.ofImage())
-////                    .capture(true)
-////                    .captureStrategy(new CaptureStrategy(true,"com.haxi.mh.fileprovider"))
-//                    .countable(false)
-//                    .maxSelectable(9)//最大可以选择数
-//                    .gridExpectedSize(UIUtil.getScreenWidth() / 3)//一行展示的个数
-//                    .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED)
-//                    .thumbnailScale(1.0f)
-//                    .theme(R.style.Matisse_Dracula)
-//                    .imageEngine(new GlideEngine())
-//                    .forResult(REQUEST_CODE_CHOOSE);
+            Matisse.from(this)
+                    .choose(MimeType.ofImage())
+                    .countable(false)
+                    .maxSelectable(9)//最大可以选择数
+                    .gridExpectedSize(UIUtil.getScreenWidth() / 3)//一行展示的个数
+                    .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED)
+                    .thumbnailScale(1.0f)
+                    .theme(R.style.Matisse_Dracula)
+                    .imageEngine(new GlideEngine())
+                    .forResult(REQUEST_CODE_CHOOSE);
         } else {
             EasyPermissions.requestPermissions(this, "请允许权限读取图片", REQUEST_CHOOSE, perms);
         }

@@ -217,6 +217,7 @@ dependencies {
     /* 友盟统计 */
     compile 'com.umeng.analytics:analytics:latest.integration'
     implementation project(':PushSDK')
+    implementation project(':matisse')
 }
 
 
