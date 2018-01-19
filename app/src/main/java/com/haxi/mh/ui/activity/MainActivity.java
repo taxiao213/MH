@@ -85,10 +85,10 @@ public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedCh
      * 开启服务
      */
     private void startService() {
-        LogUtils.e("MainActivity--->>startService()");
+        LogUtils.e("mh-->>MainActivity--->>startService()");
         if (!UIUtil.isServiceRunning(mActivity, PlayMusicService.class.getName())) {
             mActivity.startService(new Intent(mActivity, PlayMusicService.class));
-            LogUtils.e("MainActivity--->>startService()开启");
+            LogUtils.e("mh-->>MainActivity--->>startService()开启");
         }
     }
 

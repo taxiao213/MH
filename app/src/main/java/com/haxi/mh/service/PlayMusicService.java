@@ -35,7 +35,7 @@ public class PlayMusicService extends Service {
         startForeground(0, getNotification());
 //        ConverServiceConnection connection = new ConverServiceConnection(this);
 //        this.bindService(new Intent(this, HelpService.class), connection, BIND_AUTO_CREATE);
-        LogUtils.e("PlayMusicService：onStartCommand()");
+        LogUtils.e("mh-->>PlayMusicService：onStartCommand()");
         return super.onStartCommand(intent, flags, startId);
     }
 
@@ -50,9 +50,15 @@ public class PlayMusicService extends Service {
 
     @Override
     public void onDestroy() {
-        startService();
+        new Thread(){
+            @Override
+            public void run() {
+                startService();
+                super.run();
+            }
+        }.start();
+        LogUtils.e("mh-->>PlayMusicService：onDestroy()");
         super.onDestroy();
-        LogUtils.e("PlayMusicService：onDestroy()");
 
     }
 
@@ -60,10 +66,10 @@ public class PlayMusicService extends Service {
      * 开启服务
      */
     private void startService() {
-        LogUtils.e("PlayMusicService--->>startService()");
+        LogUtils.e("mh-->>PlayMusicService--->>startService()");
         if (!UIUtil.isServiceRunning(this, PlayMusicService.class.getName())) {
             startService(new Intent(this, PlayMusicService.class));
-            LogUtils.e("PlayMusicService--->>startService()开启");
+            LogUtils.e("mh-->>PlayMusicService--->>startService()开启");
         }
     }
 }

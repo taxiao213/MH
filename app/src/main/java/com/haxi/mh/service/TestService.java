@@ -24,13 +24,13 @@ public class TestService extends Service {
 
     @Override
     public void onCreate() {
-        LogUtils.e("TestService--->>>onCreate");
+        LogUtils.e("mh-->>TestService--->>>onCreate");
         super.onCreate();
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        LogUtils.e("TestService--->>>onStartCommand");
+        LogUtils.e("mh-->>TestService--->>>onStartCommand");
         return super.onStartCommand(intent, flags, startId);
     }
 }
