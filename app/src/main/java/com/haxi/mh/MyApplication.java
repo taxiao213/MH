@@ -6,8 +6,10 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.os.Handler;
 import android.support.multidex.MultiDex;
+import android.text.TextUtils;
 
 import com.haxi.mh.network.manager.RxRetrofitApp;
+import com.haxi.mh.utils.model.LogUtils;
 import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.Logger;
 import com.tencent.bugly.Bugly;
@@ -17,6 +19,9 @@ import com.umeng.analytics.MobclickAgent;
 import com.umeng.message.IUmengRegisterCallback;
 import com.umeng.message.PushAgent;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 
 
 /**
@@ -57,7 +62,7 @@ public class MyApplication extends Application {
         //CrashReport.initCrashReport(getApplicationContext(), "58aa13feb7", true, strategy);
         Bugly.init(getApplicationContext(), "58aa13feb7", true, strategy);
         //参数1：isManual 用户手动点击检查，非用户点击操作请传false 参数2：isSilence 是否显示弹窗等交互，[true:没有弹窗和toast] [false:有弹窗或toast]
-        Beta.checkUpgrade(false,false);
+        Beta.checkUpgrade(false, false);
 
         //初始化Logger
         Logger.addLogAdapter(new AndroidLogAdapter());
@@ -83,6 +88,15 @@ public class MyApplication extends Application {
 
             }
         });
+
+        String processName = this.getProcessName();
+
+        if (!TextUtils.isEmpty(processName) && processName.equals(this.getPackageName())) {//判断进程名，保证只有主进程运行
+            //在这里进行主进程初始化逻辑操作
+            LogUtils.i("myApplication", "oncreate+主进程");
+        }
+
+        LogUtils.i("myApplication", "oncreate" + processName);
     }
 
 
@@ -147,5 +161,22 @@ public class MyApplication extends Application {
             e.printStackTrace();
         }
         return channel;
+    }
+
+    /**
+     * 获取当前进程的包名
+     * @return
+     */
+    public String getProcessName() {
+        try {
+            File file = new File("/proc/" + android.os.Process.myPid() + "/" + "cmdline");
+            BufferedReader mBufferedReader = new BufferedReader(new FileReader(file));
+            String processName = mBufferedReader.readLine().trim();
+            mBufferedReader.close();
+            return processName;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }

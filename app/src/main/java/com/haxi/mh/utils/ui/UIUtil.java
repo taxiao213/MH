@@ -1,13 +1,16 @@
 package com.haxi.mh.utils.ui;
 
 import android.app.Activity;
+import android.app.ActivityManager;
 import android.app.PendingIntent;
 import android.app.ProgressDialog;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
@@ -19,6 +22,7 @@ import android.os.Handler;
 import android.support.annotation.StringRes;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
+import android.text.TextUtils;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,6 +36,8 @@ import com.haxi.mh.MyApplication;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 
 
@@ -87,14 +93,15 @@ public class UIUtil {
 
     /**
      * 获取手机屏幕宽和高
+     *
      * @param context
      * @return
      */
-    public static int[] getScreenDispaly(Context context){
-        WindowManager wm=(WindowManager)context.getSystemService(Context.WINDOW_SERVICE);
-        int width=wm.getDefaultDisplay().getWidth();//手机屏幕的宽度
-        int height=wm.getDefaultDisplay().getHeight();//手机屏幕的高度
-        int result[] = {width,height};
+    public static int[] getScreenDispaly(Context context) {
+        WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        int width = wm.getDefaultDisplay().getWidth();//手机屏幕的宽度
+        int height = wm.getDefaultDisplay().getHeight();//手机屏幕的高度
+        int result[] = {width, height};
         return result;
     }
 
@@ -527,6 +534,76 @@ public class UIUtil {
             return "";
         }
         return "";
+    }
+
+    /**
+     * 唤起其他APP  "com.tencent.mm"
+     *
+     * @param packagename 包名
+     * @param context 上下文
+     */
+    private void doStartApplicationWithPackageName(String packagename, Context context) {
+
+        // 通过包名获取此APP详细信息，包括Activities、services、versioncode、name等等
+        PackageInfo packageinfo = null;
+        try {
+            packageinfo = context.getPackageManager().getPackageInfo(packagename, 0);
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        if (packageinfo == null) {
+            return;
+        }
+
+        // 创建一个类别为CATEGORY_LAUNCHER的该包名的Intent
+        Intent resolveIntent = new Intent(Intent.ACTION_MAIN, null);
+        resolveIntent.addCategory(Intent.CATEGORY_LAUNCHER);
+        resolveIntent.setPackage(packageinfo.packageName);
+
+        // 通过getPackageManager()的queryIntentActivities方法遍历
+        List<ResolveInfo> resolveinfoList = context.getPackageManager().queryIntentActivities(resolveIntent, 0);
+
+        ResolveInfo resolveinfo = resolveinfoList.iterator().next();
+        if (resolveinfo != null) {
+            // packagename = 参数packname
+            String packageName = resolveinfo.activityInfo.packageName;
+            // 这个就是我们要找的该APP的LAUNCHER的Activity[组织形式：packagename.mainActivityname]
+            String className = resolveinfo.activityInfo.name;
+            // LAUNCHER Intent
+            Intent intent = new Intent(Intent.ACTION_MAIN);
+            intent.addCategory(Intent.CATEGORY_LAUNCHER);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+            // 设置ComponentName参数1:packagename参数2:MainActivity路径
+            ComponentName cn = new ComponentName(packageName, className);
+
+            intent.setComponent(cn);
+            context.startActivity(intent);
+        }
+    }
+
+    /**
+     * 判断服务是否开启
+     *
+     * @return
+     */
+    public static boolean isServiceRunning(Context context, String ServiceName) {
+        if (TextUtils.isEmpty(ServiceName)) {
+            return false;
+        }
+
+        android.app.ActivityManager myManager = (android.app.ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+        ArrayList<ActivityManager.RunningServiceInfo> runningService = (ArrayList<android.app.ActivityManager.RunningServiceInfo>) myManager
+                .getRunningServices(100);
+        if (runningService == null || runningService.size() == 0) {
+            return false;
+        }
+        for (android.app.ActivityManager.RunningServiceInfo list : runningService) {
+            if (list.service.getClassName().toString().equals(ServiceName)) {
+                return true;
+            }
+        }
+        return false;
     }
 }
 

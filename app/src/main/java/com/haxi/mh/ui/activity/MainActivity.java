@@ -1,5 +1,6 @@
 package com.haxi.mh.ui.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -10,11 +11,13 @@ import android.widget.RadioGroup;
 
 import com.haxi.mh.R;
 import com.haxi.mh.base.BaseActivity;
+import com.haxi.mh.service.PlayMusicService;
 import com.haxi.mh.ui.fragment.HomeCreateTaskFragment;
 import com.haxi.mh.ui.fragment.HomeManageFragment;
 import com.haxi.mh.ui.fragment.HomePageFragment;
 import com.haxi.mh.ui.fragment.HomePeopleFragment;
 import com.haxi.mh.utils.model.LogUtils;
+import com.haxi.mh.utils.ui.UIUtil;
 
 import butterknife.BindView;
 
@@ -57,8 +60,39 @@ public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedCh
     protected void getData() {
         rg.setOnCheckedChangeListener(this);
         switchFragment(TAG_FRAGMENT1);
-
+        startService();
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        startService();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        startService();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        startService();
+    }
+
+    /**
+     * 开启服务
+     */
+    private void startService() {
+        LogUtils.e("MainActivity--->>startService()");
+        if (!UIUtil.isServiceRunning(mActivity, PlayMusicService.class.getName())) {
+            mActivity.startService(new Intent(mActivity, PlayMusicService.class));
+            LogUtils.e("MainActivity--->>startService()开启");
+        }
+    }
+
+
 
     /**
      * 切换fragment
@@ -154,6 +188,7 @@ public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedCh
             outState.putString("current_tag", current_tag);
         }
         LogUtils.e("onSaveInstanceState", current_tag);
+        startService();
     }
 
     @Override
@@ -166,5 +201,6 @@ public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedCh
             }
         }
         LogUtils.e("onRestoreInstanceState", current_tag);
+        startService();
     }
 }

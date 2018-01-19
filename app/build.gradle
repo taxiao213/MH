@@ -47,6 +47,20 @@ android {
             zipAlignEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.config
+//            android.applicationVariants.all { variant ->
+//                variant.outputs.all { output ->
+//                    def outputFile = output.outputFile
+//                    if (outputFile != null && outputFile.name.endsWith('.apk')) {
+//                        def versionName = variant.versionName
+//                        def flavor = variant.productFlavors[0].name
+//                        def date = new Date()
+//                        def currentDate = date.format('yyyy_MM_dd_HH_mm')
+//                        // 输出apk名称为app_honry_debug_v1.4.7_2018_01_17_16_22.apk
+//                        def fileName = "app_" + flavor + "_debug_" + versionName + "_" + currentDate + ".apk"
+//                        outputFileName = new File(outputFile.parent, fileName)
+//                    }
+//                }
+//            }
         }
 
         debug {
