@@ -1,20 +1,14 @@
 package com.haxi.mh.utils.ui.picture;
 
 import android.annotation.TargetApi;
-import android.app.Activity;
 import android.content.ContentUris;
-import android.content.pm.ActivityInfo;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 
-import com.haxi.mh.R;
 import com.haxi.mh.utils.ui.UIUtil;
-import com.zhihu.matisse.Matisse;
-import com.zhihu.matisse.MimeType;
-import com.zhihu.matisse.engine.impl.GlideEngine;
 
 /**
  * 图片工具类
@@ -89,7 +83,7 @@ public class PictureUtil {
      * 用法：List<Uri> mSelected = Matisse.obtainResult(data);
      */
     public static void select() {
-        // 配置和启用
+       /* // 配置和启用
         Matisse.from((Activity) UIUtil.getContext())
                 .choose(MimeType.ofImage())
                 .countable(false)
@@ -99,6 +93,6 @@ public class PictureUtil {
                 .thumbnailScale(1.0f)
                 .theme(R.style.Matisse_Dracula)
                 .imageEngine(new GlideEngine())
-                .forResult(REQUEST_CODE_CHOOSE);
+                .forResult(REQUEST_CODE_CHOOSE);*/
     }
 }

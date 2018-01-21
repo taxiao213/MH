@@ -27,6 +27,34 @@ import java.lang.ref.WeakReference;
 import java.util.List;
 import java.util.Set;
 
+/*
+
+用法：
+
+Matisse.from(this)
+     .choose(MimeType.ofImage())
+     .countable(false)
+     .maxSelectable(9)//最大可以选择数
+     .gridExpectedSize(UIUtil.getScreenWidth() / 3)//一行展示的个数
+     .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED)
+     .thumbnailScale(1.0f)
+     .theme(R.style.Matisse_Dracula)
+     .imageEngine(new GlideEngine())
+     .forResult(REQUEST_CODE_CHOOSE);
+
+
+在onActivityResult回调选择的照片
+@Override
+public void onActivityResult(int requestCode, int resultCode, Intent data) {
+    super.onActivityResult(requestCode, resultCode, data);
+    if (requestCode==REQUEST_CODE_CHOOSE){
+        //返回选择的图片地址
+        Matisse.obtainResult(data).toString();
+    }
+}
+
+* */
+
 /**
  * Entry for Matisse's media selection.
  */

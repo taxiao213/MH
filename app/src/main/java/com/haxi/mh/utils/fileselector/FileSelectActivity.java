@@ -28,7 +28,21 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+/*
 
+用法：
+
+Intent intent = new Intent(mActivity, FileSelectActivity.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+intent.putExtra(FileSelectConstant.SELECTOR_REQUEST_CODE_KEY, FileSelectConstant.SELECTOR_MODE_FILE);
+intent.putExtra(FileSelectConstant.SELECTOR_IS_MULTIPLE, true);
+startActivityForResult(intent, FILE_SELECT_CODE);
+
+在onActivityResult中回调
+if (resultCode == Activity.RESULT_OK) {
+    final ArrayList<String> uris = data.getStringArrayListExtra(FileSelectConstant.SELECTOR_BUNDLE_PATHS);
+}
+
+* */
 
 /**
  * 文件选择器的activity

@@ -4,10 +4,25 @@
               android:layout_height="match_parent"
               android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/dd"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="center"
-        android:text="@string/homemanage_name"/>
+    <include layout="@layout/common_title"/>
+
+    <Button
+        android:id="@+id/select_pic"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="调用相册"/>
+
+    <Button
+        android:id="@+id/select_camera"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="打开相机"/>
+    <Button
+        android:id="@+id/select_file"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="选择文件"/>
 </LinearLayout>

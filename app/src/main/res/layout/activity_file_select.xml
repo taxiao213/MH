@@ -9,14 +9,14 @@
         android:id="@+id/menu_rl"
         android:layout_width="match_parent"
         android:layout_height="45dp"
-        android:background="@color/chart_title">
+        android:background="@color/myThemeColor">
 
         <ImageView
             android:id="@+id/img_title_back"
             android:layout_width="45dp"
             android:layout_height="match_parent"
             android:padding="13dp"
-            android:src="@drawable/title_back"/>
+            android:src="@drawable/title_back_white"/>
 
         <LinearLayout
             android:id="@+id/todo_menu"

@@ -47,6 +47,20 @@ android {
             zipAlignEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.config
+//            android.applicationVariants.all { variant ->
+//                variant.outputs.all { output ->
+//                    def outputFile = output.outputFile
+//                    if (outputFile != null && outputFile.name.endsWith('.apk')) {
+//                        def versionName = variant.versionName
+//                        def flavor = variant.productFlavors[0].name
+//                        def date = new Date()
+//                        def currentDate = date.format('yyyy_MM_dd_HH_mm')
+//                        // 输出apk名称为app_honry_debug_v1.4.7_2018_01_17_16_22.apk
+//                        def fileName = "app_" + flavor + "_debug_" + versionName + "_" + currentDate + ".apk"
+//                        outputFileName = new File(outputFile.parent, fileName)
+//                    }
+//                }
+//            }
         }
 
         debug {
@@ -114,6 +128,7 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
+    compile 'com.android.support:recyclerview-v7:27.0.2'
 
     /* multidex兼容包，配合AndroidStudio实现了一个APK包含多个dex的功能 */
     compile 'com.android.support:multidex:1.0.1'
@@ -126,8 +141,10 @@ dependencies {
     compile 'com.google.code.gson:gson:2.8.2'
 
     /* Glide */
-    implementation 'com.github.bumptech.glide:glide:4.4.0'
-    annotationProcessor 'com.github.bumptech.glide:compiler:4.4.0'
+
+    //    implementation 'com.github.bumptech.glide:glide:4.4.0'
+
+    //    annotationProcessor 'com.github.bumptech.glide:compiler:4.4.0'
 
     /* EventBus */
     compile 'org.greenrobot:eventbus:3.1.1'
@@ -176,11 +193,16 @@ dependencies {
     implementation 'pub.devrel:easypermissions:1.1.0'
 
     /* PermissionsDispatcher */
-    compile('com.github.hotchemi:permissionsdispatcher:3.0.1') {
-        exclude module: "support-v13"
-        // if you don't use android.app.Fragment you can exclude support for them
-    }
-    annotationProcessor "com.github.hotchemi:permissionsdispatcher-processor:3.0.1"
+
+    //    compile('com.github.hotchemi:permissionsdispatcher:3.0.1') {
+
+    //        exclude module: "support-v13"
+
+    //        // if you don't use android.app.Fragment you can exclude support for them
+
+    //    }
+
+    //    annotationProcessor "com.github.hotchemi:permissionsdispatcher-processor:3.0.1"
 
     /* bugly收集错误日志 */
 
