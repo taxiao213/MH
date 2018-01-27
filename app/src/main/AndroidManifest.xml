@@ -74,7 +74,7 @@
         </service>
         <service
             android:name=".service.HelpService"
-            android:process=":channel"/>
+            android:process=":test"/>
 
         <receiver
             android:name=".receiver.MsgReceiver"
