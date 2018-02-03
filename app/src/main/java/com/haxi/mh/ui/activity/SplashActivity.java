@@ -115,6 +115,7 @@ public class SplashActivity extends BaseActivity {
         public Object instantiateItem(@NonNull ViewGroup container, int position) {
             ImageView imageView = new ImageView(mContext);
             imageView.setImageDrawable(mImageViews.get(position));
+            imageView.setScaleType(ImageView.ScaleType.FIT_XY);
             container.addView(imageView);
             return imageView;
         }

@@ -37,4 +37,9 @@
         <attr name="searchTextSize" format="dimension"/>
         <attr name="searchTextColor" format="color"/>
     </declare-styleable>
+
+    <style name="Theme.Start" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowBackground">@drawable/splash_dot1</item>
+        <item name="android:windowFullscreen">true</item>
+    </style>
 </resources>

@@ -58,8 +58,12 @@
             android:taskAffinity="com.haxi.cc"/>
 
         <activity
-            android:name=".ui.activity.SplashActivity"
-          >
+            android:name=".ui.activity.SplashActivity"/>
+
+        <activity
+            android:name=".ui.activity.StartActivity"
+            android:theme="@style/Theme.Start"
+            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
