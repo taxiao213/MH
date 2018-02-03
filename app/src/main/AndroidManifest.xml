@@ -47,15 +47,24 @@
             android:name=".ui.activity.MainActivity"
             android:configChanges="keyboardHidden|orientation|screenSize|locale"
             android:launchMode="singleTask">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
+            <!--<intent-filter>-->
+            <!--<action android:name="android.intent.action.MAIN"/>-->
+            <!--<category android:name="android.intent.category.LAUNCHER"/>-->
+            <!--</intent-filter>-->
         </activity>
         <activity
             android:name=".utils.fileselector.FileSelectActivity"
             android:launchMode="singleTask"
             android:taskAffinity="com.haxi.cc"/>
+
+        <activity
+            android:name=".ui.activity.SplashActivity"
+          >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
 
         <!--android:taskAffinity="com.haxi.cc"存在于不同的任务栈中/>-->
         <service
