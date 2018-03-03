@@ -28,13 +28,14 @@ public class PlayMusicService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
+        startForeground(100, getNotification());//单独开进程，前台服务
+        ConverServiceConnection connection = new ConverServiceConnection(this);
+        this.bindService(new Intent(this, HelpService.class), connection, BIND_AUTO_CREATE);
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        startForeground(0, getNotification());
-//        ConverServiceConnection connection = new ConverServiceConnection(this);
-//        this.bindService(new Intent(this, HelpService.class), connection, BIND_AUTO_CREATE);
+
         LogUtils.e("mh-->>PlayMusicService：onStartCommand()");
         return super.onStartCommand(intent, flags, startId);
     }

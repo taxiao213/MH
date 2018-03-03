@@ -28,7 +28,7 @@ public class ConverServiceConnection implements ServiceConnection {
     public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
         LogUtils.e("ConverServiceConnection：onServiceConnected()");
         HelpService service = ((HelpService.LocalBinder) iBinder).getService();
-        service.startForeground(110, getNotification(service));
+        service.startForeground(100, getNotification(service));
         service.stopForeground(true);
         if (musicService != null) {
             musicService.unbindService(this);

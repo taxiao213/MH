@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.view.KeyEvent;
 import android.widget.FrameLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -91,7 +92,6 @@ public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedCh
             LogUtils.e("mh-->>MainActivity--->>startService()开启");
         }
     }
-
 
 
     /**
@@ -202,5 +202,24 @@ public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedCh
         }
         LogUtils.e("onRestoreInstanceState", current_tag);
         startService();
+    }
+
+
+    /**
+     * 后退键不finish界面
+     * @param keyCode
+     * @param event
+     * @return
+     */
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            Intent intent = new Intent(Intent.ACTION_MAIN);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.addCategory(Intent.CATEGORY_HOME);
+            startActivity(intent);
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
     }
 }

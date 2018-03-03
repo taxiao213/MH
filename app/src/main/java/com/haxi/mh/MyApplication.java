@@ -15,6 +15,8 @@ import com.orhanobut.logger.Logger;
 import com.tencent.bugly.Bugly;
 import com.tencent.bugly.beta.Beta;
 import com.tencent.bugly.crashreport.CrashReport;
+import com.tencent.mm.opensdk.openapi.IWXAPI;
+import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.message.IUmengRegisterCallback;
 import com.umeng.message.PushAgent;
@@ -97,6 +99,15 @@ public class MyApplication extends Application {
         }
 
         LogUtils.i("myApplication", "oncreate" + processName);
+
+        //微信支付
+        regToWx();
+    }
+
+    private void regToWx() {
+        IWXAPI wxapi = WXAPIFactory.createWXAPI(mContext, "");
+        wxapi.registerApp("");
+
     }
 
 
