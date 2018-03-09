@@ -31,4 +31,12 @@ public class Constant {
     public static String PIC = "jpg,jpeg,png,gif,bmp,webp";
     public static String VIDEO = "3gp,3gpp,3g2,3gpp2,avi,asx,flv,mpeg,mpe,mpg,mp1,mp2,mp4,m4v,mov,mkv,rm,rmvb,sf,ts,webm,wmv";
     public static String MUSIC = "asf,aac,ape,flac,m4a,mp3,mmf,mid,ra,tti,wma,wav";
+
+    /* 监听物理按键 只能动态注册使用 */
+    public static final String LOG_TAG = "HomeReceiver";
+    public static final String SYSTEM_DIALOG_REASON_KEY = "reason";
+    public static final String SYSTEM_DIALOG_REASON_RECENT_APPS = "recentapps";
+    public static final String SYSTEM_DIALOG_REASON_HOME_KEY = "homekey";
+    public static final String SYSTEM_DIALOG_REASON_LOCK = "lock";
+    public static final String SYSTEM_DIALOG_REASON_ASSIST = "assist";
 }
