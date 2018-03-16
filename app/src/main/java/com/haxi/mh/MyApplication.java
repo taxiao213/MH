@@ -1,9 +1,11 @@
 package com.haxi.mh;
 
+import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
+import android.os.Bundle;
 import android.os.Handler;
 import android.support.multidex.MultiDex;
 import android.text.TextUtils;
@@ -42,9 +44,10 @@ public class MyApplication extends Application {
     private static String mThreadName;
     //获取主线程 id
     private static long mTthreadId;
-    // 获取到主线程的handler
+    //获取到主线程的handler
     private static Handler mMainThreadHandler = null;
-
+    //统计activity 生命周期
+    private int appCount = 0;
     @Override
     public void onCreate() {
         super.onCreate();
@@ -102,6 +105,41 @@ public class MyApplication extends Application {
 
         //微信支付
         regToWx();
+
+        //监听activity生命周期
+        registerActivityLifecycleCallbacks(new ActivityLifecycleCallbacks() {
+            @Override
+            public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
+            }
+
+            @Override
+            public void onActivityStarted(Activity activity) {
+                appCount++;
+            }
+
+            @Override
+            public void onActivityResumed(Activity activity) {
+            }
+
+            @Override
+            public void onActivityPaused(Activity activity) {
+            }
+
+            @Override
+            public void onActivityStopped(Activity activity) {
+                appCount--;
+            }
+
+            @Override
+            public void onActivitySaveInstanceState(Activity activity, Bundle outState) {
+
+            }
+
+            @Override
+            public void onActivityDestroyed(Activity activity) {
+
+            }
+        });
     }
 
     private void regToWx() {
@@ -189,5 +227,21 @@ public class MyApplication extends Application {
             e.printStackTrace();
             return null;
         }
+    }
+
+    /**
+     * 统计APP生命周期的
+     * @return
+     */
+    public int getAppCount() {
+        return appCount;
+    }
+
+    /**
+     * 设置APP生命周期的
+     * @param appCount
+     */
+    public void setAppCount(int appCount) {
+        this.appCount = appCount;
     }
 }

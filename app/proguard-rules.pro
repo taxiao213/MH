@@ -285,6 +285,9 @@ public static java.lang.String TABLENAME;
 -dontwarn com.zhihu.matisse.**
 -keep class com.zhihu.matisse.** {*;}
 
+# 腾讯支付
+-dontwarn com.tencent.mm.opensdk.**
+-keep class com.tencent.mm.opensdk.** {*;}
 
 #---------------------------------------------------------------------
 
