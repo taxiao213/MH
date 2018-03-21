@@ -2,11 +2,13 @@ package com.haxi.mh.utils.db;
 
 import android.content.Context;
 
-import com.haxi.mh.CookieResulteDao;
+import com.haxi.mh.DaoMaster;
 import com.haxi.mh.PersonDao;
 
 import org.greenrobot.greendao.database.Database;
 import org.greenrobot.greendao.database.DatabaseOpenHelper;
+
+import java.util.concurrent.Executors;
 
 import static com.haxi.mh.DaoMaster.SCHEMA_VERSION;
 
@@ -24,16 +26,25 @@ public class MyOpenHelper extends DatabaseOpenHelper {
     }
 
     @Override
-    public void onUpgrade(Database db, int oldVersion, int newVersion) {
+    public void onCreate(Database db) {
+        super.onCreate(db);
+        DaoMaster.createAllTables(db, false);
+    }
+
+    @Override
+    public void onUpgrade(final Database db, int oldVersion, int newVersion) {
         super.onUpgrade(db, oldVersion, newVersion);
         //判断之前的版本
         switch (oldVersion) {
             case 1:
-                //CookieResulteDao.createTable(db,false); 创建表 无变动
-                CookieResulteDao.createTable(db,false);
             case 2:
-                //更新 PersonDao 表字段 增加字段
-                MigrationHelper.getInstance().migrate(db, PersonDao.class);
+                //做相应的处理 传入表的class文件即可
+                Executors.newSingleThreadExecutor().execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        MigrationHelper.getInstance().migrate(db, PersonDao.class);
+                    }
+                });
         }
     }
 }

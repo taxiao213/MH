@@ -140,9 +140,7 @@ dependencies {
     compile 'com.google.code.gson:gson:2.8.2'
 
     /* Glide */
-
     implementation 'com.github.bumptech.glide:glide:4.4.0'
-
     annotationProcessor 'com.github.bumptech.glide:compiler:4.4.0'
 
     /* EventBus */
@@ -190,15 +188,10 @@ dependencies {
 
     /* PermissionsDispatcher */
 
-//        compile('com.github.hotchemi:permissionsdispatcher:3.0.1') {
-//
-//            exclude module: "support-v13"
-//
-//            // if you don't use android.app.Fragment you can exclude support for them
-//
-//        }
-//
-//        annotationProcessor "com.github.hotchemi:permissionsdispatcher-processor:3.0.1"
+    //        compile('com.github.hotchemi:permissionsdispatcher:3.0.1') {
+    //            exclude module: "support-v13"
+    //        }
+    //        annotationProcessor "com.github.hotchemi:permissionsdispatcher-processor:3.0.1"
 
     /* bugly收集错误日志 */
 

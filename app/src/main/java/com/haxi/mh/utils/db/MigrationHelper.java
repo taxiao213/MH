@@ -1,13 +1,18 @@
 package com.haxi.mh.utils.db;
 
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.text.TextUtils;
 import android.util.Log;
+
+import com.haxi.mh.model.TableColumn;
+import com.haxi.mh.model.db.Person;
 
 import org.greenrobot.greendao.AbstractDao;
 import org.greenrobot.greendao.database.Database;
 import org.greenrobot.greendao.internal.DaoConfig;
 
+import java.io.File;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -26,7 +31,11 @@ public class MigrationHelper {
     private static final String CONVERSION_CLASS_NOT_FOUND_EXCEPTION =
             "MIGRATION HELPER - CLASS DOESN'T MATCH WITH THE CURRENT PARAMETERS";
 
-    public static MigrationHelper migrationHelper;
+    private static MigrationHelper migrationHelper;
+
+    private MigrationHelper() {
+
+    }
 
     public static MigrationHelper getInstance() {
         if (migrationHelper == null) {
@@ -39,17 +48,18 @@ public class MigrationHelper {
         return migrationHelper;
     }
 
+
     public void migrate(Database db, Class<? extends AbstractDao<?, ?>>... daoClasses) {
-        //1.备份（同上）
+        //1. 备份
         generateTempTables(db, daoClasses);
-        //2. 只删除需要更新的表（改造）
+        //2. 只删除需要更新的表 DaoMaster.dropAllTables(db, true);
         deleteTables(db, daoClasses);
-        //3. 只创建需要更新的表（改造）
-        //DaoMaster.createAllTables(db, false);
+        //3. 只创建需要更新的表 DaoMaster.createAllTables(db, false);
         createTables(db, daoClasses);
         //4. 恢复数据
         restoreData(db, daoClasses);
     }
+
 
     /**
      * 恢复数据
@@ -57,38 +67,78 @@ public class MigrationHelper {
      * @param db
      * @param daoClasses
      */
+
     private void restoreData(Database db, Class<? extends AbstractDao<?, ?>>... daoClasses) {
+
         for (int i = 0; i < daoClasses.length; i++) {
             DaoConfig daoConfig = new DaoConfig(db, daoClasses[i]);
-
             String tableName = daoConfig.tablename;
             String tempTableName = daoConfig.tablename.concat("_TEMP");
             ArrayList<String> properties = new ArrayList();
-
+            ArrayList<TableColumn> list = new ArrayList<>();//表中多出的参数
             for (int j = 0; j < daoConfig.properties.length; j++) {
                 String columnName = daoConfig.properties[j].columnName;
-
                 if (getColumns(db, tempTableName).contains(columnName)) {
                     properties.add(columnName);
+
+                } else {
+                    //表中多出的参数
+                    String type = null;
+                    try {
+                        type = getTypeByClass(daoConfig.properties[j].type);
+                        list.add(new TableColumn(columnName, type));
+                    } catch (Exception exception) {
+                    }
                 }
             }
 
             StringBuilder insertTableStringBuilder = new StringBuilder();
-
             insertTableStringBuilder.append("INSERT INTO ").append(tableName).append(" (");
             insertTableStringBuilder.append(TextUtils.join(",", properties));
             insertTableStringBuilder.append(") SELECT ");
             insertTableStringBuilder.append(TextUtils.join(",", properties));
             insertTableStringBuilder.append(" FROM ").append(tempTableName).append(";");
-
             StringBuilder dropTableStringBuilder = new StringBuilder();
-
             dropTableStringBuilder.append("DROP TABLE ").append(tempTableName);
+            try {
+                db.execSQL(insertTableStringBuilder.toString());
+                db.execSQL(dropTableStringBuilder.toString());
 
-            db.execSQL(insertTableStringBuilder.toString());
-            db.execSQL(dropTableStringBuilder.toString());
+                if (list != null && list.size() > 0) {
+                    ArrayList<String> arrayList = new ArrayList<>();
+                    for (int j = 0; j < list.size(); j++) {
+                        TableColumn tableColumn = list.get(j);
+                        if (TextUtils.equals(tableColumn.getTypes(), "INTEGER")) {
+                            arrayList.add(tableColumn.getColumnName());
+                        }
+                    }
+                    if (arrayList != null && arrayList.size() > 0) {
+                        StringBuilder stringBuilder = new StringBuilder();
+                        stringBuilder.append("UPDATE ").append(tableName).append(" SET");
+                        for (int j = 0; j < arrayList.size(); j++) {
+                            String name = arrayList.get(j);
+                            stringBuilder.append(" ");
+                            stringBuilder.append(name);
+                            stringBuilder.append(" = ");
+                            stringBuilder.append(0);
+                            if (j == arrayList.size() - 1) {
+                                stringBuilder.append(";");
+                            } else {
+                                stringBuilder.append(",");
+                            }
+                        }
+                        db.execSQL(stringBuilder.toString());
+                        Log.e("MyOpenHelper  ---", "更新语句===" + stringBuilder.toString());
+                    }
+                }
+            } catch (Exception e) {
+                Log.e("MyOpenHelper  ---", "错误" + e.getMessage());
+            }
+
         }
+        Log.e("MyOpenHelper----", "restoreData 恢复数据");
     }
+
 
     /**
      * 创建表
@@ -166,8 +216,10 @@ public class MigrationHelper {
                 }
             }
             createTableStringBuilder.append(");");
-
-            db.execSQL(createTableStringBuilder.toString());
+            try {
+                db.execSQL(createTableStringBuilder.toString());
+            } catch (Exception e) {
+            }
 
             StringBuilder insertTableStringBuilder = new StringBuilder();
 
@@ -176,8 +228,10 @@ public class MigrationHelper {
             insertTableStringBuilder.append(") SELECT ");
             insertTableStringBuilder.append(TextUtils.join(",", properties));
             insertTableStringBuilder.append(" FROM ").append(tableName).append(";");
-
-            db.execSQL(insertTableStringBuilder.toString());
+            try {
+                db.execSQL(insertTableStringBuilder.toString());
+            } catch (Exception e) {
+            }
         }
     }
 
@@ -197,7 +251,7 @@ public class MigrationHelper {
                 columns = new ArrayList<>(Arrays.asList(cursor.getColumnNames()));
             }
         } catch (Exception e) {
-            Log.v(tableName, e.getMessage(), e);
+            Log.e(tableName, e.getMessage(), e);
             e.printStackTrace();
         } finally {
             if (cursor != null)
@@ -210,7 +264,7 @@ public class MigrationHelper {
         if (type.equals(String.class)) {
             return "TEXT";
         }
-        if (type.equals(Long.class) || type.equals(Integer.class) || type.equals(long.class)) {
+        if (type.equals(int.class) || type.equals(Long.class) || type.equals(Integer.class) || type.equals(long.class)) {
             return "INTEGER";
         }
         if (type.equals(Boolean.class)) {
@@ -220,5 +274,61 @@ public class MigrationHelper {
         Exception exception =
                 new Exception(CONVERSION_CLASS_NOT_FOUND_EXCEPTION.concat(" - Class: ").concat(type.toString()));
         throw exception;
+    }
+
+
+    /**
+     * 恢复旧数据 数据库表存放地方 String DB_PATH = "/data/data/com.haxi.mh/databases/";
+     */
+    public void rostoreOldData() {
+        String DB_PATH = "/data/data/com.haxi.mh/databases/";
+        File db = new File(DB_PATH);
+        if (db.exists()) {
+            rostoreMsgTextData(db);
+        }
+    }
+
+    /**
+     * 恢复数据库数据 "SELECT name FROM sqlite_master WHERE type='table' and name = 'PERSON' ORDER BY name;" 查找库中所对应的表
+     * "SELECT * FROM PERSON;" 查找表中的数据
+     *
+     * @param db
+     */
+    private void rostoreMsgTextData(File db) {
+        File message_db = new File(db, "person_db");
+        if (message_db.exists()) {
+            SQLiteDatabase sqLiteDatabase = SQLiteDatabase.openDatabase(message_db.getAbsolutePath(), null, SQLiteDatabase.OPEN_READWRITE);
+            sqLiteDatabase.beginTransaction();
+            try {
+                Cursor cursor1 = sqLiteDatabase.rawQuery("SELECT name FROM sqlite_master WHERE type='table' and name = 'PERSON' ORDER BY name;", null);
+                if (cursor1.moveToFirst()) {
+                    Cursor cursor = sqLiteDatabase.rawQuery("SELECT * FROM PERSON;", null);
+                    boolean flag = cursor.moveToFirst();
+                    ArrayList<Person> list = new ArrayList<>();
+                    while (flag) {
+                        Person person = new Person();
+                        list.add(person);
+                        flag = cursor.moveToNext();
+                    }
+                    if (cursor != null) {
+                        cursor.close();
+                    }
+                    for (Person msg : list) {
+                        PersonUtils.getInstance().save(msg);
+                    }
+                    sqLiteDatabase.execSQL("DROP table PERSON");
+                }
+                if (cursor1 != null) {
+                    cursor1.close();
+                }
+                sqLiteDatabase.setTransactionSuccessful();
+            } catch (Exception ignored) {
+
+            } finally {
+                sqLiteDatabase.endTransaction();
+            }
+            sqLiteDatabase.close();
+
+        }
     }
 }
