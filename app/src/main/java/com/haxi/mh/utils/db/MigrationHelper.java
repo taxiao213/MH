@@ -48,7 +48,11 @@ public class MigrationHelper {
         return migrationHelper;
     }
 
-
+    /**
+     * 数据库备份
+     * @param db
+     * @param daoClasses
+     */
     public void migrate(Database db, Class<? extends AbstractDao<?, ?>>... daoClasses) {
         //1. 备份
         generateTempTables(db, daoClasses);
@@ -62,7 +66,8 @@ public class MigrationHelper {
 
 
     /**
-     * 恢复数据
+     * 恢复数据 如果新建的表中有Integer类型的参数，需要手动赋值，不然会报错，
+     * 所以我手动算出需要赋值的参数
      *
      * @param db
      * @param daoClasses
