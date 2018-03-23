@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="@dimen/x270"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:background="@drawable/main_force_shape">
+
+        <RelativeLayout
+            android:id="@+id/rl_mian_title"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/y52"
+            android:background="@drawable/main_force_pop">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:orientation="vertical"
+                android:paddingBottom="@dimen/y6">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:text="发现新版本"
+                    android:textColor="@color/white"
+                    android:textSize="16dp"/>
+
+                <TextView
+                    android:id="@+id/tv_main_code"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="@dimen/y3"
+                    android:textColor="@color/white"
+                    android:textSize="14dp"/>
+            </LinearLayout>
+
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/tv_main_update"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@id/rl_mian_title"
+            android:layout_centerHorizontal="true"
+            android:layout_marginLeft="@dimen/x19"
+            android:layout_marginTop="@dimen/y5"
+            android:text="更新内容："
+            android:textColor="@color/grey_33"
+            android:textSize="15dp"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/tv_main_content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@id/tv_main_update"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="@dimen/x19"
+            android:layout_marginRight="@dimen/x19"
+            android:layout_marginTop="@dimen/y5"
+            android:lineSpacingExtra="@dimen/y7"
+            android:textColor="@color/grey_33"
+            android:textSize="15dp"
+            android:textStyle="normal"/>
+
+        <TextView
+            android:id="@+id/tv_main_bt"
+            android:layout_width="@dimen/x231"
+            android:layout_height="@dimen/y29"
+            android:layout_below="@id/tv_main_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="@dimen/y11"
+            android:layout_marginTop="@dimen/y5"
+            android:background="@drawable/main_but_shape"
+            android:gravity="center"
+            android:text="立即升级"
+            android:textColor="@color/white"
+            android:textSize="14dp"/>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_below="@id/tv_main_bt"/>
+    </RelativeLayout>
+
+</RelativeLayout>

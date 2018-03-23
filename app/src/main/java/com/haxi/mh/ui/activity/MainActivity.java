@@ -1,15 +1,24 @@
 package com.haxi.mh.ui.activity;
 
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.PopupWindow;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 
+import com.haxi.mh.MyApplication;
 import com.haxi.mh.R;
 import com.haxi.mh.base.BaseActivity;
 import com.haxi.mh.service.PlayMusicService;
@@ -17,7 +26,9 @@ import com.haxi.mh.ui.fragment.HomeCreateTaskFragment;
 import com.haxi.mh.ui.fragment.HomeManageFragment;
 import com.haxi.mh.ui.fragment.HomePageFragment;
 import com.haxi.mh.ui.fragment.HomePeopleFragment;
+import com.haxi.mh.utils.background.BackgroundUtils;
 import com.haxi.mh.utils.model.LogUtils;
+import com.haxi.mh.utils.net.DownFileService;
 import com.haxi.mh.utils.ui.UIUtil;
 
 import butterknife.BindView;
@@ -51,6 +62,7 @@ public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedCh
     @BindView(R.id.rg)
     RadioGroup rg;
     private String current_tag = null;
+    private PopupWindow window;
 
     @Override
     protected int getLayoutRes() {
@@ -207,6 +219,7 @@ public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedCh
 
     /**
      * 后退键不finish界面
+     *
      * @param keyCode
      * @param event
      * @return
@@ -221,5 +234,51 @@ public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedCh
             return true;
         }
         return super.onKeyDown(keyCode, event);
+    }
+
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        LogUtils.e("-----------hasFocus==" + hasFocus);
+        if (hasFocus && BackgroundUtils.getApplicationValue(MyApplication.getMyApplication())) {
+            showForcePOP("v1.0.1", "1.大家好，今天是星期四###2.你是谁啊，我是风儿你是沙###3.今天好高兴，杀了一个程序员祭天", "http://img2.imgtn.bdimg.com");
+        }
+    }
+
+    /**
+     * 升级提示框
+     *
+     * @param apkVersionVame
+     * @param updateContent
+     * @param address
+     */
+    private void showForcePOP(String apkVersionVame, String updateContent, final String address) {
+        View view = LayoutInflater.from(mActivity).inflate(R.layout.activity_main_force_pop, null);
+        if (window == null) {
+            window = new PopupWindow(view, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        }
+        window.setBackgroundDrawable(new ColorDrawable(0x80000000));
+        window.setOutsideTouchable(false);
+        window.showAtLocation(view, Gravity.CENTER, 0, 0);
+        TextView main_code = (TextView) view.findViewById(R.id.tv_main_code);
+        TextView main_content = (TextView) view.findViewById(R.id.tv_main_content);
+        TextView main_bt = (TextView) view.findViewById(R.id.tv_main_bt);
+        main_code.setText(apkVersionVame == null ? " " : apkVersionVame);
+        if (updateContent != null) {
+            String[] strings = updateContent.split("###");
+            main_content.setText(TextUtils.join("\r\n", strings));
+        } else {
+            main_content.setText(" ");
+        }
+        if (address != null) {
+            main_bt.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent updataService = new Intent(mActivity, DownFileService.class);
+                    updataService.putExtra("downloadurl", address);
+                    startService(updataService);
+                }
+            });
+        }
     }
 }
