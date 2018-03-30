@@ -179,6 +179,8 @@ public static java.lang.String TABLENAME;
 -dontwarn retrofit2.converter.gson.**
 -dontwarn retrofit2.converter.scalars.**
 -dontwarn retrofit2.adapter.rxjava2.**
+# 项目中报错所以要忽略掉
+-dontwarn retrofit2.Platform$Java8
 
 # OKHttp3拦截器
 -dontwarn okhttp3.logging.**
