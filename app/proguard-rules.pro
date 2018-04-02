@@ -124,7 +124,11 @@
 
 #---------------------------------2.实体类---------------------------------
 
+#保持某个包下的所有类不混淆
 #-keep class com.demo.login.bean.** { *; }
+
+#保持某个类不被混淆
+#-keep class com.hr.deanoffice.bean.ApprovedBean{*;}
 
 #-------------------------------------------------------------------------
 
@@ -179,6 +183,9 @@ public static java.lang.String TABLENAME;
 -dontwarn retrofit2.converter.gson.**
 -dontwarn retrofit2.converter.scalars.**
 -dontwarn retrofit2.adapter.rxjava2.**
+-dontwarn retrofit2.Platform$Java8
+-keep public class retrofit2.**{*;}
+
 # 项目中报错所以要忽略掉
 -dontwarn retrofit2.Platform$Java8
 
