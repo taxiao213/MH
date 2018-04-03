@@ -220,6 +220,9 @@ dependencies {
 
     /* 微信支付 */
     compile 'com.tencent.mm.opensdk:wechat-sdk-android-with-mta:+'
+
+    /* 百分比布局 */
+    compile 'com.android.support:percent:26.0.2'
 }
 
 
