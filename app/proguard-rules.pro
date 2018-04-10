@@ -305,5 +305,10 @@ public static java.lang.String TABLENAME;
 -dontwarn com.tencent.mm.opensdk.**
 -keep class com.tencent.mm.opensdk.** {*;}
 
+# sqlcipher加密数据库 keep 不加public
+-dontwarn net.sqlcipher.**
+-keep  class net.sqlcipher.** {*;}
+-keep  class net.sqlcipher.database.** {*;}
+
 #---------------------------------------------------------------------
 

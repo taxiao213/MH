@@ -223,6 +223,9 @@ dependencies {
 
     /* 百分比布局 */
     compile 'com.android.support:percent:26.0.2'
+
+    /* sqlcipher 加密数据库 */
+    compile 'net.zetetic:android-database-sqlcipher:3.5.9@aar'
 }
 
 

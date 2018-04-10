@@ -1,17 +1,17 @@
 package com.haxi.mh.utils.db;
 
 import android.content.Context;
-import android.database.sqlite.SQLiteDatabase;
 
 import com.haxi.mh.DaoMaster;
 import com.haxi.mh.DaoSession;
 import com.haxi.mh.PersonDao;
+import com.haxi.mh.constant.Constant;
 import com.haxi.mh.model.db.Person;
 import com.haxi.mh.utils.ui.UIUtil;
 
+import org.greenrobot.greendao.database.Database;
 import org.greenrobot.greendao.query.QueryBuilder;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -25,16 +25,13 @@ import java.util.List;
 public class PersonUtils {
 
     private static PersonUtils person;
-    private String DB_NAME = "person_db";
-    private DaoMaster.DevOpenHelper openHelper = null;
+    private MyOpenHelper openHelper = null;
     private final Context context;
-    private SQLiteDatabase readableDatabase;
-    private SQLiteDatabase writableDatabase;
     private DaoSession daoSession;
 
     public PersonUtils() {
         context = UIUtil.getContext();
-        openHelper = new DaoMaster.DevOpenHelper(context, DB_NAME);
+        openHelper = new MyOpenHelper(context, Constant.DB_NAME);
     }
 
     public static PersonUtils getInstance() {
@@ -53,17 +50,13 @@ public class PersonUtils {
      *
      * @return
      */
-    private SQLiteDatabase getWritableDatabase() {
+    private Database getWritableDatabase() {
         try {
-            if (openHelper == null) {
-                synchronized (PersonUtils.class) {
-                    if (openHelper == null) {
-                        openHelper = new DaoMaster.DevOpenHelper(context, DB_NAME);
-                    }
-                }
+            if (Constant.DB_RELEASE) {
+                return openHelper.getEncryptedWritableDb(Constant.DB_KEY);
+            } else {
+                return openHelper.getWritableDb();
             }
-            writableDatabase = openHelper.getWritableDatabase();
-            return writableDatabase;
         } catch (Exception e) {
             return null;
         }
@@ -74,37 +67,18 @@ public class PersonUtils {
      *
      * @return
      */
-    private SQLiteDatabase getReadableDatabase() {
+    private Database getReadableDatabase() {
         try {
-            if (openHelper == null) {
-                synchronized (PersonUtils.class) {
-                    if (openHelper == null) {
-                        openHelper = new DaoMaster.DevOpenHelper(context, DB_NAME);
-                    }
-                }
+            if (Constant.DB_RELEASE) {
+                return openHelper.getEncryptedReadableDb(Constant.DB_KEY);
+            } else {
+                return openHelper.getReadableDb();
             }
-            readableDatabase = openHelper.getReadableDatabase();
-            return readableDatabase;
         } catch (Exception e) {
             return null;
         }
     }
 
-    private DaoSession getDaoSession() {
-        try {
-            if (writableDatabase == null) {
-                synchronized (PersonUtils.this) {
-                    if (writableDatabase == null) {
-                        writableDatabase = getWritableDatabase();
-                    }
-                }
-            }
-            DaoMaster daoMaster = new DaoMaster(writableDatabase);
-            return daoMaster.newSession();
-        } catch (Exception e) {
-            return null;
-        }
-    }
 
     /**
      * 关闭数据库会报错。。一般无需关闭
@@ -149,16 +123,8 @@ public class PersonUtils {
      */
     public void save(final Person info) {
         try {
-            if (info != null) {
-                if (daoSession == null) {
-                    synchronized (PersonUtils.class) {
-                        if (daoSession == null) {
-                            daoSession = getDaoSession();
-                        }
-                    }
-                }
-                daoSession.getPersonDao().insert(info);
-            }
+            DaoMaster daoMaster = new DaoMaster(getWritableDatabase());
+            daoMaster.newSession().getPersonDao().insert(info);
         } catch (Exception e) {
 
         }
@@ -172,16 +138,8 @@ public class PersonUtils {
      */
     public void delete(final Person info) {
         try {
-            if (info != null) {
-                if (daoSession == null) {
-                    synchronized (PersonUtils.class) {
-                        if (daoSession == null) {
-                            daoSession = getDaoSession();
-                        }
-                    }
-                }
-                daoSession.getPersonDao().delete(info);
-            }
+            DaoMaster daoMaster = new DaoMaster(getWritableDatabase());
+            daoMaster.newSession().getPersonDao().delete(info);
         } catch (Exception e) {
         }
     }
@@ -193,16 +151,8 @@ public class PersonUtils {
      */
     public void update(final Person info) {
         try {
-            if (info != null) {
-                if (daoSession == null) {
-                    synchronized (PersonUtils.class) {
-                        if (daoSession == null) {
-                            daoSession = getDaoSession();
-                        }
-                    }
-                }
-                daoSession.getPersonDao().update(info);
-            }
+            DaoMaster daoMaster = new DaoMaster(getWritableDatabase());
+            daoMaster.newSession().getPersonDao().update(info);
         } catch (Exception e) {
         }
     }
@@ -214,17 +164,14 @@ public class PersonUtils {
      */
     public List<Person> queryAll() {
         try {
-            ArrayList<Person> list = new ArrayList<>();
-            if (daoSession == null) {
-                synchronized (PersonUtils.class) {
-                    if (daoSession == null) {
-                        daoSession = getDaoSession();
-                    }
-                }
+            DaoMaster daoMaster = new DaoMaster(getReadableDatabase());
+            QueryBuilder<Person> builder = daoMaster.newSession().getPersonDao().queryBuilder();
+            List<Person> list = builder.list();
+            if (list != null && list.size() > 0) {
+                return list;
+            } else {
+                return null;
             }
-            QueryBuilder<Person> builder = daoSession.getPersonDao().queryBuilder();
-            list.addAll(builder.list());
-            return list;
         } catch (Exception e) {
             return null;
         }
@@ -238,16 +185,15 @@ public class PersonUtils {
      */
     public List<Person> queryByNodeLevel(String name) {
         try {
-            if (daoSession == null) {
-                synchronized (PersonUtils.class) {
-                    if (daoSession == null) {
-                        daoSession = getDaoSession();
-                    }
-                }
-            }
-            QueryBuilder<Person> builder = daoSession.getPersonDao().queryBuilder();
+            DaoMaster daoMaster = new DaoMaster(getReadableDatabase());
+            QueryBuilder<Person> builder = daoMaster.newSession().getPersonDao().queryBuilder();
             builder.where(PersonDao.Properties.Name.eq(name));
-            return builder.list();
+            List<Person> list = builder.list();
+            if (list != null && list.size() > 0) {
+                return list;
+            } else {
+                return null;
+            }
         } catch (Exception e) {
             return null;
         }
@@ -261,24 +207,19 @@ public class PersonUtils {
      */
     public List<Person> queryByID(Long ID) {
         try {
-            if (ID == null || ID.equals("")) {
-                return null;
-            }
-            if (daoSession == null) {
-                synchronized (PersonUtils.class) {
-                    if (daoSession == null) {
-                        daoSession = getDaoSession();
-                    }
-                }
-            }
-            QueryBuilder<Person> builder = daoSession.getPersonDao().queryBuilder();
+            DaoMaster daoMaster = new DaoMaster(getReadableDatabase());
+            QueryBuilder<Person> builder = daoMaster.newSession().getPersonDao().queryBuilder();
             builder.where(PersonDao.Properties.Id.eq(ID));
             builder.orderAsc(PersonDao.Properties.Id);
-            return builder.list();
+            List<Person> list = builder.list();
+            if (list != null && list.size() > 0) {
+                return builder.list();
+            } else {
+                return null;
+            }
         } catch (Exception e) {
             return null;
         }
     }
-
 
 }
