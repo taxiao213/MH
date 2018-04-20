@@ -41,6 +41,12 @@ public class MsgReceiver extends BroadcastReceiver {
                         // samsung 长按Home键
                     }
                     break;
+                case Intent.ACTION_SCREEN_ON: //屏幕变亮
+                    break;
+                case Intent.ACTION_SCREEN_OFF: //屏幕变暗
+                    break;
+                case Intent.ACTION_USER_PRESENT: //屏幕解锁
+                    break;
             }
         }
     }

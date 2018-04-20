@@ -39,4 +39,11 @@ public class Constant {
     public static final String SYSTEM_DIALOG_REASON_HOME_KEY = "homekey";
     public static final String SYSTEM_DIALOG_REASON_LOCK = "lock";
     public static final String SYSTEM_DIALOG_REASON_ASSIST = "assist";
+
+    /* 数据库是否开启加密 */
+    public static final Boolean DB_RELEASE = true;
+    /* 数据库秘钥 */
+    public static final String DB_KEY = "mhdb";
+    /* 数据库名称 */
+    public static final String DB_NAME = "mh";
 }

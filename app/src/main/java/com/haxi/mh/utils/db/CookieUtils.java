@@ -1,14 +1,15 @@
 package com.haxi.mh.utils.db;
 
 import android.content.Context;
-import android.database.sqlite.SQLiteDatabase;
 
 import com.haxi.mh.CookieResulteDao;
 import com.haxi.mh.DaoMaster;
 import com.haxi.mh.DaoSession;
+import com.haxi.mh.constant.Constant;
 import com.haxi.mh.network.cookie.CookieResulte;
 import com.haxi.mh.utils.ui.UIUtil;
 
+import org.greenrobot.greendao.database.Database;
 import org.greenrobot.greendao.query.QueryBuilder;
 
 import java.util.List;
@@ -24,16 +25,13 @@ import java.util.List;
 public class CookieUtils {
 
     private static CookieUtils cookieUtils;
-    private String DB_NAME = "cookie_db";
-    private static DaoMaster.DevOpenHelper openHelper = null;
+    private static MyOpenHelper openHelper = null;
     private final Context context;
-    private SQLiteDatabase readableDatabase;
-    private SQLiteDatabase writableDatabase;
     private DaoSession daoSession;
 
     public CookieUtils() {
         context = UIUtil.getContext();
-        openHelper = new DaoMaster.DevOpenHelper(context, DB_NAME);
+        openHelper = new MyOpenHelper(context, Constant.DB_NAME);
     }
 
     public static CookieUtils getInstance() {
@@ -52,17 +50,13 @@ public class CookieUtils {
      *
      * @return
      */
-    private SQLiteDatabase getWritableDatabase() {
+    private Database getWritableDatabase() {
         try {
-            if (openHelper == null) {
-                synchronized (CookieUtils.class) {
-                    if (openHelper == null) {
-                        openHelper = new DaoMaster.DevOpenHelper(context, DB_NAME);
-                    }
-                }
+            if (Constant.DB_RELEASE) {
+                return openHelper.getEncryptedWritableDb(Constant.DB_KEY);
+            } else {
+                return openHelper.getWritableDb();
             }
-            writableDatabase = openHelper.getWritableDatabase();
-            return writableDatabase;
         } catch (Exception e) {
             return null;
         }
@@ -73,37 +67,18 @@ public class CookieUtils {
      *
      * @return
      */
-    private SQLiteDatabase getReadableDatabase() {
+    private Database getReadableDatabase() {
         try {
-            if (openHelper == null) {
-                synchronized (CookieUtils.class) {
-                    if (openHelper == null) {
-                        openHelper = new DaoMaster.DevOpenHelper(context, DB_NAME);
-                    }
-                }
+            if (Constant.DB_RELEASE) {
+                return openHelper.getEncryptedReadableDb(Constant.DB_KEY);
+            } else {
+                return openHelper.getReadableDb();
             }
-            readableDatabase = openHelper.getReadableDatabase();
-            return readableDatabase;
         } catch (Exception e) {
             return null;
         }
     }
 
-    private DaoSession getDaoSession() {
-        try {
-            if (writableDatabase == null) {
-                synchronized (CookieUtils.this) {
-                    if (writableDatabase == null) {
-                        writableDatabase = getWritableDatabase();
-                    }
-                }
-            }
-            DaoMaster daoMaster = new DaoMaster(writableDatabase);
-            return daoMaster.newSession();
-        } catch (Exception e) {
-            return null;
-        }
-    }
 
     /**
      * 关闭数据库会报错。。一般无需关闭
@@ -148,16 +123,8 @@ public class CookieUtils {
      */
     public void save(CookieResulte info) {
         try {
-            if (info != null) {
-                if (daoSession == null) {
-                    synchronized (PersonUtils.class) {
-                        if (daoSession == null) {
-                            daoSession = getDaoSession();
-                        }
-                    }
-                }
-                daoSession.getCookieResulteDao().insert(info);
-            }
+            DaoMaster daoMaster = new DaoMaster(getWritableDatabase());
+            daoMaster.newSession().getCookieResulteDao().insert(info);
         } catch (Exception e) {
 
         }
@@ -171,16 +138,8 @@ public class CookieUtils {
      */
     public void delete(CookieResulte info) {
         try {
-            if (info != null) {
-                if (daoSession == null) {
-                    synchronized (PersonUtils.class) {
-                        if (daoSession == null) {
-                            daoSession = getDaoSession();
-                        }
-                    }
-                }
-                daoSession.getCookieResulteDao().delete(info);
-            }
+            DaoMaster daoMaster = new DaoMaster(getWritableDatabase());
+            daoMaster.newSession().getCookieResulteDao().delete(info);
         } catch (Exception e) {
         }
     }
@@ -192,16 +151,8 @@ public class CookieUtils {
      */
     public void update(CookieResulte info) {
         try {
-            if (info != null) {
-                if (daoSession == null) {
-                    synchronized (PersonUtils.class) {
-                        if (daoSession == null) {
-                            daoSession = getDaoSession();
-                        }
-                    }
-                }
-                daoSession.getCookieResulteDao().update(info);
-            }
+            DaoMaster daoMaster = new DaoMaster(getWritableDatabase());
+            daoMaster.newSession().getCookieResulteDao().update(info);
         } catch (Exception e) {
         }
     }
@@ -213,15 +164,14 @@ public class CookieUtils {
      */
     public List<CookieResulte> queryAll() {
         try {
-            if (daoSession == null) {
-                synchronized (PersonUtils.class) {
-                    if (daoSession == null) {
-                        daoSession = getDaoSession();
-                    }
-                }
+            DaoMaster daoMaster = new DaoMaster(getWritableDatabase());
+            QueryBuilder<CookieResulte> builder =  daoMaster.newSession().getCookieResulteDao().queryBuilder();
+            List<CookieResulte> list = builder.list();
+            if (list != null && list.size() > 0) {
+                return list;
+            } else {
+                return null;
             }
-            QueryBuilder<CookieResulte> builder = daoSession.getCookieResulteDao().queryBuilder();
-            return builder.list();
         } catch (Exception e) {
             return null;
         }
@@ -235,17 +185,12 @@ public class CookieUtils {
      */
     public CookieResulte queryByUrl(String url) {
         try {
-            if (daoSession == null) {
-                synchronized (PersonUtils.class) {
-                    if (daoSession == null) {
-                        daoSession = getDaoSession();
-                    }
-                }
-            }
-            QueryBuilder<CookieResulte> builder = daoSession.getCookieResulteDao().queryBuilder();
+            DaoMaster daoMaster = new DaoMaster(getWritableDatabase());
+            QueryBuilder<CookieResulte> builder =  daoMaster.newSession().getCookieResulteDao().queryBuilder();
             builder.where(CookieResulteDao.Properties.Url.eq(url));
-            if (builder != null && builder.list().size() > 0) {
-                return builder.list().get(0);
+            List<CookieResulte> list = builder.list();
+            if (list != null && list.size() > 0) {
+               return list.get(0);
             } else {
                 return null;
             }
@@ -253,6 +198,5 @@ public class CookieUtils {
             return null;
         }
     }
-
 
 }

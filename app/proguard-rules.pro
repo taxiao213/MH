@@ -124,7 +124,11 @@
 
 #---------------------------------2.实体类---------------------------------
 
+#保持某个包下的所有类不混淆
 #-keep class com.demo.login.bean.** { *; }
+
+#保持某个类不被混淆
+#-keep class com.hr.deanoffice.bean.ApprovedBean{*;}
 
 #-------------------------------------------------------------------------
 
@@ -179,6 +183,11 @@ public static java.lang.String TABLENAME;
 -dontwarn retrofit2.converter.gson.**
 -dontwarn retrofit2.converter.scalars.**
 -dontwarn retrofit2.adapter.rxjava2.**
+-dontwarn retrofit2.Platform$Java8
+-keep public class retrofit2.**{*;}
+
+# 项目中报错所以要忽略掉
+-dontwarn retrofit2.Platform$Java8
 
 # OKHttp3拦截器
 -dontwarn okhttp3.logging.**
@@ -270,6 +279,13 @@ public static java.lang.String TABLENAME;
    public static final int *;
 }
 
+# 小米推送
+#这里com.xiaomi.mipushdemo.DemoMessageRreceiver改成app中定义的完整类名
+-keep class com.hr.deanoffice.service.MIMessageReceiver {*;}
+#可以防止一个误报的 warning 导致无法成功编译，如果编译使用的 Android 版本是 23。
+-dontwarn com.xiaomi.push.**
+
+
 #（可选）避免Log打印输出
 -assumenosideeffects class android.util.Log {
    public static *** v(...);
@@ -288,6 +304,11 @@ public static java.lang.String TABLENAME;
 # 腾讯支付
 -dontwarn com.tencent.mm.opensdk.**
 -keep class com.tencent.mm.opensdk.** {*;}
+
+# sqlcipher加密数据库 keep 不加public
+-dontwarn net.sqlcipher.**
+-keep  class net.sqlcipher.** {*;}
+-keep  class net.sqlcipher.database.** {*;}
 
 #---------------------------------------------------------------------
 
