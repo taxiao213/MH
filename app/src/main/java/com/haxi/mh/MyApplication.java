@@ -1,14 +1,17 @@
 package com.haxi.mh;
 
 import android.app.Activity;
+import android.app.ActivityManager;
 import android.app.Application;
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Process;
 import android.support.multidex.MultiDex;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.haxi.mh.network.manager.RxRetrofitApp;
 import com.haxi.mh.utils.model.LogUtils;
@@ -22,10 +25,13 @@ import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.message.IUmengRegisterCallback;
 import com.umeng.message.PushAgent;
+import com.xiaomi.channel.commonutils.logger.LoggerInterface;
+import com.xiaomi.mipush.sdk.MiPushClient;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.util.List;
 
 
 /**
@@ -48,6 +54,7 @@ public class MyApplication extends Application {
     private static Handler mMainThreadHandler = null;
     //统计activity 生命周期
     private int appCount = 0;
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -93,6 +100,32 @@ public class MyApplication extends Application {
 
             }
         });
+
+         /*小米推送 start*/
+        if (shouldInit()) {
+            MiPushClient.registerPush(this, "2882303761517774776", "5441777412776");
+        }
+
+        LoggerInterface newLogger = new LoggerInterface() {
+            @Override
+            public void setTag(String tag) {
+                // ignore
+            }
+
+            @Override
+            public void log(String content, Throwable t) {
+                Log.e("------ xiaomi", content, t);
+            }
+
+            @Override
+            public void log(String content) {
+                Log.e("------ xiaomi", content);
+            }
+        };
+
+        com.xiaomi.mipush.sdk.Logger.setLogger(this, newLogger);
+        /*小米推送 end*/
+
 
         String processName = this.getProcessName();
 
@@ -214,6 +247,7 @@ public class MyApplication extends Application {
 
     /**
      * 获取当前进程的包名
+     *
      * @return
      */
     public String getProcessName() {
@@ -231,6 +265,7 @@ public class MyApplication extends Application {
 
     /**
      * 统计APP生命周期的
+     *
      * @return
      */
     public int getAppCount() {
@@ -239,9 +274,23 @@ public class MyApplication extends Application {
 
     /**
      * 设置APP生命周期的
+     *
      * @param appCount
      */
     public void setAppCount(int appCount) {
         this.appCount = appCount;
+    }
+
+    private boolean shouldInit() {
+        ActivityManager am = ((ActivityManager) getSystemService(Context.ACTIVITY_SERVICE));
+        List<ActivityManager.RunningAppProcessInfo> processInfos = am.getRunningAppProcesses();
+        String mainProcessName = getPackageName();
+        int myPid = Process.myPid();
+        for (ActivityManager.RunningAppProcessInfo info : processInfos) {
+            if (info.pid == myPid && mainProcessName.equals(info.processName)) {
+                return true;
+            }
+        }
+        return false;
     }
 }
