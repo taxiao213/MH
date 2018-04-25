@@ -1,6 +1,7 @@
 package com.haxi.mh.utils.model;
 
 
+import com.haxi.mh.constant.Constant;
 import com.orhanobut.logger.Logger;
 
 /**
@@ -14,43 +15,63 @@ import com.orhanobut.logger.Logger;
 public class LogUtils {
 
     public static void v(String arg) {
-        Logger.v(arg);
+        if (Constant.IS_OPEN_LOG) {
+            Logger.v(arg);
+        }
     }
 
     public static void v(String arg, String st) {
-        Logger.v(arg, st);
+        if (Constant.IS_OPEN_LOG) {
+            Logger.t(arg).v(st);
+        }
     }
 
     public static void d(String arg) {
-        Logger.d(arg);
+        if (Constant.IS_OPEN_LOG) {
+            Logger.d(arg);
+        }
     }
 
     public static void d(String arg, String st) {
-        Logger.d(arg, st);
+        if (Constant.IS_OPEN_LOG) {
+            Logger.t(arg).d(st);
+        }
     }
 
     public static void i(String arg) {
-        Logger.i(arg);
+        if (Constant.IS_OPEN_LOG) {
+            Logger.i(arg);
+        }
     }
 
     public static void i(String arg, String st) {
-        Logger.i(arg, st);
+        if (Constant.IS_OPEN_LOG) {
+            Logger.t(arg).i(st);
+        }
     }
 
     public static void w(String arg) {
-        Logger.w(arg);
+        if (Constant.IS_OPEN_LOG) {
+            Logger.w(arg);
+        }
     }
 
     public static void w(String arg, String st) {
-        Logger.w(arg, st);
+        if (Constant.IS_OPEN_LOG) {
+            Logger.t(arg).w(st);
+        }
     }
 
     public static void e(String arg) {
-        Logger.e(arg);
+        if (Constant.IS_OPEN_LOG) {
+            Logger.e(arg);
+        }
     }
 
     public static void e(String arg, String st) {
-        Logger.e(arg, st);
+        if (Constant.IS_OPEN_LOG) {
+            Logger.t(arg).e(st);
+        }
     }
 
 }

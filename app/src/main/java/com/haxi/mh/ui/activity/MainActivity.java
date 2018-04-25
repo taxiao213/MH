@@ -1,12 +1,17 @@
 package com.haxi.mh.ui.activity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -21,6 +26,7 @@ import android.widget.TextView;
 import com.haxi.mh.MyApplication;
 import com.haxi.mh.R;
 import com.haxi.mh.base.BaseActivity;
+import com.haxi.mh.constant.Constant;
 import com.haxi.mh.service.PlayMusicService;
 import com.haxi.mh.ui.fragment.HomeCreateTaskFragment;
 import com.haxi.mh.ui.fragment.HomeManageFragment;
@@ -30,9 +36,17 @@ import com.haxi.mh.utils.background.BackgroundUtils;
 import com.haxi.mh.utils.model.LogUtils;
 import com.haxi.mh.utils.net.DownFileService;
 import com.haxi.mh.utils.ui.UIUtil;
+import com.huawei.hms.api.ConnectionResult;
+import com.huawei.hms.api.HuaweiApiAvailability;
+import com.huawei.hms.api.HuaweiApiClient;
+import com.huawei.hms.support.api.client.PendingResult;
+import com.huawei.hms.support.api.client.ResultCallback;
+import com.huawei.hms.support.api.push.HuaweiPush;
+import com.huawei.hms.support.api.push.TokenResult;
 
 import butterknife.BindView;
 
+import static com.haxi.mh.constant.Constant.REQUEST_HMS_RESOLVE_ERROR;
 import static com.haxi.mh.constant.Constant.TAG_FRAGMENT1;
 import static com.haxi.mh.constant.Constant.TAG_FRAGMENT2;
 import static com.haxi.mh.constant.Constant.TAG_FRAGMENT3;
@@ -74,6 +88,9 @@ public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedCh
         rg.setOnCheckedChangeListener(this);
         switchFragment(TAG_FRAGMENT1);
         startService();
+
+        /* 初始化华为push */
+        initHuaWeiPush();
     }
 
     @Override
@@ -279,6 +296,102 @@ public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedCh
                     startService(updataService);
                 }
             });
+        }
+    }
+
+
+    /**
+     * 初始化华为服务
+     */
+    private HuaweiApiClient client = null;
+
+    private void initHuaWeiPush() {
+        client = new HuaweiApiClient.Builder(mActivity)
+                .addApi(HuaweiPush.PUSH_API)
+                .addConnectionCallbacks(new HuaweiApiClient.ConnectionCallbacks() {
+                    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
+                    @Override
+                    public void onConnected() {
+                        //华为移动服务client连接成功，在这边处理业务自己的事件
+                        if (!MainActivity.this.isDestroyed() && !MainActivity.this.isFinishing()) {
+                            Log.e("------------", "HuaweiApiClient 连接成功");
+                            getTokenAsync();
+                        }
+                    }
+
+                    @Override
+                    public void onConnectionSuspended(int cause) {
+                        //HuaweiApiClient异常断开连接, if 括号里的条件可以根据需要修改
+                        client.connect(mActivity);
+                        Log.e("---------", "HuaweiApiClient 连接断开");
+                    }
+                })
+                .addOnConnectionFailedListener(new HuaweiApiClient.OnConnectionFailedListener() {
+                    @Override
+                    public void onConnectionFailed(ConnectionResult result) {
+                        Log.e("------------", "HuaweiApiClient连接失败，错误码：" + result.getErrorCode());
+                        if (HuaweiApiAvailability.getInstance().isUserResolvableError(result.getErrorCode())) {
+                            final int errorCode = result.getErrorCode();
+                            new Handler(getMainLooper()).post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    try {
+                                        // 此方法必须在主线程调用, xxxxxx.this 为当前界面的activity
+                                        HuaweiApiAvailability.getInstance().resolveError(MainActivity.this, errorCode, REQUEST_HMS_RESOLVE_ERROR);
+                                    } catch (Exception e) {
+
+                                    }
+                                }
+                            });
+                        } else {
+                            //其他错误码请参见开发指南或者API文档
+                        }
+                    }
+                }).build();
+        //建议在oncreate的时候连接华为移动服务
+        //业务可以根据自己业务的形态来确定client的连接和断开的时机，但是确保connect和disconnect必须成对出现
+        client.connect(mActivity);
+    }
+
+    private void getTokenAsync() {
+        if (!client.isConnected()) {
+            Log.e("华为token-----------", "获取token失败，原因：HuaweiApiClient未连接");
+            client.connect(mActivity);
+            return;
+        }
+
+        Log.e("------------", "异步接口获取push token");
+        PendingResult<TokenResult> tokenResult = HuaweiPush.HuaweiPushApi.getToken(client);
+        tokenResult.setResultCallback(new ResultCallback<TokenResult>() {
+            @Override
+            public void onResult(TokenResult result) {
+
+            }
+        });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_HMS_RESOLVE_ERROR) {
+            if (resultCode == Activity.RESULT_OK) {
+                int result = data.getIntExtra(Constant.REQUEST_HMS_EXTRA_RESULT, 0);
+                if (result == ConnectionResult.SUCCESS) {
+                    Log.e("--------------", "错误成功解决");
+                    if (!client.isConnecting() && !client.isConnected()) {
+                        client.connect(mActivity);
+                    }
+                } else if (result == ConnectionResult.CANCELED) {
+                    Log.e("------------------", "解决错误过程被用户取消");
+                } else if (result == ConnectionResult.INTERNAL_ERROR) {
+                    Log.e("---------------", "发生内部错误，重试可以解决");
+                    //开发者可以在此处重试连接华为移动服务等操作，导致失败的原因可能是网络原因等
+                } else {
+                    Log.e("----------------", "未知返回码");
+                }
+            } else {
+                Log.e("-------------", "调用解决方案发生错误");
+            }
         }
     }
 }

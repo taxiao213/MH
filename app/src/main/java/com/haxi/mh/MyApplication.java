@@ -126,7 +126,6 @@ public class MyApplication extends Application {
         com.xiaomi.mipush.sdk.Logger.setLogger(this, newLogger);
         /*小米推送 end*/
 
-
         String processName = this.getProcessName();
 
         if (!TextUtils.isEmpty(processName) && processName.equals(this.getPackageName())) {//判断进程名，保证只有主进程运行

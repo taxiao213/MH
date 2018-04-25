@@ -13,7 +13,11 @@ import com.xiaomi.mipush.sdk.PushMessageReceiver;
 import java.util.List;
 
 /**
- * Created by Administrator on 2017/8/7.
+ * 小米推送
+ * Created by Han on 2017/12/27
+ * Email:yin13753884368@163.com
+ * CSDN:http://blog.csdn.net/yin13753884368/article
+ * Github:https://github.com/yin13753884368
  */
 
 public class MIMessageReceiver extends PushMessageReceiver {

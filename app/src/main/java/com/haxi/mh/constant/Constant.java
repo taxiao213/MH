@@ -46,4 +46,9 @@ public class Constant {
     public static final String DB_KEY = "mhdb";
     /* 数据库名称 */
     public static final String DB_NAME = "mh";
+    /* 华为推送Code */
+    public static final int REQUEST_HMS_RESOLVE_ERROR = 101;
+    public static final String REQUEST_HMS_EXTRA_RESULT = "intent.extra.RESULT";
+    /* 是否打印log */
+    public static final Boolean IS_OPEN_LOG = true;
 }
