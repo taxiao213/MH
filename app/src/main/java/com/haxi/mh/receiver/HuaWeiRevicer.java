@@ -6,7 +6,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 
-import com.haxi.mh.utils.model.LogUtils;
 import com.huawei.hms.support.api.push.PushReceiver;
 
 /**
@@ -30,7 +29,7 @@ public class HuaWeiRevicer extends PushReceiver {
     @Override
     public void onToken(Context context, String token, Bundle extras) {
         String belongId = extras.getString("belongId");
-        LogUtils.e("------华为onToken", "token = " + token + ",belongId = " + belongId);
+        Log.e("------华为onToken", "token = " + token + ",belongId = " + belongId);
     }
 
     /**
@@ -44,7 +43,9 @@ public class HuaWeiRevicer extends PushReceiver {
     @Override
     public boolean onPushMsg(Context context, byte[] msg, Bundle bundle) {
         try {
-            LogUtils.e("------华为 onPushMsg", new String(msg, "UTF-8"));
+            int notifyId = bundle.getInt(BOUND_KEY.pushNotifyId, 0);
+            Log.e("------华为 onPushMsg", new String(msg, "UTF-8") + "notifyId== " + notifyId);
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -60,6 +61,8 @@ public class HuaWeiRevicer extends PushReceiver {
      */
     @Override
     public void onEvent(Context context, PushReceiver.Event event, Bundle extras) {
+        Log.e("------华为 onEvent", extras.getInt(BOUND_KEY.pushNotifyId, 0) + "");
+
         if (Event.NOTIFICATION_OPENED.equals(event) || Event.NOTIFICATION_CLICK_BTN.equals(event)) {
             int notifyId = extras.getInt(BOUND_KEY.pushNotifyId, 0);
             if (0 != notifyId) {

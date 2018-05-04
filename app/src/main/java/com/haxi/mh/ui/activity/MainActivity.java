@@ -1,6 +1,8 @@
 package com.haxi.mh.ui.activity;
 
 import android.app.Activity;
+import android.app.NotificationManager;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
@@ -43,6 +45,7 @@ import com.huawei.hms.support.api.client.PendingResult;
 import com.huawei.hms.support.api.client.ResultCallback;
 import com.huawei.hms.support.api.push.HuaweiPush;
 import com.huawei.hms.support.api.push.TokenResult;
+import com.xiaomi.mipush.sdk.MiPushClient;
 
 import butterknife.BindView;
 
@@ -88,7 +91,6 @@ public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedCh
         rg.setOnCheckedChangeListener(this);
         switchFragment(TAG_FRAGMENT1);
         startService();
-
         /* 初始化华为push */
         initHuaWeiPush();
     }
@@ -96,6 +98,12 @@ public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedCh
     @Override
     protected void onResume() {
         super.onResume();
+        MiPushClient.clearNotification(mActivity);
+        NotificationManager manager = (NotificationManager) mActivity.getSystemService(Context.NOTIFICATION_SERVICE);
+        if (manager != null) {
+            manager.cancelAll();
+        }
+
         startService();
     }
 
