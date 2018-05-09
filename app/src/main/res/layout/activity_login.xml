@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
+
+    <include layout="@layout/titlebar"/>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="80dp"
+        android:background="@drawable/login_input_shape"
+        android:padding="12dp">
+
+        <TextView
+            android:id="@+id/tv_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:gravity="center_vertical|left"
+            android:text="@string/login_name"
+            android:textColor="@android:color/black"
+            android:textSize="16sp"/>
+
+        <EditText
+            android:id="@+id/et_account"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@id/tv_name"
+            android:background="@null"
+            android:gravity="center_vertical|right"
+            android:hint="@string/login_name_hint"
+            android:inputType="text"
+            android:lines="1"
+            android:textColor="@color/black_trans_40"
+            android:textSize="14sp"
+            />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="40dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:background="@drawable/login_input_shape"
+        android:padding="12dp">
+
+        <TextView
+            android:id="@+id/tv_password"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:gravity="center_vertical|left"
+            android:text="@string/login_password"
+            android:textColor="@android:color/black"
+            android:textSize="16sp"/>
+
+        <EditText
+            android:id="@+id/et_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@id/tv_password"
+            android:background="@null"
+            android:gravity="center_vertical|right"
+            android:hint="@string/login_password_hint"
+            android:inputType="textPassword"
+            android:lines="1"
+            android:textColor="@color/black_trans_40"
+            android:textSize="14sp"
+            />
+    </RelativeLayout>
+
+
+    <Button
+        android:id="@+id/bt_login"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="40dp"
+        android:layout_marginRight="40dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/login_login_shape"
+        android:text="@string/login_login"
+        android:textColor="@android:color/white"
+        android:textSize="18sp"
+        />
+
+    <Button
+        android:id="@+id/bt_registered"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="40dp"
+        android:layout_marginRight="40dp"
+        android:layout_marginTop="40dp"
+        android:background="@drawable/login_registered_shape"
+        android:text="@string/login_registered"
+        android:textColor="@android:color/white"
+        android:textSize="18sp"
+        />
+
+
+</LinearLayout>

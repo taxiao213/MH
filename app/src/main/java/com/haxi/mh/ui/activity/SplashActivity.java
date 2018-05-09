@@ -67,7 +67,7 @@ public class SplashActivity extends BaseActivity {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
                 if (position == list.size() - 1) {
-                    startActivity(new Intent(mActivity, MainActivity.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+                    startActivity(new Intent(mActivity, LoginActivity.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
                     finish();
                 }
             }

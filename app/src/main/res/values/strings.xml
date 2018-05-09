@@ -4,7 +4,19 @@
     <string name="homecreatetask_name">文档</string>
     <string name="homemanage_name">发现</string>
     <string name="homepeople_name">我的</string>
-
+    <string name="login_name">账号：</string>
+    <string name="login_name_hint">昵称或手机</string>
+    <string name="login_password">密码：</string>
+    <string name="login_password_hint">....</string>
+    <string name="login_login">登录</string>
+    <string name="login_registered">注册</string>
+    <string name="register_tel">手机：</string>
+    <string name="register_tel_hint">请输入您的电话号码</string>
+    <string name="register_mail">邮箱：</string>
+    <string name="register_mail_hint">请输入您的邮箱</string>
+    <string name="register_name">昵称：</string>
+    <string name="register_name_hint">请输入您的昵称</string>
+    <string name="register_password">确认密码：</string>
     <!--webview-->
     <string name="webview_error"> 系统维护中...</string>
 

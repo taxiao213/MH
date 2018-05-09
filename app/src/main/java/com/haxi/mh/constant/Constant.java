@@ -51,4 +51,7 @@ public class Constant {
     public static final String REQUEST_HMS_EXTRA_RESULT = "intent.extra.RESULT";
     /* 是否打印log */
     public static final Boolean IS_OPEN_LOG = true;
+
+    /* 界面跳转code */
+    public static final int REGISTER_CODE = 1110;
 }
