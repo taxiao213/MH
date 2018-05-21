@@ -1,7 +1,11 @@
 package com.haxi.mh.ui.fragment;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
+import android.os.Build;
+import android.support.v4.app.ActivityCompat;
 import android.util.LruCache;
 import android.view.View;
 import android.widget.Button;
@@ -11,8 +15,10 @@ import android.widget.TextView;
 import com.haxi.mh.R;
 import com.haxi.mh.base.BaseFragment;
 import com.haxi.mh.ui.widget.Notification;
+import com.haxi.mh.utils.model.LogUtils;
 import com.haxi.mh.utils.ui.UIUtil;
 
+import java.io.File;
 import java.util.concurrent.LinkedBlockingDeque;
 import java.util.concurrent.RejectedExecutionHandler;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -91,6 +97,16 @@ public class HomePageFragment extends BaseFragment {
                 });
 
                 getBitmap();
+
+                File dir = mActivity.getExternalCacheDir();
+                LogUtils.e(dir.getAbsolutePath());
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    if (mActivity.checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_DENIED) {
+                        ActivityCompat.requestPermissions(mActivity, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+                    }
+                }
+
                 break;
         }
     }

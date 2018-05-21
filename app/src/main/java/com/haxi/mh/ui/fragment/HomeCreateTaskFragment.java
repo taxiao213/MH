@@ -1,7 +1,14 @@
 package com.haxi.mh.ui.fragment;
 
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
+
 import com.haxi.mh.R;
 import com.haxi.mh.base.BaseFragment;
+
+import butterknife.BindView;
+import butterknife.OnClick;
 
 /**
  * 文档
@@ -13,6 +20,10 @@ import com.haxi.mh.base.BaseFragment;
 
 public class HomeCreateTaskFragment extends BaseFragment {
 
+    @BindView(R.id.title_back)
+    ImageView titleBack;
+    @BindView(R.id.title_tv)
+    TextView titleTv;
 
     @Override
     protected int getLayoutRes() {
@@ -21,11 +32,24 @@ public class HomeCreateTaskFragment extends BaseFragment {
 
     @Override
     protected void initView() {
-
+        titleBack.setVisibility(View.GONE);
+        titleTv.setText(R.string.homecreatetask_name);
     }
 
     @Override
     protected void initData() {
 
+    }
+
+    @OnClick({R.id.bt_01, R.id.bt_02, R.id.bt_03})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.bt_01:
+                break;
+            case R.id.bt_02:
+                break;
+            case R.id.bt_03:
+                break;
+        }
     }
 }
