@@ -39,7 +39,7 @@
     <!-- 这里com.xiaomi.mipushdemo改成app的包名 -->
 
     <!--如果是安卓8.0，应用编译配置的targetSdkVersion>=26，请务必添加以下权限 -->
-    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
+    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES"/>
 
     <application
         android:name=".MyApplication"
@@ -79,8 +79,7 @@
 
         <activity
             android:name=".ui.activity.StartActivity"
-            android:theme="@style/Theme.Start"
-            >
+            android:theme="@style/Theme.Start">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
@@ -90,6 +89,7 @@
 
         <activity android:name=".ui.activity.RegisterActivity"/>
 
+        <activity android:name=".ui.activity.MaterialDesignActivity"/>
         <!--android:taskAffinity="com.haxi.cc"存在于不同的任务栈中/>-->
         <service
             android:name=".service.TestService"
@@ -182,7 +182,7 @@
         </receiver>
         <!--小米end -->
 
-        <!--华为-->
+        <!--华为 start-->
         <!--“xxx.xxx.xxx”用实际的应用包名替换-->
         <provider
             android:name="com.huawei.hms.update.provider.UpdateProvider"

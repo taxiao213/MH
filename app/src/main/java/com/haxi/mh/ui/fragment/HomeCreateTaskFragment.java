@@ -1,11 +1,13 @@
 package com.haxi.mh.ui.fragment;
 
+import android.content.Intent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.haxi.mh.R;
 import com.haxi.mh.base.BaseFragment;
+import com.haxi.mh.ui.activity.MaterialDesignActivity;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -45,6 +47,7 @@ public class HomeCreateTaskFragment extends BaseFragment {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bt_01:
+                startActivity(new Intent(mActivity, MaterialDesignActivity.class));
                 break;
             case R.id.bt_02:
                 break;
