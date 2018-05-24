@@ -15,8 +15,8 @@
         <item name="android:colorControlActivated">@color/myThemeColor</item>
         <!--textColorHighlight 选中字体后背景色-->
         <item name="android:textColorHighlight">@color/myThemeColor</item>
-        <!--textCursorDrawable光标的颜色-->
-        <item name="android:textCursorDrawable">@color/myThemeColor</item>
+        <!--textCursorDrawable光标的颜色 低版本不显示光标-->
+        <!--<item name="android:textCursorDrawable">@color/myThemeColor</item>-->
         <!--colorAccent按钮选中的颜色-->
         <item name="android:colorAccent">@color/myThemeColor</item>
 
