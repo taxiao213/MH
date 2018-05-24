@@ -45,7 +45,6 @@ public class LoginActivity extends BaseActivity {
     protected void getData() {
         titlebarBackIv.setVisibility(View.GONE);
         titlebarTitleTv.setText(mActivity.getText(R.string.login_login));
-
     }
 
 

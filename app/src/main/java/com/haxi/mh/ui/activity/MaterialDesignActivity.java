@@ -4,6 +4,7 @@ import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
+import android.view.Window;
 import android.widget.TextView;
 
 import com.haxi.mh.R;
@@ -38,6 +39,8 @@ public class MaterialDesignActivity extends BaseActivity {
 
     @Override
     protected void getData() {
+        Window window = this.getWindow();
+        window.addFlags(Window.FEATURE_ACTIVITY_TRANSITIONS);
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {

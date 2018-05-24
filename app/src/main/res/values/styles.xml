@@ -11,6 +11,15 @@
     <style name="noActionBarTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimary">@color/myThemeColor</item>
         <item name="colorPrimaryDark">@color/myThemeColor</item>
+        <!--colorControlActivated 修改选中的字体后出现的图标颜色-->
+        <item name="android:colorControlActivated">@color/myThemeColor</item>
+        <!--textColorHighlight 选中字体后背景色-->
+        <item name="android:textColorHighlight">@color/myThemeColor</item>
+        <!--textCursorDrawable光标的颜色-->
+        <item name="android:textCursorDrawable">@color/myThemeColor</item>
+        <!--colorAccent按钮选中的颜色-->
+        <item name="android:colorAccent">@color/myThemeColor</item>
+
     </style>
 
     <style name="myRadioButton">

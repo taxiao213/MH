@@ -1,16 +1,20 @@
 package com.haxi.mh.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.List;
 
 /**
- * 测试用
+ * 测试用 实现Pracelable 序列化
+ * Serializable方式简单，会把整个对象序列化，效率比Pracelable效率低
  * Created by Han on 2018/1/3
  * Email:yin13753884368@163.com
  * CSDN:http://blog.csdn.net/yin13753884368/article
  * Github:https://github.com/yin13753884368
  */
 
-public class Test {
+public class Test implements Parcelable {
 
     /**
      * image_id : lfT7kkH1CKLUVU0L9DWMNw==
@@ -23,6 +27,44 @@ public class Test {
     private String request_id;
     private int time_used;
     private List<?> cards;
+
+    protected Test() {
+    }
+
+    protected Test(Parcel in) {
+        image_id = in.readString();
+        request_id = in.readString();
+        time_used = in.readInt();
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(image_id);
+        dest.writeString(request_id);
+        dest.writeInt(time_used);
+    }
+
+    public static final Creator<Test> CREATOR = new Creator<Test>() {
+        @Override
+        public Test createFromParcel(Parcel in) {
+            Test test = new Test();
+            test.image_id = in.readString();
+            test.request_id = in.readString();
+            test.time_used = in.readInt();
+            return test;
+        }
+
+        @Override
+        public Test[] newArray(int size) {
+            return new Test[size];
+        }
+    };
+
 
     public String getImage_id() {
         return image_id;
@@ -65,4 +107,5 @@ public class Test {
                 ", cards=" + cards +
                 '}';
     }
+
 }
