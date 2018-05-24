@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/risk_pop_root_ll"
+    android:layout_width="@dimen/x270"
+    android:layout_height="wrap_content"
+    android:layout_centerInParent="true"
+    android:layout_gravity="center"
+    android:background="@drawable/main_force_shape"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/risk_pop_tv_title"
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:layout_below="@id/rl_mian_title"
+        android:layout_centerHorizontal="true"
+        android:gravity="center"
+        android:text="风险警示"
+        android:textSize="15sp"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.1dp"/>
+
+    <RelativeLayout
+        android:id="@+id/risk_pop_rl"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y80">
+
+        <EditText
+            android:id="@+id/risk_pop_et"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="12dp"
+            android:background="@null"
+            android:hint="请输入风险警示内容..."
+            android:paddingBottom="5dp"
+            android:paddingTop="5dp"
+            android:textSize="14sp"
+            />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/risk_pop_ll"
+        android:layout_width="match_parent"
+        android:layout_height="39dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/risk_pop_tv_cancel"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="取消"
+            android:textSize="14sp"/>
+
+        <TextView
+            android:id="@+id/risk_pop_tv_commit"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@color/chart_title"
+            android:gravity="center"
+            android:text="提交"
+            android:textColor="@color/white"
+            android:textSize="14sp"/>
+
+    </LinearLayout>
+
+</LinearLayout>
+
