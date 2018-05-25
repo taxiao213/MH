@@ -38,6 +38,8 @@ public class Pop {
         window = new PopupWindow(view, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, true);
         window.setBackgroundDrawable(new ColorDrawable(0x80000000));
         window.setOutsideTouchable(true);
+        //在tagetSdkVersion为21的情况下，PopupWindow可以全屏显示正常。但是当tagetSdkVersion改为23时无法全屏显示，顶部的状态栏无法覆盖，需要这样设置
+        window.setClippingEnabled(false);
         //居中显示
         window.showAtLocation(view, Gravity.CENTER, 0, 0);
        /* //在某个View底部显示
