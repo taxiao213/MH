@@ -7,7 +7,6 @@ import com.haxi.mh.network.exception.ResulteFunction;
 import com.haxi.mh.network.exception.RetryNetworkException;
 import com.haxi.mh.network.listener.HttpOnNextListener;
 import com.haxi.mh.utils.model.LogUtils;
-import com.trello.rxlifecycle2.android.ActivityEvent;
 import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
 
 import java.util.concurrent.TimeUnit;
@@ -106,8 +105,8 @@ public class HttpsManager {
         observable.retryWhen(new RetryNetworkException(baseApi.getCount(), baseApi.getDelay()))
                 //异常处理
                 .onErrorResumeNext(new ExceptionFunction())
-                //Note:手动设置在activity onDestroy的时候取消订阅
-                .compose(rxAppCompatActivity.bindUntilEvent(ActivityEvent.DESTROY))
+                //Note:手动设置在activity onDestroy的时候取消订阅 注意
+                //.compose(rxAppCompatActivity.bindUntilEvent(ActivityEvent.DESTROY))
                 .map(new ResulteFunction())
                 //http请求线程
                 .subscribeOn(Schedulers.io())
