@@ -54,9 +54,9 @@ public class ProcessedBusinessFragment extends BaseFragment implements XListView
 
     private void init() {
         pages = 1;
+        lishiList = new ArrayList<>();
         if (!isInit) {
             //UI只加载一次，每次请求数据刷新
-            lishiList = new ArrayList<>();
             mylistView.setXListViewListener(this);
         }
         isInit = true;
