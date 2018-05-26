@@ -55,5 +55,9 @@ public class MaterialDesignActivity extends BaseActivity {
         tvContent.setText(builder.toString());
     }
 
-
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+    }
 }

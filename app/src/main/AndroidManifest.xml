@@ -90,6 +90,8 @@
         <activity android:name=".ui.activity.RegisterActivity"/>
 
         <activity android:name=".ui.activity.MaterialDesignActivity"/>
+        <activity android:name=".ui.activity.BusinessApprovalActivity"/>
+
         <!--android:taskAffinity="com.haxi.cc"存在于不同的任务栈中/>-->
         <service
             android:name=".service.TestService"

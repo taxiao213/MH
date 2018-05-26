@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.haxi.mh.R;
 import com.haxi.mh.base.BaseFragment;
 import com.haxi.mh.service.PlayMusicService;
+import com.haxi.mh.ui.activity.BusinessApprovalActivity;
 import com.haxi.mh.ui.activity.MaterialDesignActivity;
 import com.haxi.mh.utils.model.LogUtils;
 
@@ -59,6 +60,8 @@ public class HomeCreateTaskFragment extends BaseFragment {
                 createAlarm();
                 break;
             case R.id.bt_03:
+                startActivity(new Intent(mActivity, BusinessApprovalActivity.class));
+
                 java();
                 helo((a, b) -> {
                     String ss = a + b;
