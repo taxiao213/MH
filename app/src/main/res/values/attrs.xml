@@ -21,4 +21,10 @@
     <dimen name="circular_progress_normal_size">48dp</dimen>
     <dimen name="circular_progress_large_size">60dp</dimen>
     <integer name="circular_progress_max">100</integer>
+
+    <declare-styleable name="customlayout">
+        <attr name="left_text" format="string"/>
+        <attr name="center_text" format="string"/>
+        <attr name="isvisible" format="integer"/>
+    </declare-styleable>
 </resources>
