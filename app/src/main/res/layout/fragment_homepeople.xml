@@ -17,12 +17,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:center_text="我是"
-        app:isvisible ="4"
+        app:isvisible="4"
         app:left_text="你好" />
+
     <com.haxi.mh.utils.ui.view.gesture.CustomLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:center_text="我是"
-        app:isvisible ="0"
+        app:isvisible="0"
         app:left_text="你好" />
 </LinearLayout>
