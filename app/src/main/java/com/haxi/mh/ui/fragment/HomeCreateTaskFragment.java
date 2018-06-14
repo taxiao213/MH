@@ -5,7 +5,10 @@ import android.app.PendingIntent;
 import android.content.Intent;
 import android.os.Build;
 import android.os.SystemClock;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -15,6 +18,7 @@ import com.haxi.mh.service.PlayMusicService;
 import com.haxi.mh.ui.activity.BusinessApprovalActivity;
 import com.haxi.mh.ui.activity.MaterialDesignActivity;
 import com.haxi.mh.utils.model.LogUtils;
+import com.haxi.mh.utils.ui.toast.ToastUtils;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -33,6 +37,8 @@ public class HomeCreateTaskFragment extends BaseFragment {
     ImageView titleBack;
     @BindView(R.id.title_tv)
     TextView titleTv;
+    @BindView(R.id.et)
+    EditText et;
 
     @Override
     protected int getLayoutRes() {
@@ -43,6 +49,17 @@ public class HomeCreateTaskFragment extends BaseFragment {
     protected void initView() {
         titleBack.setVisibility(View.GONE);
         titleTv.setText(R.string.homecreatetask_name);
+        //监听软键盘搜索键
+        et.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId== EditorInfo.IME_ACTION_SEARCH){
+                    ToastUtils.showShortToast("哈哈");
+                    return true;
+                }
+                return false;
+            }
+        });
     }
 
     @Override
@@ -58,6 +75,7 @@ public class HomeCreateTaskFragment extends BaseFragment {
                 break;
             case R.id.bt_02:
                 createAlarm();
+                startActivity(new Intent(mActivity, MaterialDesignActivity.class));
                 break;
             case R.id.bt_03:
                 startActivity(new Intent(mActivity, BusinessApprovalActivity.class));

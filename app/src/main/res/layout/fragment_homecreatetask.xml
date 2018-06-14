@@ -1,30 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <include layout="@layout/common_title"/>
+    <include layout="@layout/common_title" />
 
     <Button
         android:id="@+id/bt_01"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="1111"/>
+        android:text="1111" />
 
     <Button
         android:id="@+id/bt_02"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="2222"/>
+        android:text="2222" />
 
     <Button
         android:id="@+id/bt_03"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="3333"/>
+        android:text="3333" />
+
+    <EditText
+        android:id="@+id/et"
+        android:singleLine="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:imeOptions="actionSearch" />
 </LinearLayout>

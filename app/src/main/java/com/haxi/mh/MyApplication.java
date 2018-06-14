@@ -172,6 +172,13 @@ public class MyApplication extends Application {
 
             }
         });
+
+        //webRTC 初始化
+//        PeerConnectionFactory.initialize(PeerConnectionFactory
+//                .InitializationOptions
+//                .builder(mContext)
+//                .createInitializationOptions());
+
     }
 
     private void regToWx() {

@@ -324,8 +324,12 @@ public static java.lang.String TABLENAME;
 
 # sqlcipher加密数据库 keep 不加public
 -dontwarn net.sqlcipher.**
--keep  class net.sqlcipher.** {*;}
--keep  class net.sqlcipher.database.** {*;}
+-keep class net.sqlcipher.** {*;}
+-keep class net.sqlcipher.database.** {*;}
+
+# webRtc混淆
+-dontwarn org.webrtc.**
+-keep class org.webrtc.** {*;}
 
 #---------------------------------------------------------------------
 
