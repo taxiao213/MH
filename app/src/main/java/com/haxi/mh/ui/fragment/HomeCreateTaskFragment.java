@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.haxi.mh.R;
 import com.haxi.mh.base.BaseFragment;
 import com.haxi.mh.service.PlayMusicService;
+import com.haxi.mh.ui.activity.AidlActivity;
 import com.haxi.mh.ui.activity.BusinessApprovalActivity;
 import com.haxi.mh.ui.activity.MaterialDesignActivity;
 import com.haxi.mh.utils.model.LogUtils;
@@ -53,7 +54,7 @@ public class HomeCreateTaskFragment extends BaseFragment {
         et.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (actionId== EditorInfo.IME_ACTION_SEARCH){
+                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                     ToastUtils.showShortToast("哈哈");
                     return true;
                 }
@@ -67,7 +68,7 @@ public class HomeCreateTaskFragment extends BaseFragment {
 
     }
 
-    @OnClick({R.id.bt_01, R.id.bt_02, R.id.bt_03})
+    @OnClick({R.id.bt_01, R.id.bt_02, R.id.bt_03, R.id.bt_04})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bt_01:
@@ -87,6 +88,9 @@ public class HomeCreateTaskFragment extends BaseFragment {
                     return ss;
 
                 });
+                break;
+            case R.id.bt_04:
+                startActivity(new Intent(mActivity, AidlActivity.class));
                 break;
         }
     }

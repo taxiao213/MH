@@ -36,7 +36,7 @@ import java.util.List;
 /**
  * Helper class to get a list of processes on Android.
  * <p/>
- * <p><b>Note:</b> Every method in this class should <i>not</i> be executed on the main thread.</p>
+ * <p><b>Note:</b> Every method in this class should <i>not</i> be executed on the Main thread.</p>
  */
 public class ProcessManager {
 
