@@ -1,7 +1,7 @@
 package com.haxi.mh.network.manager;
 
 
-import android.content.Context;
+import android.support.v7.app.AppCompatActivity;
 
 import com.haxi.mh.network.cookie.CookieResulte;
 import com.haxi.mh.network.exception.ApiException;
@@ -30,16 +30,16 @@ import io.reactivex.schedulers.Schedulers;
 public class ProgressObserver<T> implements Observer<T> {
     /*是否显示加载框*/
     private boolean showPorgress = true;
-    private Context mActivity;
+    private AppCompatActivity mActivity;
     /*加载框可自己定义*/
-    private ProgressDialog dialog;
+    private ProgressDialog progress;
     /*回调接口*/
     private HttpOnNextListener mHttpOnNextListener;
     /*请求数据*/
     private BaseApi api;
 
 
-    public ProgressObserver(BaseApi api, HttpOnNextListener mHttpOnNextListener, Context mActivity) {
+    public ProgressObserver(BaseApi api, HttpOnNextListener mHttpOnNextListener, AppCompatActivity mActivity) {
         this.api = api;
         this.mHttpOnNextListener = mHttpOnNextListener;
         this.mActivity = mActivity;
@@ -53,9 +53,14 @@ public class ProgressObserver<T> implements Observer<T> {
      * 初始化加载框
      */
     private void initProgressDialog(boolean cancel) {
-        if (dialog == null && mActivity != null) {
-            dialog = new ProgressDialog(mActivity);
-            dialog.setCancelable(cancel);
+        if (progress == null && mActivity != null) {
+            mActivity.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    progress = new ProgressDialog(mActivity);
+                    progress.setCancelable(cancel);
+                }
+            });
         }
     }
 
@@ -64,10 +69,20 @@ public class ProgressObserver<T> implements Observer<T> {
      * 显示加载框
      */
     private void showProgressDialog() {
-        if (dialog != null && !dialog.isShowing()) {
-            if (api.isShowProgress()) {
-                dialog.show();
-            }
+        if (progress == null || mActivity == null)
+            return;
+        if (progress != null && !progress.isShowing()) {
+            mActivity.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        if (!mActivity.isFinishing()) {
+                            progress.show();
+                        }
+                    } catch (Exception e) {
+                    }
+                }
+            });
         }
     }
 
@@ -76,8 +91,8 @@ public class ProgressObserver<T> implements Observer<T> {
      * 隐藏
      */
     private void dismissProgressDialog() {
-        if (dialog != null && dialog.isShowing()) {
-            dialog.dismiss();
+        if (progress != null && progress.isShowing()) {
+            progress.dismiss();
         }
     }
 

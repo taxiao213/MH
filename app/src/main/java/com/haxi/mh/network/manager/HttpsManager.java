@@ -102,24 +102,26 @@ public class HttpsManager {
      * @param baseApi
      */
     private void requestHttp(Observable observable, BaseApi baseApi) {
-        observable.retryWhen(new RetryNetworkException(baseApi.getCount(), baseApi.getDelay()))
-                //异常处理
-                .onErrorResumeNext(new ExceptionFunction())
-                //Note:手动设置在activity onDestroy的时候取消订阅 注意
-                //.compose(rxAppCompatActivity.bindUntilEvent(ActivityEvent.DESTROY))
-                .map(new ResulteFunction())
-                //http请求线程
-                .subscribeOn(Schedulers.io())
-                .unsubscribeOn(Schedulers.io())
-                //回调在主线程
-                .observeOn(AndroidSchedulers.mainThread());
+        if (observable != null) {
+            observable = observable
+                    .retryWhen(new RetryNetworkException(baseApi.getCount(), baseApi.getDelay()))
+                    //异常处理
+                    .onErrorResumeNext(new ExceptionFunction())
+                    //Note:手动设置在activity onDestroy的时候取消订阅 注意
+                    //.compose(rxAppCompatActivity.bindUntilEvent(ActivityEvent.DESTROY))
+                    .map(new ResulteFunction())
+                    //http请求线程
+                    .subscribeOn(Schedulers.io())
+                    .unsubscribeOn(Schedulers.io())
+                    //回调在主线程
+                    .observeOn(AndroidSchedulers.mainThread());
 
-        if (null != onNextListener) {
-            //显示进度加载框
-            ProgressObserver observer = new ProgressObserver(baseApi, onNextListener, rxAppCompatActivity);
-            observable.subscribe(observer);
+            if (null != onNextListener) {
+                //显示进度加载框
+                ProgressObserver observer = new ProgressObserver(baseApi, onNextListener, rxAppCompatActivity);
+                observable.subscribe(observer);
+            }
         }
-
     }
 
 
