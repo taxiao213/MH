@@ -33,6 +33,16 @@ public class Main {
             public void addBook(Book book) throws RemoteException {
 
             }
+
+            @Override
+            public void registerListener(IOnNewBookArrivedListener onNewBookArrivedListener) throws RemoteException {
+
+            }
+
+            @Override
+            public void unregisterListener(IOnNewBookArrivedListener onNewBookArrivedListener) throws RemoteException {
+
+            }
         };
 
         deathRecipient = new IBinder.DeathRecipient() {

@@ -40,6 +40,9 @@
 
     <!--如果是安卓8.0，应用编译配置的targetSdkVersion>=26，请务必添加以下权限 -->
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
+    <permission
+        android:name="com.haxi.mh.aidl.ACCESS_BOOK_SERVICE"
+        android:protectionLevel="normal" />
 
     <application
         android:name=".MyApplication"
@@ -128,6 +131,16 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/provider_paths" />
         </provider>
+
+        <provider
+            android:name="com.haxi.mh.contentprovider.BookContentProvider"
+            android:authorities="com.haxi.mh.contentprovider.bookcontentprovider"
+            android:permission="com.haxi.PROVIDER"
+            android:process=":bookprovider" />
+
+        <service
+            android:name="com.haxi.mh.service.TcpService"
+            android:process=":tcpservice" />
 
         <service
             android:name="com.haxi.mh.aidl.MessengerService"

@@ -2,8 +2,14 @@ package com.haxi.mh.ui.fragment;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
+import android.content.ContentValues;
 import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Build;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.os.SystemClock;
 import android.view.KeyEvent;
 import android.view.View;
@@ -13,13 +19,25 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.haxi.mh.R;
+import com.haxi.mh.aidl.Book;
 import com.haxi.mh.base.BaseFragment;
+import com.haxi.mh.contentprovider.BookContentProvider;
 import com.haxi.mh.service.PlayMusicService;
+import com.haxi.mh.service.TcpService;
 import com.haxi.mh.ui.activity.AidlActivity;
 import com.haxi.mh.ui.activity.BusinessApprovalActivity;
 import com.haxi.mh.ui.activity.MaterialDesignActivity;
 import com.haxi.mh.utils.model.LogUtils;
 import com.haxi.mh.utils.ui.toast.ToastUtils;
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.net.Socket;
+import java.util.Random;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -40,6 +58,25 @@ public class HomeCreateTaskFragment extends BaseFragment {
     TextView titleTv;
     @BindView(R.id.et)
     EditText et;
+    private Socket clientSocket = null;
+    private PrintWriter printWriter;
+    private static final int SOCKET_SUCCESS = 0;
+    private static final int SOCKET_NEWMESSAGE = 1;
+    private String[] strings = new String[]{"client1", "client2", "client3"};
+    private Handler handler = new Handler(Looper.getMainLooper()) {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what) {
+                case SOCKET_SUCCESS:
+                    LogUtils.e("--- initSocket --- SOCKET_SUCCESS");
+                    break;
+                case SOCKET_NEWMESSAGE:
+                    LogUtils.e("--- initSocket --- SOCKET_NEWMESSAGE" + msg.obj);
+                    break;
+            }
+        }
+    };
 
     @Override
     protected int getLayoutRes() {
@@ -68,7 +105,20 @@ public class HomeCreateTaskFragment extends BaseFragment {
 
     }
 
-    @OnClick({R.id.bt_01, R.id.bt_02, R.id.bt_03, R.id.bt_04})
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (clientSocket != null) {
+            try {
+                clientSocket.shutdownInput();
+                clientSocket.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    @OnClick({R.id.bt_01, R.id.bt_02, R.id.bt_03, R.id.bt_04, R.id.bt_05, R.id.bt_06})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bt_01:
@@ -92,7 +142,80 @@ public class HomeCreateTaskFragment extends BaseFragment {
             case R.id.bt_04:
                 startActivity(new Intent(mActivity, AidlActivity.class));
                 break;
+            case R.id.bt_05:
+                initProvider();
+                break;
+            case R.id.bt_06:
+                mActivity.startService(new Intent(mActivity, TcpService.class));
+                new Thread() {
+                    @Override
+                    public void run() {
+                        super.run();
+                        initSocket();
+                    }
+                }.start();
+                break;
         }
+    }
+
+    /**
+     * 初始化socket
+     */
+    private void initSocket() {
+        Socket socket = null;
+        while (socket == null) {
+            try {
+                socket = new Socket("localhost", 8080);
+                clientSocket = socket;
+                printWriter = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())), true);
+                handler.sendEmptyMessage(SOCKET_SUCCESS);
+                LogUtils.e("--- initSocket --- success");
+            } catch (IOException e) {
+                SystemClock.sleep(1000);
+                e.printStackTrace();
+                LogUtils.e("--- initSocket --- failure");
+            }
+        }
+
+        try {
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            while (!this.isDetached()) {
+                String line = bufferedReader.readLine();
+                if (line != null) {
+                    handler.obtainMessage(SOCKET_NEWMESSAGE, line).sendToTarget();
+                }
+                Random random = new Random();
+                int anInt = random.nextInt(strings.length);
+                printWriter.println(strings[anInt]);
+            }
+            printWriter.close();
+            bufferedReader.close();
+            socket.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    /**
+     * 初始化内容提供者
+     */
+    private void initProvider() {
+        Uri bookuri = BookContentProvider.BOOK_CONTENT_URI;
+        ContentValues values = new ContentValues();
+        values.put("_id", 10);
+        values.put("name", "name1110");
+        mActivity.getContentResolver().insert(bookuri, values);
+
+        Cursor query = mActivity.getContentResolver().query(bookuri, new String[]{"_id", "name"}, null, null, null);
+        while (query.moveToNext()) {
+            Book book = new Book();
+            book.bookId = query.getInt(0);
+            book.bookName = query.getString(1);
+
+            LogUtils.e("--- contentprovider --- " + book.toString());
+        }
+        query.close();
     }
 
     private void helo(OnJava java) {

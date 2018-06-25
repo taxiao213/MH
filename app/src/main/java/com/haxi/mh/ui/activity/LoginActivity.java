@@ -2,7 +2,9 @@ package com.haxi.mh.ui.activity;
 
 import android.content.Intent;
 import android.text.TextUtils;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -45,6 +47,18 @@ public class LoginActivity extends BaseActivity {
     protected void getData() {
         titlebarBackIv.setVisibility(View.GONE);
         titlebarTitleTv.setText(mActivity.getText(R.string.login_login));
+        //软键盘登录
+        etPassword.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    startActivity(new Intent(mActivity, MainActivity.class));
+                    finish();
+                    return true;
+                }
+                return false;
+            }
+        });
     }
 
 
@@ -86,7 +100,7 @@ public class LoginActivity extends BaseActivity {
 
         //通过接口请求
         ToastUtils.showShortToast("登录成功");
-        startActivity(new Intent(mActivity,MainActivity.class));
+        startActivity(new Intent(mActivity, MainActivity.class));
         finish();
     }
 

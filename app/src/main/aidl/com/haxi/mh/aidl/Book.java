@@ -13,8 +13,8 @@ import android.os.Parcelable;
 
 public class Book implements Parcelable {
 
-    private int bookId;
-    private String bookName;
+    public int bookId;
+    public String bookName;
 
     public Book(int bookId, String bookName) {
         this.bookId = bookId;
@@ -24,6 +24,10 @@ public class Book implements Parcelable {
     protected Book(Parcel in) {
         bookId = in.readInt();
         bookName = in.readString();
+    }
+
+    public Book() {
+
     }
 
     public static final Creator<Book> CREATOR = new Creator<Book>() {

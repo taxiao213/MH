@@ -34,10 +34,24 @@
         android:layout_gravity="center"
         android:text="4444" />
 
+    <Button
+        android:id="@+id/bt_05"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="内容提供者" />
+
+    <Button
+        android:id="@+id/bt_06"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="socket" />
+
     <EditText
         android:id="@+id/et"
-        android:singleLine="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:imeOptions="actionSearch" />
+        android:imeOptions="actionSearch"
+        android:singleLine="true" />
 </LinearLayout>
