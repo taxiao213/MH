@@ -8,8 +8,10 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Handler;
+import android.os.IBinder;
 import android.os.Looper;
 import android.os.Message;
+import android.os.RemoteException;
 import android.os.SystemClock;
 import android.view.KeyEvent;
 import android.view.View;
@@ -19,7 +21,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.haxi.mh.R;
+import com.haxi.mh.aidl.BinderPool;
 import com.haxi.mh.aidl.Book;
+import com.haxi.mh.aidl.ComputeImpl;
+import com.haxi.mh.aidl.ICompute;
+import com.haxi.mh.aidl.ISecurityCenter;
+import com.haxi.mh.aidl.SecurityCenterImpl;
 import com.haxi.mh.base.BaseFragment;
 import com.haxi.mh.contentprovider.BookContentProvider;
 import com.haxi.mh.service.PlayMusicService;
@@ -118,7 +125,7 @@ public class HomeCreateTaskFragment extends BaseFragment {
         }
     }
 
-    @OnClick({R.id.bt_01, R.id.bt_02, R.id.bt_03, R.id.bt_04, R.id.bt_05, R.id.bt_06})
+    @OnClick({R.id.bt_01, R.id.bt_02, R.id.bt_03, R.id.bt_04, R.id.bt_05, R.id.bt_06, R.id.bt_07, R.id.bt_08})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bt_01:
@@ -155,6 +162,47 @@ public class HomeCreateTaskFragment extends BaseFragment {
                     }
                 }.start();
                 break;
+            case R.id.bt_07:
+                new Thread() {
+                    @Override
+                    public void run() {
+                        super.run();
+                        connectBinderPool();
+                    }
+                }.start();
+                break;
+
+                case R.id.bt_08:
+
+                    break;
+        }
+    }
+
+    /**
+     * 连接线程池
+     */
+    private void connectBinderPool() {
+        BinderPool instance = BinderPool.getInstance(mActivity);
+        IBinder securitybinder = instance.queryBinder(BinderPool.BINDER_SECURITY);
+        ISecurityCenter iSecurityCenter = SecurityCenterImpl.asInterface(securitybinder);
+        try {
+            String encrypt = iSecurityCenter.encrypt("hahahahah----");
+
+            LogUtils.e("--- BinderPool --- encrypt ==" + encrypt);
+
+            LogUtils.e("--- BinderPool --- decrypt ==" + iSecurityCenter.decrypt(encrypt));
+
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+
+        IBinder computebinder = instance.queryBinder(BinderPool.BINDER_COMPUTE);
+        ICompute iCompute = ComputeImpl.asInterface(computebinder);
+        try {
+            int add = iCompute.add(1, 2);
+            LogUtils.e("--- BinderPool --- compute ==" + add);
+        } catch (RemoteException e) {
+            e.printStackTrace();
         }
     }
 

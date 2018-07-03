@@ -24,10 +24,16 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 public class BookManagerService extends Service {
 
+    //AtomicBoolean是java.util.concurrent.atomic包下的原子变量，这个包里面提供了一组原子类。其基本的特性就是在多线程环境下
+    // 当有多个线程同时执行这些类的实例包含的方法时，具有排他性
+    // 即当某个线程进入方法，执行其中的指令时，不会被其他线程打断，而别的线程就像自旋锁一样，一直等到该方法执行完成
     private AtomicBoolean atomicBoolean = new AtomicBoolean(false);
     private CopyOnWriteArrayList<Book> mBookList = new CopyOnWriteArrayList<>();//支持 并发读 / 写
-//    private CopyOnWriteArrayList<IOnNewBookArrivedListener> listeners = new CopyOnWriteArrayList<>(); //多线程中在注销时会找不到listener
 
+    //用这个类，可以简单的创建一个实例，通过其register(E)和unregister(E)函数注册或注销clients
+    //通过beginBroadcast(), getBroadcastItem(int), finishBroadcast().回调给client
+    //如果一个注册了callback的进程消失了，这个类会自动将其从list中清除
+    //可以通过onCallbackDied(E)对这个注册的callback进行额外处理
     private RemoteCallbackList<IOnNewBookArrivedListener> mlisteners = new RemoteCallbackList<>();
     private Binder binder;
 

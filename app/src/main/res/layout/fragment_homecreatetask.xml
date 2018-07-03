@@ -48,6 +48,20 @@
         android:layout_gravity="center"
         android:text="socket" />
 
+    <Button
+        android:id="@+id/bt_07"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="线程池" />
+
+    <Button
+        android:id="@+id/bt_08"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="计算" />
+
     <EditText
         android:id="@+id/et"
         android:layout_width="match_parent"

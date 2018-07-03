@@ -167,9 +167,16 @@
             android:name="com.xiaomi.mipush.sdk.PushMessageHandler"
             android:enabled="true"
             android:exported="true" />
+
         <service
             android:name="com.xiaomi.mipush.sdk.MessageHandleService"
             android:enabled="true" />
+
+        <service
+            android:name=".aidl.BinderPoolService"
+            android:process=":binderpool" />
+
+
         <!--注：此service必须在2.2.5版本以后（包括2.2.5版本）加入-->
         <receiver
             android:name="com.xiaomi.push.service.receivers.NetworkStatusReceiver"
