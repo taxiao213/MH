@@ -240,6 +240,10 @@ public class ProgressObserver<T> implements Observer<T> {
             return;
         if (e instanceof ApiException) {
             mHttpOnNextListener.onError((ApiException) e);
+            int code = ((ApiException) e).getCode();
+            if (code == CodeException.HTTP_ERROR || code == CodeException.RUNTIME_ERROR || code == CodeException.UNKOWNHOST_ERROR) {
+                //ToastUtil.showSafeToast(mActivity.getResources().getString(R.string.tip_error));
+            }
         } else if (e instanceof CustomTimeException) {
             CustomTimeException exception = (CustomTimeException) e;
             mHttpOnNextListener.onError(new ApiException(exception, CodeException.RUNTIME_ERROR, exception.getMessage()));

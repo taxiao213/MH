@@ -40,15 +40,15 @@ public class FactoryException {
             apiException.setCode(CodeException.NET_ERROR);
             apiException.setDisplayMessage(HTTPEXCEPTION_MSG);
         } else if (e instanceof CustomTimeException) {
-             /*自定义运行时异常*/
+             /*超时异常*/
             apiException.setCode(CodeException.RUNTIME_ERROR);
             apiException.setDisplayMessage(e.getMessage());
         } else if (e instanceof ConnectException ||e instanceof SocketTimeoutException) {
-             /*连接异常*/
+            /*http异常*/
             apiException.setCode(CodeException.HTTP_ERROR);
             apiException.setDisplayMessage(CONNECTEXCEPTION_MSG);
         } else if ( e instanceof JSONException || e instanceof ParseException) {
-            /*json解析失败*/
+            /*json异常*/
             apiException.setCode(CodeException.JSON_ERROR);
             apiException.setDisplayMessage(JSONEXCEPTION_MSG);
         }else if (e instanceof UnknownHostException){
