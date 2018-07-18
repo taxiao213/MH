@@ -214,7 +214,8 @@ public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedCh
                 current_tag = TAG_FRAGMENT4;
                 break;
         }
-        transaction.commitNow();
+        //transaction.commitNow();2018.07.17修改
+        transaction.commitNowAllowingStateLoss();
     }
 
 
