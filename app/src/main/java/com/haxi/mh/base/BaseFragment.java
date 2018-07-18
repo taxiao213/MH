@@ -32,10 +32,10 @@ public abstract class BaseFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        mActivity = (BaseActivity) getActivity();
         EventBus.getDefault().register(this);
         View view = inflater.inflate(getLayoutRes(), container, false);
         bind = ButterKnife.bind(this, view);
-        mActivity = (BaseActivity) getActivity();
         initView();
         initData();
         return view;

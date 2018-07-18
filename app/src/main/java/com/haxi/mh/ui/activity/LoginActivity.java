@@ -1,7 +1,6 @@
 package com.haxi.mh.ui.activity;
 
 import android.content.Intent;
-import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -88,15 +87,15 @@ public class LoginActivity extends BaseActivity {
 
         String account = etAccount.getText().toString().trim();
         String password = etPassword.getText().toString().trim();
-        if (TextUtils.isEmpty(account)) {
-            ToastUtils.showShortToast("账号不能为空！");
-            return;
-        }
-
-        if (TextUtils.isEmpty(password)) {
-            ToastUtils.showShortToast("密码不能为空！");
-            return;
-        }
+//        if (TextUtils.isEmpty(account)) {
+//            ToastUtils.showShortToast("账号不能为空！");
+//            return;
+//        }
+//
+//        if (TextUtils.isEmpty(password)) {
+//            ToastUtils.showShortToast("密码不能为空！");
+//            return;
+//        }
 
         //通过接口请求
         ToastUtils.showShortToast("登录成功");
