@@ -1,6 +1,7 @@
 package com.haxi.mh.ui.fragment;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
@@ -14,6 +15,7 @@ import android.widget.TextView;
 
 import com.haxi.mh.R;
 import com.haxi.mh.base.BaseFragment;
+import com.haxi.mh.ui.activity.ViewInterceptActivity;
 import com.haxi.mh.ui.widget.Notification;
 import com.haxi.mh.utils.model.LogUtils;
 import com.haxi.mh.utils.ui.UIUtil;
@@ -65,7 +67,7 @@ public class HomePageFragment extends BaseFragment {
     }
 
 
-    @OnClick({R.id.bt_01, R.id.bt_02, R.id.bt_03})
+    @OnClick({R.id.bt_01, R.id.bt_02, R.id.bt_03, R.id.bt_04})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bt_01:
@@ -107,6 +109,9 @@ public class HomePageFragment extends BaseFragment {
                     }
                 }
 
+                break;
+            case R.id.bt_04:
+                startActivity(new Intent(mActivity, ViewInterceptActivity.class));
                 break;
         }
     }

@@ -94,6 +94,7 @@
         <activity android:name=".ui.activity.MaterialDesignActivity" />
         <activity android:name=".ui.activity.BusinessApprovalActivity" />
         <activity android:name=".ui.activity.AidlActivity" />
+        <activity android:name=".ui.activity.ViewInterceptActivity" />
 
         <!--android:taskAffinity="com.haxi.cc"存在于不同的任务栈中/>-->
         <service
