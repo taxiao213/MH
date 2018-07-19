@@ -8,18 +8,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Scroller;
 
-import com.haxi.mh.utils.model.LogUtils;
-
 /**
  * 仿ViewPager 实现左右滑动
- * 场景 外部左右滑动 里面是上下滑动，在外部的View做判断
+ * 场景 外部左右滑动 里面是上下滑动，在里部的View和外部的View都做判断
  * Created by Han on 2018/7/18
  * Email:yin13753884368@163.com
  * CSDN:http://blog.csdn.net/yin13753884368/article
  * Github:https://github.com/yin13753884368
  */
 
-public class HorizontalScrollView extends ViewGroup {
+public class HorizontalScrollViewEX extends ViewGroup {
     private String Tag = "---HorizontalScrollView---";
     private Scroller mScroller;
     // 用于跟踪触摸事件的速度，用于实现投掷和其他此类手势
@@ -37,15 +35,15 @@ public class HorizontalScrollView extends ViewGroup {
     private int mChildWidth = 0;
     private int mChildIndex = 0;
 
-    public HorizontalScrollView(Context context) {
+    public HorizontalScrollViewEX(Context context) {
         this(context, null);
     }
 
-    public HorizontalScrollView(Context context, AttributeSet attrs) {
+    public HorizontalScrollViewEX(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public HorizontalScrollView(Context context, AttributeSet attrs, int defStyleAttr) {
+    public HorizontalScrollViewEX(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         initView();
     }
@@ -102,37 +100,19 @@ public class HorizontalScrollView extends ViewGroup {
 
     @Override
     public boolean onInterceptTouchEvent(MotionEvent event) {
-        boolean intercepted = false;
         int x = (int) event.getX();
         int y = (int) event.getY();
-        switch (event.getAction()) {
-            case MotionEvent.ACTION_DOWN:
-                intercepted = false;
-                if (!mScroller.isFinished()) {
-                    mScroller.abortAnimation();//优化滑动体验
-                    intercepted = true;
-                }
-                break;
-            case MotionEvent.ACTION_MOVE:
-                int deltaX = x - mLastXIntercept;
-                int deltaY = y - mLastYIntercept;
-                if (Math.abs(deltaX) > Math.abs(deltaY)) {
-                    intercepted = true;
-                } else {
-                    intercepted = false;
-                }
-                break;
-            case MotionEvent.ACTION_UP:
-                intercepted = false;
-                break;
+        if (event.getAction() == MotionEvent.ACTION_DOWN) {
+            mLastX = x;
+            mLastY = y;
+            if (!mScroller.isFinished()) {
+                mScroller.abortAnimation();//优化滑动体验
+                return true;
+            }
+            return false;
+        } else {
+            return true;
         }
-        mLastX = x;
-        mLastY = y;
-        mLastXIntercept = x;
-        mLastYIntercept = y;
-
-        LogUtils.e(Tag, " intercepted = " + intercepted + " mLastX = " + mLastX + " mLastY = " + mLastY + "  mLastXIntercept = " + mLastXIntercept + " mLastYIntercept = " + mLastYIntercept);
-        return intercepted;
     }
 
     @Override

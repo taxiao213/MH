@@ -34,4 +34,11 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:text="view"/>
+
+    <Button
+        android:id="@+id/bt_05"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="view"/>
 </LinearLayout>

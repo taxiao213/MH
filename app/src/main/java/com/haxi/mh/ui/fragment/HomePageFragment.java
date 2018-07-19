@@ -16,6 +16,7 @@ import android.widget.TextView;
 import com.haxi.mh.R;
 import com.haxi.mh.base.BaseFragment;
 import com.haxi.mh.ui.activity.ViewInterceptActivity;
+import com.haxi.mh.ui.activity.ViewInterceptActivity2;
 import com.haxi.mh.ui.widget.Notification;
 import com.haxi.mh.utils.model.LogUtils;
 import com.haxi.mh.utils.ui.UIUtil;
@@ -67,7 +68,7 @@ public class HomePageFragment extends BaseFragment {
     }
 
 
-    @OnClick({R.id.bt_01, R.id.bt_02, R.id.bt_03, R.id.bt_04})
+    @OnClick({R.id.bt_01, R.id.bt_02, R.id.bt_03, R.id.bt_04, R.id.bt_05})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bt_01:
@@ -112,6 +113,9 @@ public class HomePageFragment extends BaseFragment {
                 break;
             case R.id.bt_04:
                 startActivity(new Intent(mActivity, ViewInterceptActivity.class));
+                break;
+            case R.id.bt_05:
+                startActivity(new Intent(mActivity, ViewInterceptActivity2.class));
                 break;
         }
     }
