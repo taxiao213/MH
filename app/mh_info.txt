@@ -40,6 +40,34 @@ KeyIdentifier [
 *******************************************
 *******************************************
 
-
+release {
+            //混淆
+            minifyEnabled true
+            //移除无用的resource文件
+            shrinkResources true
+            //Zipalign优化
+            zipAlignEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.config
+            android.applicationVariants.all { variant ->
+                variant.outputs.each { output ->
+                    def outputFile = output.outputFile
+                    if (outputFile != null && outputFile.name.endsWith('.apk')) {
+                        def versionName = variant.versionName
+                        def flavor = variant.productFlavors[0].name
+                        def date = new Date()
+                        //buildType name
+                        def name = variant.buildType.name
+                        //def currentDate = date.format('yyyy_MM_dd_HH_mm')
+                        def currentDate = date.format('_MM_dd_')
+                        def math = (int) (Math.random() * 100)
+                        def fileName = flavor + "_" + name + "_" + versionName + currentDate + math + ".apk"
+                        output.outputFile = new File(outputFile.parent, fileName)
+                    }
+                }
+            }
+        }
 
 D:\Program Files\Java\jdk1.8.0_66\bin>
+
+
