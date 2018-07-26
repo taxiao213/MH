@@ -10,7 +10,7 @@ import android.widget.TextView;
 import com.haxi.mh.R;
 import com.haxi.mh.base.BaseActivity;
 import com.haxi.mh.utils.ui.UIUtil;
-import com.haxi.mh.utils.ui.view.HorizontalScrollView;
+import com.haxi.mh.utils.ui.view.test.HorizontalScrollView;
 
 import java.util.ArrayList;
 

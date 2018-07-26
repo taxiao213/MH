@@ -12,7 +12,7 @@
         android:layout_marginBottom="5dp"
         android:text="TextView" />
 
-    <com.haxi.mh.utils.ui.view.ListViewEx
+    <com.haxi.mh.utils.ui.view.test.ListViewEx
         android:id="@+id/list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

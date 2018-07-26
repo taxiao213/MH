@@ -9,8 +9,8 @@ import android.widget.TextView;
 import com.haxi.mh.R;
 import com.haxi.mh.base.BaseActivity;
 import com.haxi.mh.utils.ui.UIUtil;
-import com.haxi.mh.utils.ui.view.HorizontalScrollViewEX;
-import com.haxi.mh.utils.ui.view.ListViewEx;
+import com.haxi.mh.utils.ui.view.test.HorizontalScrollViewEX;
+import com.haxi.mh.utils.ui.view.test.ListViewEx;
 
 import java.util.ArrayList;
 

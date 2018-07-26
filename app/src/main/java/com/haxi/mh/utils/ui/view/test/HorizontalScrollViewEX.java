@@ -1,4 +1,4 @@
-package com.haxi.mh.utils.ui.view;
+package com.haxi.mh.utils.ui.view.test;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -66,6 +66,11 @@ public class HorizontalScrollViewEX extends ViewGroup {
         int heightMeasureMode = MeasureSpec.getMode(heightMeasureSpec);
         if (childCount == 0) {
             setMeasuredDimension(0, 0);
+        } else if (heightMeasureMode == MeasureSpec.AT_MOST && widthMeasureMode == MeasureSpec.AT_MOST) {
+            View childAt = getChildAt(0);
+            measuredWidth = childAt.getMeasuredWidth() * childCount;
+            measuredHeight = childAt.getMeasuredHeight();
+            setMeasuredDimension(measuredWidth, measuredHeight);
         } else if (heightMeasureMode == MeasureSpec.AT_MOST) {
             View childAt = getChildAt(0);
             measuredHeight = childAt.getMeasuredHeight();

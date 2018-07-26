@@ -3,10 +3,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.haxi.mh.utils.ui.view.HorizontalScrollViewEX
+    <com.haxi.mh.utils.ui.view.test.HorizontalScrollViewEX
         android:id="@+id/horizontal_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-    </com.haxi.mh.utils.ui.view.HorizontalScrollViewEX>
+    </com.haxi.mh.utils.ui.view.test.HorizontalScrollViewEX>
 </android.support.constraint.ConstraintLayout>

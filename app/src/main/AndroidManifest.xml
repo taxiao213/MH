@@ -96,7 +96,17 @@
         <activity android:name=".ui.activity.AidlActivity" />
         <activity android:name=".ui.activity.ViewInterceptActivity" />
         <activity android:name=".ui.activity.ViewInterceptActivity2" />
+        <activity android:name=".ui.activity.CustomizeActivity" />
 
+        <receiver android:name=".utils.ui.view.test.AppWidget">
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/appwidget" />
+            <intent-filter>
+                <action android:name="com.mh.appwidget" />
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+        </receiver>
         <!--android:taskAffinity="com.haxi.cc"存在于不同的任务栈中/>-->
         <service
             android:name=".service.TestService"

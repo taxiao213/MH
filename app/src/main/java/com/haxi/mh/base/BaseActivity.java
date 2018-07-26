@@ -3,9 +3,15 @@ package com.haxi.mh.base;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
+import android.view.View;
+import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 
+import com.haxi.mh.R;
 import com.haxi.mh.model.MessageEvent;
 import com.haxi.mh.utils.ui.ActivityManager;
 import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
@@ -29,6 +35,9 @@ import butterknife.Unbinder;
 public abstract class BaseActivity extends RxAppCompatActivity {
     protected BaseActivity mActivity;
     private Unbinder bind;
+    private View view;
+    private LinearLayout layout_error;
+    private ProgressBar progress;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -48,7 +57,57 @@ public abstract class BaseActivity extends RxAppCompatActivity {
         //            //透明导航栏
         //            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
         //        }
+
+        ViewGroup contentView = findViewById(android.R.id.content);
+        ViewGroup childAt = (ViewGroup) contentView.getChildAt(0);
+//        childAt.setVisibility(View.GONE);
+//        childAt.getViewTreeObserver().addOnDrawListener(new ViewTreeObserver.OnDrawListener() {
+//            @Override
+//            public void onDraw() {
+//                childAt.setVisibility(View.VISIBLE);
+//                setProgressView(false);
+//            }
+//        });
+
+        view = getView();
+//        contentView.addView(view);
+//        setProgressView(true);
     }
+
+    private View getView() {
+        View childView = LayoutInflater.from(this).inflate(R.layout.activity_error_layout, null);
+        layout_error = childView.findViewById(R.id.layout_error);
+        progress = childView.findViewById(R.id.progress);
+        childView.findViewById(R.id.tv_error_layout).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setRetryViewVisibile(true);
+            }
+        });
+
+
+        return childView;
+    }
+
+    /**
+     * 点击重新获取网络的View
+     *
+     * @param isShow
+     */
+    public void setRetryViewVisibile(boolean isShow) {
+        if (progress != null && layout_error != null) {
+            layout_error.setVisibility(!isShow ? View.VISIBLE : View.GONE);
+            progress.setVisibility(isShow ? View.VISIBLE : View.GONE);
+        }
+    }
+
+    public void setProgressView(boolean isShow) {
+        if (progress != null && layout_error != null) {
+            progress.setVisibility(isShow ? View.VISIBLE : View.GONE);
+            layout_error.setVisibility(!isShow ? View.VISIBLE : View.GONE);
+        }
+    }
+
 
     /**
      * 获取资源文件

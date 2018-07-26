@@ -54,4 +54,7 @@ public class Constant {
 
     /* 界面跳转code */
     public static final int REGISTER_CODE = 1110;
+
+    /* 桌面小插件广播 */
+    public static final String RECEIVER_WIDGET = "com.mh.appwidget";
 }
