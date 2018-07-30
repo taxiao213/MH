@@ -55,7 +55,7 @@ public class AppWidget extends AppWidgetProvider {
                     Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.add);
                     AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
                     for (int i = 0; i < 37; i++) {
-                        float degree = (i * 10) / 360;
+                        float degree = (i * 100) / 360;
                         RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.widget);
                         remoteViews.setImageViewBitmap(R.id.iv, rotateBitmap(context, bitmap, degree));
                         Intent intent1 = new Intent(Constant.RECEIVER_WIDGET);

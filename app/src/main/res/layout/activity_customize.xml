@@ -20,4 +20,34 @@
         android:layout_height="100dp"
         android:layout_marginTop="20dp"
         android:padding="10dp" />
+
+    <TextView
+        android:id="@+id/tv_remote"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:padding="10dp"
+        android:text="通知栏RemoteViews" />
+
+    <ImageView
+        android:id="@+id/iv_attributes1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:background="@drawable/drawable_attributes1" />
+
+    <ImageView
+        android:id="@+id/iv_attributes2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:background="@drawable/drawable_attributes2" />
+
+    <ImageView
+        android:id="@+id/iv_attributes3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:background="@drawable/drawable_attributes3" />
+
 </LinearLayout>
