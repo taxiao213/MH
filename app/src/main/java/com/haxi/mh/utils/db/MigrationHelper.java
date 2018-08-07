@@ -5,6 +5,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.facebook.stetho.common.LogUtil;
+import com.haxi.mh.BuildConfig;
 import com.haxi.mh.model.TableColumn;
 import com.haxi.mh.model.db.Person;
 
@@ -16,6 +18,7 @@ import java.io.File;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -96,7 +99,16 @@ public class MigrationHelper {
                     }
                 }
             }
-
+            if (properties != null && properties.size() > 0) {
+                Iterator<String> iterator = properties.iterator();
+                if (iterator.hasNext()) {
+                    String next = iterator.next();
+                    if (TextUtils.equals(next, "_id")) {
+                        //(2018.08.06) UNIQUE constraint failed: MSG_TIP_DO_INFO._id 所以删掉_id
+                        iterator.remove();
+                    }
+                }
+            }
             StringBuilder insertTableStringBuilder = new StringBuilder();
             insertTableStringBuilder.append("INSERT INTO ").append(tableName).append(" (");
             insertTableStringBuilder.append(TextUtils.join(",", properties));
@@ -113,7 +125,7 @@ public class MigrationHelper {
                     ArrayList<String> arrayList = new ArrayList<>();
                     for (int j = 0; j < list.size(); j++) {
                         TableColumn tableColumn = list.get(j);
-                        if (TextUtils.equals(tableColumn.getTypes(), "INTEGER")) {
+                        if (TextUtils.equals(tableColumn.getTypes(), "INTEGER") || TextUtils.equals(tableColumn.getTypes(), "BOOLEAN")) {
                             arrayList.add(tableColumn.getColumnName());
                         }
                     }
@@ -133,15 +145,15 @@ public class MigrationHelper {
                             }
                         }
                         db.execSQL(stringBuilder.toString());
-                        Log.e("MyOpenHelper  ---", "更新语句===" + stringBuilder.toString());
+                        LogUtil.e("MyOpenHelper  ---", "更新语句===" + stringBuilder.toString());
                     }
+                    LogUtil.e("MyOpenHelper  ---", "添加的参数 list.size =" + list.toString());
                 }
             } catch (Exception e) {
-                Log.e("MyOpenHelper  ---", "错误" + e.getMessage());
+                LogUtil.e("MyOpenHelper  ---", "错误" + e.getMessage() + "  添加的参数 list.size =" + list.toString());
             }
-
         }
-        Log.e("MyOpenHelper----", "restoreData 恢复数据");
+        LogUtil.e("MyOpenHelper----", "restoreData 恢复数据");
     }
 
 
@@ -152,12 +164,41 @@ public class MigrationHelper {
      * @param daoClasses
      */
     private void createTables(Database db, Class<? extends AbstractDao<?, ?>>... daoClasses) {
-        for (Class<? extends AbstractDao<?, ?>> daoClass : daoClasses) {
-            try {
-                Method method = daoClass.getMethod("createTable", Database.class, boolean.class);
-                method.invoke(null, db, false);
-            } catch (Exception e) {
-                e.printStackTrace();
+        String buildType = BuildConfig.BUILD_TYPE;
+        if (TextUtils.equals(buildType, "debug")) {
+            for (Class<? extends AbstractDao<?, ?>> daoClass : daoClasses) {
+                try {
+                    Method method = daoClass.getMethod("createTable", Database.class, boolean.class);
+                    method.invoke(null, db, false);
+                } catch (Exception e) {
+                    LogUtil.e("MyOpenHelper---- createTables debug e == " + e.getMessage());
+                    e.printStackTrace();
+                }
+            }
+        } else {
+            for (int i = 0; i < daoClasses.length; i++) {
+                DaoConfig daoConfig = new DaoConfig(db, daoClasses[i]);
+                String tableName = daoConfig.tablename;
+                StringBuilder createTableStringBuilder = new StringBuilder();
+                createTableStringBuilder.append("CREATE TABLE ").append(tableName).append(" (");
+                String divider = "";
+                try {
+                    for (int j = 0; j < daoConfig.properties.length; j++) {
+                        String columnName = daoConfig.properties[j].columnName;
+                        String type = null;
+                        type = getTypeByClass(daoConfig.properties[j].type);
+                        createTableStringBuilder.append(divider).append(columnName).append(" ").append(type);
+                        if (daoConfig.properties[j].primaryKey) {
+                            createTableStringBuilder.append(" PRIMARY KEY");
+                        }
+                        divider = ",";
+                    }
+                    createTableStringBuilder.append(");");
+                    db.execSQL(createTableStringBuilder.toString());
+                    LogUtil.e("MyOpenHelper  ---createTables release sql== " + createTableStringBuilder.toString());
+                } catch (Exception e) {
+                    LogUtil.e("MyOpenHelper  ---createTables release e == " + e.getMessage());
+                }
             }
         }
     }
@@ -169,15 +210,33 @@ public class MigrationHelper {
      * @param daoClasses
      */
     private void deleteTables(Database db, Class<? extends AbstractDao<?, ?>>... daoClasses) {
-        for (Class<? extends AbstractDao<?, ?>> daoClass : daoClasses) {
-            try {
-                Method method = daoClass.getMethod("dropTable", Database.class, boolean.class);
-                method.invoke(null, db, true);
-            } catch (Exception e) {
-                e.printStackTrace();
+        String buildType = BuildConfig.BUILD_TYPE;
+        if (TextUtils.equals(buildType, "debug")) {
+            for (Class<? extends AbstractDao<?, ?>> daoClass : daoClasses) {
+                try {
+                    Method method = daoClass.getMethod("dropTable", Database.class, boolean.class);
+                    method.invoke(null, db, true);
+                } catch (Exception e) {
+                    LogUtil.e("MyOpenHelper---- debug deleteTables e == " + e.getMessage());
+                    e.printStackTrace();
+                }
+            }
+        } else {
+            for (int i = 0; i < daoClasses.length; i++) {
+                try {
+                    DaoConfig daoConfig = new DaoConfig(db, daoClasses[i]);
+                    StringBuilder dropTableStringBuilder = new StringBuilder();
+                    String tableName = daoConfig.tablename;
+                    dropTableStringBuilder.append("DROP TABLE ").append(tableName);
+                    db.execSQL(dropTableStringBuilder.toString());
+                    LogUtil.e("MyOpenHelper---- release deleteTables sql== " + dropTableStringBuilder.toString());
+                } catch (Exception e) {
+                    LogUtil.e("MyOpenHelper---- release deleteTables e == " + e.getMessage());
+                }
             }
         }
     }
+
 
     /**
      * 备份表
@@ -223,6 +282,7 @@ public class MigrationHelper {
             createTableStringBuilder.append(");");
             try {
                 db.execSQL(createTableStringBuilder.toString());
+                LogUtil.e("MyOpenHelper  ---", "generateTempTables create sql== " + createTableStringBuilder.toString());
             } catch (Exception e) {
             }
 
@@ -235,6 +295,7 @@ public class MigrationHelper {
             insertTableStringBuilder.append(" FROM ").append(tableName).append(";");
             try {
                 db.execSQL(insertTableStringBuilder.toString());
+                LogUtil.e("MyOpenHelper  ---", "generateTempTables insert sql== " + insertTableStringBuilder.toString());
             } catch (Exception e) {
             }
         }
@@ -272,7 +333,7 @@ public class MigrationHelper {
         if (type.equals(int.class) || type.equals(Long.class) || type.equals(Integer.class) || type.equals(long.class)) {
             return "INTEGER";
         }
-        if (type.equals(Boolean.class)) {
+        if (type.equals(boolean.class) || type.equals(Boolean.class)) {
             return "BOOLEAN";
         }
 

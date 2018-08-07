@@ -38,7 +38,7 @@ public class MyOpenHelper extends DatabaseOpenHelper {
         switch (oldVersion) {
             case 1:
             case 2:
-                //做相应的处理 传入表的class文件即可
+                //做相应的处理  哪个表增删字段，传入那个类，记得发送广播刷新界面 传入表的class文件即可
                 Executors.newSingleThreadExecutor().execute(new Runnable() {
                     @Override
                     public void run() {
