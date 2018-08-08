@@ -4,6 +4,7 @@ import android.animation.ArgbEvaluator;
 import android.animation.IntEvaluator;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Color;
@@ -11,7 +12,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.animation.LayoutAnimationController;
 import android.widget.Button;
@@ -59,7 +59,7 @@ public class CustomizeActivity extends BaseActivity implements View.OnTouchListe
     protected void getData() {
         register();
         sendBroadcast(new Intent(Constant.RECEIVER_WIDGET));
-        windowservice =  getWindowManager();
+        windowservice = (WindowManager) mActivity.getSystemService(Context.WINDOW_SERVICE);
 
     }
 
@@ -67,10 +67,12 @@ public class CustomizeActivity extends BaseActivity implements View.OnTouchListe
      * 会报错 Unable to add window android.view.ViewRootImpl
      */
     private void floatView() {
-        layoutParams = new WindowManager.LayoutParams(WindowManager.LayoutParams.WRAP_CONTENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT);
+        //layoutParams=new WindowManager.LayoutParams(WindowManager.LayoutParams.WRAP_CONTENT,WindowManager.LayoutParams.WRAP_CONTENT); 这样写会报错
+        layoutParams = new WindowManager.LayoutParams();
         layoutParams.flags = WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL;
         layoutParams.gravity = Gravity.LEFT | Gravity.TOP;
+        layoutParams.width = WindowManager.LayoutParams.WRAP_CONTENT;
+        layoutParams.height = WindowManager.LayoutParams.WRAP_CONTENT;
         layoutParams.x = 100;
         layoutParams.y = 300;
         button = new Button(this);
