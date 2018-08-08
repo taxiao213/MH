@@ -64,10 +64,11 @@ public class CustomizeActivity extends BaseActivity implements View.OnTouchListe
     }
 
     /**
+     * layoutParams=new WindowManager.LayoutParams(WindowManager.LayoutParams.WRAP_CONTENT,WindowManager.LayoutParams.WRAP_CONTENT);
      * 会报错 Unable to add window android.view.ViewRootImpl
      */
     private void floatView() {
-        //layoutParams=new WindowManager.LayoutParams(WindowManager.LayoutParams.WRAP_CONTENT,WindowManager.LayoutParams.WRAP_CONTENT); 这样写会报错
+
         layoutParams = new WindowManager.LayoutParams();
         layoutParams.flags = WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE;
         layoutParams.gravity = Gravity.LEFT | Gravity.TOP;
