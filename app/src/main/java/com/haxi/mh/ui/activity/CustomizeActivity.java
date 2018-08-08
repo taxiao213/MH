@@ -69,7 +69,7 @@ public class CustomizeActivity extends BaseActivity implements View.OnTouchListe
     private void floatView() {
         //layoutParams=new WindowManager.LayoutParams(WindowManager.LayoutParams.WRAP_CONTENT,WindowManager.LayoutParams.WRAP_CONTENT); 这样写会报错
         layoutParams = new WindowManager.LayoutParams();
-        layoutParams.flags = WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL;
+        layoutParams.flags = WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE;
         layoutParams.gravity = Gravity.LEFT | Gravity.TOP;
         layoutParams.width = WindowManager.LayoutParams.WRAP_CONTENT;
         layoutParams.height = WindowManager.LayoutParams.WRAP_CONTENT;
@@ -140,11 +140,20 @@ public class CustomizeActivity extends BaseActivity implements View.OnTouchListe
                 buttonAnimator(but2, 1, 400);
                 break;
             case R.id.but3:
+                removeView();
                 floatView();
                 break;
         }
 
 
+    }
+
+    private void removeView() {
+        if (button != null) {
+            if (windowservice != null) {
+                windowservice.removeView(button);
+            }
+        }
     }
 
     /**
@@ -198,4 +207,9 @@ public class CustomizeActivity extends BaseActivity implements View.OnTouchListe
         }
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        removeView();
+    }
 }
