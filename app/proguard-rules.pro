@@ -331,5 +331,8 @@ public static java.lang.String TABLENAME;
 -dontwarn org.webrtc.**
 -keep class org.webrtc.** {*;}
 
+# 状态栏控制
+-keep class android.support.v8.renderscript.** { *; }
+
 #---------------------------------------------------------------------
 
