@@ -64,6 +64,7 @@ public class HomeManageFragment extends BaseFragment implements EasyPermissions.
     protected void initView() {
         titleBack.setVisibility(View.GONE);
         titleTv.setText(R.string.homemanage_name);
+        //DataBinding
     }
 
     @Override

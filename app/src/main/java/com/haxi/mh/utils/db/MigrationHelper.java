@@ -1,20 +1,16 @@
 package com.haxi.mh.utils.db;
 
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.facebook.stetho.common.LogUtil;
 import com.haxi.mh.BuildConfig;
 import com.haxi.mh.model.TableColumn;
-import com.haxi.mh.model.db.Person;
 
 import org.greenrobot.greendao.AbstractDao;
 import org.greenrobot.greendao.database.Database;
 import org.greenrobot.greendao.internal.DaoConfig;
 
-import java.io.File;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -51,12 +47,8 @@ public class MigrationHelper {
         return migrationHelper;
     }
 
-    /**
-     * 数据库备份
-     * @param db
-     * @param daoClasses
-     */
-    public void migrate(Database db, Class<? extends AbstractDao<?, ?>>... daoClasses) {
+
+    public void migrate(Database db, Class<? extends AbstractDao<?, ?>> daoClasses) {
         //1. 备份
         generateTempTables(db, daoClasses);
         //2. 只删除需要更新的表 DaoMaster.dropAllTables(db, true);
@@ -69,14 +61,14 @@ public class MigrationHelper {
 
 
     /**
-     * 恢复数据 如果新建的表中有Integer类型的参数，需要手动赋值，不然会报错，
-     * 所以我手动算出需要赋值的参数
+     * 恢复数据
      *
      * @param db
      * @param daoClasses
      */
 
     private void restoreData(Database db, Class<? extends AbstractDao<?, ?>>... daoClasses) {
+        String primarykey = null;//约束键 insert 时不能select
 
         for (int i = 0; i < daoClasses.length; i++) {
             DaoConfig daoConfig = new DaoConfig(db, daoClasses[i]);
@@ -87,8 +79,11 @@ public class MigrationHelper {
             for (int j = 0; j < daoConfig.properties.length; j++) {
                 String columnName = daoConfig.properties[j].columnName;
                 if (getColumns(db, tempTableName).contains(columnName)) {
+                    columnName = resultColumnName(columnName);
                     properties.add(columnName);
-
+                    if (daoConfig.properties[j].primaryKey) {
+                        primarykey = columnName;
+                    }
                 } else {
                     //表中多出的参数
                     String type = null;
@@ -101,14 +96,15 @@ public class MigrationHelper {
             }
             if (properties != null && properties.size() > 0) {
                 Iterator<String> iterator = properties.iterator();
-                if (iterator.hasNext()) {
+                while (iterator.hasNext()) {
                     String next = iterator.next();
-                    if (TextUtils.equals(next, "_id")) {
+                    if (TextUtils.equals(primarykey, next)) {
                         //(2018.08.06) UNIQUE constraint failed: MSG_TIP_DO_INFO._id 所以删掉_id
                         iterator.remove();
                     }
                 }
             }
+
             StringBuilder insertTableStringBuilder = new StringBuilder();
             insertTableStringBuilder.append("INSERT INTO ").append(tableName).append(" (");
             insertTableStringBuilder.append(TextUtils.join(",", properties));
@@ -145,7 +141,13 @@ public class MigrationHelper {
                             }
                         }
                         db.execSQL(stringBuilder.toString());
-                        LogUtil.e("MyOpenHelper  ---", "更新语句===" + stringBuilder.toString());
+                        LogUtil.e("MyOpenHelper  ---", "更新语句 stringBuilder ===" + stringBuilder.toString());
+                        if (arrayList.contains("IS_READ_MESSAGE")) {
+                            StringBuilder st = new StringBuilder();
+                            st.append("UPDATE ").append(tableName).append(" SET IS_READ_MESSAGE = 1;");
+                            db.execSQL(st.toString());
+                            LogUtil.e("MyOpenHelper  ---", "更新语句 st ===" + st.toString());
+                        }
                     }
                     LogUtil.e("MyOpenHelper  ---", "添加的参数 list.size =" + list.toString());
                 }
@@ -185,6 +187,7 @@ public class MigrationHelper {
                 try {
                     for (int j = 0; j < daoConfig.properties.length; j++) {
                         String columnName = daoConfig.properties[j].columnName;
+                        columnName = resultColumnName(columnName);
                         String type = null;
                         type = getTypeByClass(daoConfig.properties[j].type);
                         createTableStringBuilder.append(divider).append(columnName).append(" ").append(type);
@@ -202,6 +205,7 @@ public class MigrationHelper {
             }
         }
     }
+
 
     /**
      * 删除表
@@ -237,7 +241,6 @@ public class MigrationHelper {
         }
     }
 
-
     /**
      * 备份表
      *
@@ -245,37 +248,32 @@ public class MigrationHelper {
      * @param daoClasses
      */
     private void generateTempTables(Database db, Class<? extends AbstractDao<?, ?>>... daoClasses) {
+        String primarykey = null;//约束键 insert 时不能select
+
         for (int i = 0; i < daoClasses.length; i++) {
             DaoConfig daoConfig = new DaoConfig(db, daoClasses[i]);
-
             String divider = "";
             String tableName = daoConfig.tablename;
             String tempTableName = daoConfig.tablename.concat("_TEMP");
             ArrayList<String> properties = new ArrayList<>();
-
             StringBuilder createTableStringBuilder = new StringBuilder();
-
             createTableStringBuilder.append("CREATE TABLE ").append(tempTableName).append(" (");
 
             for (int j = 0; j < daoConfig.properties.length; j++) {
                 String columnName = daoConfig.properties[j].columnName;
-
                 if (getColumns(db, tableName).contains(columnName)) {
+                    columnName = resultColumnName(columnName);
                     properties.add(columnName);
-
                     String type = null;
-
                     try {
                         type = getTypeByClass(daoConfig.properties[j].type);
                     } catch (Exception exception) {
                     }
-
                     createTableStringBuilder.append(divider).append(columnName).append(" ").append(type);
-
                     if (daoConfig.properties[j].primaryKey) {
+                        primarykey = columnName;
                         createTableStringBuilder.append(" PRIMARY KEY");
                     }
-
                     divider = ",";
                 }
             }
@@ -284,10 +282,18 @@ public class MigrationHelper {
                 db.execSQL(createTableStringBuilder.toString());
                 LogUtil.e("MyOpenHelper  ---", "generateTempTables create sql== " + createTableStringBuilder.toString());
             } catch (Exception e) {
+                LogUtil.e("MyOpenHelper  ---", "generateTempTables create e== " + e.getMessage());
             }
-
+            if (properties != null && properties.size() > 0) {
+                Iterator<String> iterator = properties.iterator();
+                while (iterator.hasNext()) {
+                    String next = iterator.next();
+                    if (TextUtils.equals(primarykey, next)) {
+                        iterator.remove();
+                    }
+                }
+            }
             StringBuilder insertTableStringBuilder = new StringBuilder();
-
             insertTableStringBuilder.append("INSERT INTO ").append(tempTableName).append(" (");
             insertTableStringBuilder.append(TextUtils.join(",", properties));
             insertTableStringBuilder.append(") SELECT ");
@@ -297,6 +303,7 @@ public class MigrationHelper {
                 db.execSQL(insertTableStringBuilder.toString());
                 LogUtil.e("MyOpenHelper  ---", "generateTempTables insert sql== " + insertTableStringBuilder.toString());
             } catch (Exception e) {
+                LogUtil.e("MyOpenHelper  ---", "generateTempTables insert e== " + e.getMessage());
             }
         }
     }
@@ -317,7 +324,7 @@ public class MigrationHelper {
                 columns = new ArrayList<>(Arrays.asList(cursor.getColumnNames()));
             }
         } catch (Exception e) {
-            Log.e(tableName, e.getMessage(), e);
+            LogUtil.e("MyOpenHelper  ---getColumns", e.getMessage());
             e.printStackTrace();
         } finally {
             if (cursor != null)
@@ -342,59 +349,20 @@ public class MigrationHelper {
         throw exception;
     }
 
-
     /**
-     * 恢复旧数据 数据库表存放地方 String DB_PATH = "/data/data/com.haxi.mh/databases/";
-     */
-    public void rostoreOldData() {
-        String DB_PATH = "/data/data/com.haxi.mh/databases/";
-        File db = new File(DB_PATH);
-        if (db.exists()) {
-            rostoreMsgTextData(db);
-        }
-    }
-
-    /**
-     * 恢复数据库数据 "SELECT name FROM sqlite_master WHERE type='table' and name = 'PERSON' ORDER BY name;" 查找库中所对应的表
-     * "SELECT * FROM PERSON;" 查找表中的数据
+     * arr关键字 替换
      *
-     * @param db
+     * @param columnName
      */
-    private void rostoreMsgTextData(File db) {
-        File message_db = new File(db, "person_db");
-        if (message_db.exists()) {
-            SQLiteDatabase sqLiteDatabase = SQLiteDatabase.openDatabase(message_db.getAbsolutePath(), null, SQLiteDatabase.OPEN_READWRITE);
-            sqLiteDatabase.beginTransaction();
-            try {
-                Cursor cursor1 = sqLiteDatabase.rawQuery("SELECT name FROM sqlite_master WHERE type='table' and name = 'PERSON' ORDER BY name;", null);
-                if (cursor1.moveToFirst()) {
-                    Cursor cursor = sqLiteDatabase.rawQuery("SELECT * FROM PERSON;", null);
-                    boolean flag = cursor.moveToFirst();
-                    ArrayList<Person> list = new ArrayList<>();
-                    while (flag) {
-                        Person person = new Person();
-                        list.add(person);
-                        flag = cursor.moveToNext();
-                    }
-                    if (cursor != null) {
-                        cursor.close();
-                    }
-                    for (Person msg : list) {
-                        PersonUtils.getInstance().save(msg);
-                    }
-                    sqLiteDatabase.execSQL("DROP table PERSON");
-                }
-                if (cursor1 != null) {
-                    cursor1.close();
-                }
-                sqLiteDatabase.setTransactionSuccessful();
-            } catch (Exception ignored) {
+    String[] arr = new String[]{"FROM", "TO", "TIME", "CONTENT", "NAME", "SELECT", "INSERT", "DELETE", "UPDATE", "ADD", "VISIBLE", "TYPE"};
+    List<String> list = Arrays.asList(arr);
 
-            } finally {
-                sqLiteDatabase.endTransaction();
-            }
-            sqLiteDatabase.close();
-
+    private String resultColumnName(String columnName) {
+        if (list.contains(columnName)) {
+            columnName = "`" + columnName + "`";
         }
+        return columnName;
     }
+
+
 }

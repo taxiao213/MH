@@ -9,12 +9,20 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Process;
+import android.support.annotation.NonNull;
 import android.support.multidex.MultiDex;
 import android.text.TextUtils;
 import android.util.Log;
 
 import com.haxi.mh.network.manager.RxRetrofitApp;
 import com.haxi.mh.utils.model.LogUtils;
+import com.haxi.mh.utils.ui.smartrefreshlayout.api.DefaultRefreshFooterCreator;
+import com.haxi.mh.utils.ui.smartrefreshlayout.api.DefaultRefreshHeaderCreator;
+import com.haxi.mh.utils.ui.smartrefreshlayout.api.RefreshFooter;
+import com.haxi.mh.utils.ui.smartrefreshlayout.api.RefreshHeader;
+import com.haxi.mh.utils.ui.smartrefreshlayout.api.RefreshLayout;
+import com.haxi.mh.utils.ui.smartrefreshlayout.footer.ClassicsFooter;
+import com.haxi.mh.utils.ui.smartrefreshlayout.header.ClassicsHeader;
 import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.Logger;
 import com.tencent.bugly.Bugly;
@@ -32,6 +40,9 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.util.List;
+
+import static com.haxi.mh.utils.ui.smartrefreshlayout.SmartRefreshLayout.setDefaultRefreshFooterCreator;
+import static com.haxi.mh.utils.ui.smartrefreshlayout.SmartRefreshLayout.setDefaultRefreshHeaderCreator;
 
 
 /**
@@ -54,6 +65,26 @@ public class MyApplication extends Application {
     private static Handler mMainThreadHandler = null;
     //统计activity 生命周期
     private int appCount = 0;
+
+    static {
+        //设置全局的Header构建器
+        setDefaultRefreshHeaderCreator(new DefaultRefreshHeaderCreator() {
+            @Override
+            public RefreshHeader createRefreshHeader(Context context, RefreshLayout layout) {
+                layout.setPrimaryColorsId(R.color.white, R.color.grey_df);//全局设置主题颜色
+                return new ClassicsHeader(context);//.setTimeFormat(new DynamicTimeFormat("更新于 %s"));//指定为经典Header，默认是 贝塞尔雷达Header
+            }
+        });
+        //设置全局的Footer构建器
+        setDefaultRefreshFooterCreator(new DefaultRefreshFooterCreator() {
+            @NonNull
+            @Override
+            public RefreshFooter createRefreshFooter(@NonNull Context context, @NonNull RefreshLayout layout) {
+                return new ClassicsFooter(context).setDrawableSize(20);
+            }
+        });
+
+    }
 
     @Override
     public void onCreate() {
@@ -101,7 +132,7 @@ public class MyApplication extends Application {
             }
         });
 
-         /*小米推送 start*/
+        /*小米推送 start*/
         if (shouldInit()) {
             MiPushClient.registerPush(this, "2882303761517774776", "5441777412776");
         }

@@ -2,6 +2,7 @@ package com.haxi.mh.utils.db;
 
 import android.content.Context;
 
+import com.facebook.stetho.common.LogUtil;
 import com.haxi.mh.DaoMaster;
 import com.haxi.mh.PersonDao;
 
@@ -12,8 +13,9 @@ import java.util.concurrent.Executors;
 
 import static com.haxi.mh.DaoMaster.SCHEMA_VERSION;
 
+
 /**
- * 数据库升级策略 每次升级时
+ * 数据库升级策略
  * Created by Han on 2018/3/17
  * Email:yin13753884368@163.com
  * CSDN:http://blog.csdn.net/yin13753884368/article
@@ -33,16 +35,14 @@ public class MyOpenHelper extends DatabaseOpenHelper {
 
     @Override
     public void onUpgrade(final Database db, int oldVersion, int newVersion) {
-        super.onUpgrade(db, oldVersion, newVersion);
-        //判断之前的版本
         switch (oldVersion) {
-            case 1:
-            case 2:
-                //做相应的处理  哪个表增删字段，传入那个类，记得发送广播刷新界面 传入表的class文件即可
+            case 1://方法预留 哪个表增删字段，传入那个类，记得发送广播刷新界面
                 Executors.newSingleThreadExecutor().execute(new Runnable() {
                     @Override
                     public void run() {
+                        LogUtil.e("MyOpenHelper  --- onUpgrade");
                         MigrationHelper.getInstance().migrate(db, PersonDao.class);
+                        //通过广播刷新数据
                     }
                 });
         }

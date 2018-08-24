@@ -57,4 +57,7 @@ public class Constant {
 
     /* 桌面小插件广播 */
     public static final String RECEIVER_WIDGET = "com.mh.appwidget";
+
+    /* 打log */
+    public static final String LOG = "----mhlog----";
 }
