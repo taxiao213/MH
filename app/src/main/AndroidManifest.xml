@@ -299,6 +299,8 @@
         <!--</editor-fold>-->
 
         <!--<editor-fold desc="银联接入">-->
+
+        <uses-library android:name="org.simalliance.openmobileapi" android:required="false"/>
         <activity
             android:name="com.unionpay.uppay.PayActivity"
             android:configChanges="orientation|keyboardHidden|keyboard"
