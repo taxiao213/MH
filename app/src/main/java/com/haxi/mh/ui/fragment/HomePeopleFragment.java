@@ -12,9 +12,13 @@ import android.os.Messenger;
 import android.os.RemoteException;
 
 import com.haxi.mh.R;
-import com.haxi.mh.base.BaseFragment;
 import com.haxi.mh.aidl.MessengerService;
+import com.haxi.mh.base.BaseFragment;
+import com.haxi.mh.ui.activity.pay.alipay.PayActivity;
 import com.haxi.mh.utils.model.LogUtils;
+
+import butterknife.OnClick;
+import butterknife.Unbinder;
 
 /**
  * 我的
@@ -26,6 +30,7 @@ import com.haxi.mh.utils.model.LogUtils;
 
 public class HomePeopleFragment extends BaseFragment {
 
+    Unbinder unbinder;
     private Messenger grtReply = new Messenger(new MessengerHandler());
 
     private static class MessengerHandler extends Handler {
@@ -48,7 +53,7 @@ public class HomePeopleFragment extends BaseFragment {
             Bundle bundle = new Bundle();
             bundle.putString("msg", "hello this is client");
             obtain.setData(bundle);
-            obtain.replyTo =grtReply;
+            obtain.replyTo = grtReply;
             try {
                 messenger.send(obtain);
             } catch (RemoteException e) {
@@ -77,6 +82,13 @@ public class HomePeopleFragment extends BaseFragment {
     protected void initData() {
 
     }
+
+
+    @OnClick(R.id.pay)
+    public void onViewClicked() {
+        startActivity(new Intent(mActivity, PayActivity.class));
+    }
+
 
     @Override
     public void onDestroy() {

@@ -16,7 +16,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.haxi.mh.utils.ui.R;
+import com.haxi.mh.R;
 import com.haxi.mh.utils.ui.smartrefreshlayout.api.RefreshHeader;
 import com.haxi.mh.utils.ui.smartrefreshlayout.api.RefreshLayout;
 import com.haxi.mh.utils.ui.smartrefreshlayout.constant.RefreshState;

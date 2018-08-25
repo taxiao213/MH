@@ -8,7 +8,7 @@ import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.View;
 
-import com.haxi.mh.utils.ui.R;
+import com.haxi.mh.R;
 import com.haxi.mh.utils.ui.smartrefreshlayout.api.RefreshFooter;
 import com.haxi.mh.utils.ui.smartrefreshlayout.api.RefreshLayout;
 import com.haxi.mh.utils.ui.smartrefreshlayout.constant.RefreshState;

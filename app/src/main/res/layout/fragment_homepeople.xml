@@ -6,7 +6,6 @@
     android:orientation="vertical">
 
     <TextView
-
         android:id="@+id/dd"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -26,4 +25,12 @@
         app:center_text="我是"
         app:isvisible="0"
         app:left_text="你好" />
+
+    <TextView
+        android:id="@+id/pay"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/text_height"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:text="@string/pay" />
 </LinearLayout>

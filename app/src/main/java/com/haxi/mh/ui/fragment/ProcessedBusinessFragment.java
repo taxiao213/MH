@@ -5,7 +5,6 @@ import android.widget.ImageView;
 import com.haxi.mh.R;
 import com.haxi.mh.base.BaseFragment;
 import com.haxi.mh.model.MyAffairsYibanbiBean;
-import com.haxi.mh.utils.ui.view.xListView.XListView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,11 +21,10 @@ import butterknife.BindView;
  * Github:https://github.com/yin13753884368
  */
 
-public class ProcessedBusinessFragment extends BaseFragment implements XListView.IXListViewListener {
+public class ProcessedBusinessFragment extends BaseFragment  {
     @BindView(R.id.fl_back)
     ImageView mFlBack;
-    @BindView(R.id.affairsListview)
-    XListView mylistView;
+
 
     private String type;
     private int totalPages;
@@ -56,8 +54,7 @@ public class ProcessedBusinessFragment extends BaseFragment implements XListView
         pages = 1;
         lishiList = new ArrayList<>();
         if (!isInit) {
-            //UI只加载一次，每次请求数据刷新
-            mylistView.setXListViewListener(this);
+
         }
         isInit = true;
         getList(1, 10);
@@ -74,13 +71,6 @@ public class ProcessedBusinessFragment extends BaseFragment implements XListView
     }
 
 
-    @Override
-    public void onRefresh() {
-    }
-
-    @Override
-    public void onLoadMore() {
-    }
 
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {

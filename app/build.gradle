@@ -19,7 +19,7 @@ android {
         }
     }
 
-    compileOptions{
+    compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
@@ -62,20 +62,35 @@ android {
             zipAlignEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.config
-//            android.applicationVariants.all { variant ->
-//                variant.outputs.all { output ->
+            android.applicationVariants.all { variant ->
+                variant.outputs.each { output ->
+                    def outputFile = output.outputFile
+                    if (outputFile != null && outputFile.name.endsWith('.apk')) {
+                        def versionName = variant.versionName
+                        def flavor = variant.productFlavors[0].name
+                        def date = new Date()
+                        def name = variant.buildType.name
+                        def currentDate = date.format('_MM_dd_')
+                        def math = (int) (Math.random() * 100)
+                        def fileName = flavor + "_" + name + "_" + versionName + currentDate + math + ".apk"
+                        outputFile = new File(outputFile.parent, fileName)
+                    }
+                }
+
+//                variant.outputs.each { output ->
 //                    def outputFile = output.outputFile
 //                    if (outputFile != null && outputFile.name.endsWith('.apk')) {
 //                        def versionName = variant.versionName
 //                        def flavor = variant.productFlavors[0].name
 //                        def date = new Date()
+//                        def name = variant.buildType.name
 //                        def currentDate = date.format('yyyy_MM_dd_HH_mm')
 //                        // 输出apk名称为app_honry_debug_v1.4.7_2018_01_17_16_22.apk
-//                        def fileName = "app_" + flavor + "_debug_" + versionName + "_" + currentDate + ".apk"
-//                        outputFileName = new File(outputFile.parent, fileName)
+//                        def fileName = name + "_" + flavor + versionName + "_" + currentDate + ".apk"
+//                        outputFile = new File(outputFile.parent, fileName)
 //                    }
 //                }
-//            }
+            }
         }
 
         debug {
@@ -232,19 +247,9 @@ dependencies {
     /* Walle（瓦力）：Android Signature V2 Scheme签名下的新一代渠道包打包神器 */
     compile 'com.meituan.android.walle:library:1.1.5'
 
-    /* 友盟统计 */
+    /* 友盟推送 统计 */
     compile 'com.umeng.analytics:analytics:latest.integration'
     implementation project(':PushSDK')
-    implementation project(':matisse')
-
-    /* 微信支付 */
-    compile 'com.tencent.mm.opensdk:wechat-sdk-android-with-mta:+'
-
-    /* 百分比布局 */
-    compile 'com.android.support:percent:26.0.2'
-
-    /* sqlcipher 加密数据库 */
-    compile 'net.zetetic:android-database-sqlcipher:3.5.9@aar'
 
     /* 小米推送 */
     implementation files('libs/MiPush_SDK_Client_3_6_2.jar')
@@ -252,9 +257,27 @@ dependencies {
     /* 华为推送 */
     compile 'com.huawei.android.hms:push:2.6.0.301'
 
+    /* 相册 */
+    implementation project(':matisse')
+
+    /* 微信支付 */
+    compile 'com.tencent.mm.opensdk:wechat-sdk-android-with-mta:+'
+
+    /* 支付宝支付 */
+    implementation files('libs/alipaySdk-20180601.jar')
+
+    /* 百分比布局 */
+    compile 'com.android.support:percent:27.0.2'
+
+    /* sqlcipher 加密数据库 */
+    compile 'net.zetetic:android-database-sqlcipher:3.5.9@aar'
+
     /* webrtc */
     implementation 'org.webrtc:google-webrtc:1.0.+'
 
+    /* dagger2 */
+    compile 'com.google.dagger:dagger:2.17'
+    annotationProcessor 'com.google.dagger:dagger-compiler:2.17'
 }
 
 

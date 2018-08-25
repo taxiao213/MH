@@ -8,7 +8,7 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.haxi.mh.utils.ui.R;
+import com.haxi.mh.R;
 import com.haxi.mh.utils.ui.smartrefreshlayout.api.OnTwoLevelListener;
 import com.haxi.mh.utils.ui.smartrefreshlayout.api.RefreshHeader;
 import com.haxi.mh.utils.ui.smartrefreshlayout.api.RefreshInternal;

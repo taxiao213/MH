@@ -6,6 +6,8 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
@@ -17,21 +19,14 @@
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.GET_TASKS" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
     <uses-permission android:name="android.permission.BROADCAST_PACKAGE_ADDED" />
     <uses-permission android:name="android.permission.BROADCAST_PACKAGE_CHANGED" />
     <uses-permission android:name="android.permission.BROADCAST_PACKAGE_INSTALL" />
     <uses-permission android:name="android.permission.BROADCAST_PACKAGE_REPLACED" />
-    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
-    <uses-permission android:name="android.permission.SYSTEM_OVERLAY_WINDOW"/>
-    <!-- 小米 -->
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.SYSTEM_OVERLAY_WINDOW" />
+
     <uses-permission android:name="android.permission.GET_TASKS" />
-    <uses-permission android:name="android.permission.VIBRATE" />
 
     <permission
         android:name="com.haxi.mh.permission.MIPUSH_RECEIVE"
@@ -42,6 +37,8 @@
 
     <!--如果是安卓8.0，应用编译配置的targetSdkVersion>=26，请务必添加以下权限 -->
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
+
+
     <permission
         android:name="com.haxi.mh.aidl.ACCESS_BOOK_SERVICE"
         android:protectionLevel="normal" />
@@ -54,16 +51,7 @@
         android:roundIcon="@mipmap/mh_icon"
         android:supportsRtl="true"
         android:theme="@style/noActionBarTheme">
-        <!--友盟 ${UMENG_CHANNEL_VALUE}-->
-        <meta-data
-            android:name="UMENG_APPKEY"
-            android:value="5a3cf80fa40fa30d2200000e" />
-        <meta-data
-            android:name="UMENG_MESSAGE_SECRET"
-            android:value="762ddec636c570e9559a67accf4564ef" />
-        <meta-data
-            android:name="UMENG_CHANNEL"
-            android:value="${UMENG_CHANNEL_VALUE}" />
+
 
         <activity
             android:name=".ui.activity.MainActivity"
@@ -99,6 +87,12 @@
         <activity android:name=".ui.activity.ViewInterceptActivity" />
         <activity android:name=".ui.activity.ViewInterceptActivity2" />
         <activity android:name=".ui.activity.CustomizeActivity" />
+        <activity
+            android:name=".ui.activity.pay.alipay.PayActivity"
+            android:configChanges="orientation|keyboardHidden|navigation" />
+        <activity
+            android:name=".ui.activity.pay.alipay.AlipayActivity"
+            android:configChanges="orientation|keyboardHidden|navigation" />
 
         <receiver android:name=".utils.ui.view.test.AppWidget">
             <meta-data
@@ -164,8 +158,22 @@
             android:name="com.haxi.mh.aidl.BookManagerService"
             android:process=":roots" />
 
+        <!-- < 推 送 >  -->
 
-        <!--小米 start-->
+        <!--<editor-fold desc="友盟推送">-->
+        <meta-data
+            android:name="UMENG_APPKEY"
+            android:value="5a3cf80fa40fa30d2200000e" />
+        <meta-data
+            android:name="UMENG_MESSAGE_SECRET"
+            android:value="762ddec636c570e9559a67accf4564ef" />
+        <meta-data
+            android:name="UMENG_CHANNEL"
+            android:value="${UMENG_CHANNEL_VALUE}" />
+        <!--</editor-fold>-->
+
+
+        <!--<editor-fold desc="小米推送">-->
         <service
             android:name="com.xiaomi.push.service.XMPushService"
             android:enabled="true"
@@ -224,9 +232,9 @@
                 <action android:name="com.xiaomi.mipush.ERROR" />
             </intent-filter>
         </receiver>
-        <!--小米end -->
+        <!--</editor-fold>-->
 
-        <!--华为 start-->
+        <!--<editor-fold desc="华为推送">-->
         <!--“xxx.xxx.xxx”用实际的应用包名替换-->
         <provider
             android:name="com.huawei.hms.update.provider.UpdateProvider"
@@ -266,10 +274,26 @@
         <!--value的值“appid”用实际申请的应用ID替换，来源于开发者联盟网站应用的权益详情。-->
         <meta-data
             android:name="com.huawei.hms.client.appid"
-            android:value="100263385">
+            android:value="100263385"></meta-data>
+        <!--</editor-fold>-->
 
-        </meta-data>
-        <!--华为end-->
+        <!-- < 支 付 >  -->
+
+        <!--<editor-fold desc="支付宝接入">-->
+        <activity
+            android:name="com.alipay.sdk.app.H5PayActivity"
+            android:configChanges="orientation|keyboardHidden|navigation|screenSize"
+            android:exported="false"
+            android:screenOrientation="behind"
+            android:windowSoftInputMode="adjustResize|stateHidden" />
+        <activity
+            android:name="com.alipay.sdk.app.H5AuthActivity"
+            android:configChanges="orientation|keyboardHidden|navigation"
+            android:exported="false"
+            android:screenOrientation="behind"
+            android:windowSoftInputMode="adjustResize|stateHidden" />
+
+        <!--</editor-fold>-->
     </application>
 
 </manifest>

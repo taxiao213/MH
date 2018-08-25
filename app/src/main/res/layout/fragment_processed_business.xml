@@ -13,9 +13,5 @@
         android:src="@drawable/kong"
         android:visibility="gone"/>
 
-    <com.haxi.mh.utils.ui.view.xListView.XListView
-        android:id="@+id/affairsListview"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:divider="@null"/>
+
 </LinearLayout>
