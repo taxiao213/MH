@@ -5,6 +5,7 @@ import android.view.View;
 
 import com.haxi.mh.R;
 import com.haxi.mh.base.BaseActivity;
+import com.haxi.mh.ui.activity.pay.ylpay.YlPayActivity;
 
 import butterknife.OnClick;
 
@@ -37,6 +38,7 @@ public class PayActivity extends BaseActivity {
             case R.id.tv_wxpay:
                 break;
             case R.id.tv_ylpay:
+                startActivity(new Intent(mActivity, YlPayActivity.class));
                 break;
         }
     }

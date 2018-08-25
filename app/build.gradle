@@ -266,6 +266,10 @@ dependencies {
     /* 支付宝支付 */
     implementation files('libs/alipaySdk-20180601.jar')
 
+    /* 银联支付 */
+    implementation files('libs/UPPayAssistEx.jar')
+    implementation files('libs/UPPayPluginExPro.jar')
+
     /* 百分比布局 */
     compile 'com.android.support:percent:27.0.2'
 
@@ -278,6 +282,7 @@ dependencies {
     /* dagger2 */
     compile 'com.google.dagger:dagger:2.17'
     annotationProcessor 'com.google.dagger:dagger-compiler:2.17'
+
 }
 
 

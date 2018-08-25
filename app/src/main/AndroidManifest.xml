@@ -93,6 +93,9 @@
         <activity
             android:name=".ui.activity.pay.alipay.AlipayActivity"
             android:configChanges="orientation|keyboardHidden|navigation" />
+        <activity
+            android:name=".ui.activity.pay.ylpay.YlPayActivity"
+            android:configChanges="orientation|keyboardHidden|navigation" />
 
         <receiver android:name=".utils.ui.view.test.AppWidget">
             <meta-data
@@ -293,6 +296,19 @@
             android:screenOrientation="behind"
             android:windowSoftInputMode="adjustResize|stateHidden" />
 
+        <!--</editor-fold>-->
+
+        <!--<editor-fold desc="银联接入">-->
+        <activity
+            android:name="com.unionpay.uppay.PayActivity"
+            android:configChanges="orientation|keyboardHidden|keyboard"
+            android:screenOrientation="portrait"/>
+
+        <activity
+            android:name="com.unionpay.UPPayWapActivity"
+            android:configChanges="orientation|keyboardHidden|fontScale"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize"/>
         <!--</editor-fold>-->
     </application>
 
