@@ -2,10 +2,10 @@ package com.haxi.mh.ui.activity.pay.ylpay;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
 
 import com.haxi.mh.R;
@@ -31,12 +31,39 @@ import static com.haxi.mh.ui.activity.pay.ylpay.RSAUtil.verify;
  * CSDN:http://blog.csdn.net/yin13753884368/article
  * Github:https://github.com/yin13753884368
  */
-public class YlPayActivity extends BaseActivity implements Handler.Callback,
-        Runnable {
+public class YlPayActivity extends BaseActivity {
 
-    public static final String LOG_TAG = "PayDemo";
-    private Context mContext = null;
-    private Handler mHandler = null;
+    private Handler mHandler = new Handler(Looper.getMainLooper()) {
+        @Override
+        public void handleMessage(Message msg) {
+            if (mLoadingDialog.isShowing()) {
+                mLoadingDialog.dismiss();
+            }
+
+            String tn = "";
+            if (msg.obj == null || ((String) msg.obj).length() == 0) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(YlPayActivity.this);
+                builder.setTitle("错误提示");
+                builder.setMessage("网络连接失败,请重试!");
+                builder.setNegativeButton("确定",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+                builder.create().show();
+            } else {
+                tn = (String) msg.obj;
+                /*************************************************
+                 * 步骤2：通过银联工具类启动支付插件
+                 ************************************************/
+                doStartUnionPayPlugin(tn, mMode);
+            }
+
+            super.handleMessage(msg);
+        }
+    };
     private ProgressDialog mLoadingDialog = null;
 
     public static final int PLUGIN_VALID = 0;
@@ -70,41 +97,41 @@ public class YlPayActivity extends BaseActivity implements Handler.Callback,
         /*************************************************
          * 步骤1：从网络开始,获取交易流水号即TN
          ************************************************/
-        new Thread(YlPayActivity.this).start();
+
+        new Thread() {
+            @Override
+            public void run() {
+                String tn = null;
+                InputStream is;
+                try {
+                    String url = TN_URL_01;
+                    URL myURL = new URL(url);
+                    URLConnection ucon = myURL.openConnection();
+                    ucon.setConnectTimeout(120000);
+                    is = ucon.getInputStream();
+                    int i = -1;
+                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                    while ((i = is.read()) != -1) {
+                        baos.write(i);
+                    }
+
+                    tn = baos.toString();
+                    is.close();
+                    baos.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                Message msg = mHandler.obtainMessage();
+                msg.obj = tn;
+                mHandler.sendMessage(msg);
+            }
+        }.start();
+
     }
 
-    @Override
-    public boolean handleMessage(Message msg) {
-        if (mLoadingDialog.isShowing()) {
-            mLoadingDialog.dismiss();
-        }
 
-        String tn = "";
-        if (msg.obj == null || ((String) msg.obj).length() == 0) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle("错误提示");
-            builder.setMessage("网络连接失败,请重试!");
-            builder.setNegativeButton("确定",
-                    new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                        }
-                    });
-            builder.create().show();
-        } else {
-            tn = (String) msg.obj;
-            /*************************************************
-             * 步骤2：通过银联工具类启动支付插件
-             ************************************************/
-            doStartUnionPayPlugin(this, tn, mMode);
-        }
-
-
-        return false;
-    }
-
-    private void doStartUnionPayPlugin(YlPayActivity ylPayActivity, String tn, String mode) {
+    private void doStartUnionPayPlugin(String tn, String mode) {
         // mMode参数解释：
         // 0 - 启动银联正式环境
         // 1 - 连接银联测试环境
@@ -137,35 +164,6 @@ public class YlPayActivity extends BaseActivity implements Handler.Callback,
         }
     }
 
-    @Override
-    public void run() {
-        String tn = null;
-        InputStream is;
-        try {
-
-            String url = TN_URL_01;
-
-            URL myURL = new URL(url);
-            URLConnection ucon = myURL.openConnection();
-            ucon.setConnectTimeout(120000);
-            is = ucon.getInputStream();
-            int i = -1;
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            while ((i = is.read()) != -1) {
-                baos.write(i);
-            }
-
-            tn = baos.toString();
-            is.close();
-            baos.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        Message msg = mHandler.obtainMessage();
-        msg.obj = tn;
-        mHandler.sendMessage(msg);
-    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
