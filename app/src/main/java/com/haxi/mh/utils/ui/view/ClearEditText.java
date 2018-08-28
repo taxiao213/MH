@@ -14,7 +14,11 @@ import com.haxi.mh.R;
 
 
 /**
- * Created by Han on 2017/4/24.
+ * 输入控件在删除键
+ * Created by Han on 2018/8/25
+ * Email:yin13753884368@163.com
+ * CSDN:http://blog.csdn.net/yin13753884368/article
+ * Github:https://github.com/yin13753884368
  */
 
 public class ClearEditText extends android.support.v7.widget.AppCompatEditText implements View.OnFocusChangeListener,

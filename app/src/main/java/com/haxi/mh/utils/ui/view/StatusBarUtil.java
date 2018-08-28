@@ -18,8 +18,11 @@ import java.lang.reflect.Method;
 import java.util.regex.Pattern;
 
 /**
- * 状态栏透明
- * Created by SCWANG on 2016/10/26.
+ * 沉浸式 状态栏透明
+ * Created by Han on 2018/8/25
+ * Email:yin13753884368@163.com
+ * CSDN:http://blog.csdn.net/yin13753884368/article
+ * Github:https://github.com/yin13753884368
  */
 
 @SuppressWarnings("unused")
