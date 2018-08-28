@@ -27,7 +27,7 @@ import butterknife.OnClick;
  * CSDN:http://blog.csdn.net/yin13753884368/article
  * Github:https://github.com/yin13753884368
  */
-public class AlipayActivity extends BaseActivity implements IBaseView {
+public class AlipayActivity extends BaseActivity {
 
     /**
      * 支付宝支付业务：入参app_id
@@ -158,21 +158,6 @@ public class AlipayActivity extends BaseActivity implements IBaseView {
                 authV2();
                 break;
         }
-    }
-
-    @Override
-    public void showLoading() {
-
-    }
-
-    @Override
-    public void showComplete() {
-
-    }
-
-    @Override
-    public void click() {
-
     }
 
     /**

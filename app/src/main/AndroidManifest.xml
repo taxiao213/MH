@@ -88,13 +88,16 @@
         <activity android:name=".ui.activity.ViewInterceptActivity2" />
         <activity android:name=".ui.activity.CustomizeActivity" />
         <activity
-            android:name=".ui.activity.pay.alipay.PayActivity"
+            android:name=".ui.activity.pay.PayActivity"
             android:configChanges="orientation|keyboardHidden|navigation" />
         <activity
             android:name=".ui.activity.pay.alipay.AlipayActivity"
             android:configChanges="orientation|keyboardHidden|navigation" />
         <activity
             android:name=".ui.activity.pay.ylpay.YlPayActivity"
+            android:configChanges="orientation|keyboardHidden|navigation" />
+        <activity
+            android:name=".ui.activity.pay.wxpay.WxpayActivity"
             android:configChanges="orientation|keyboardHidden|navigation" />
 
         <receiver android:name=".utils.ui.view.test.AppWidget">
@@ -300,17 +303,20 @@
 
         <!--<editor-fold desc="银联接入">-->
 
-        <uses-library android:name="org.simalliance.openmobileapi" android:required="false"/>
+        <uses-library
+            android:name="org.simalliance.openmobileapi"
+            android:required="false" />
+
         <activity
             android:name="com.unionpay.uppay.PayActivity"
             android:configChanges="orientation|keyboardHidden|keyboard"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
 
         <activity
             android:name="com.unionpay.UPPayWapActivity"
             android:configChanges="orientation|keyboardHidden|fontScale"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustResize"/>
+            android:windowSoftInputMode="adjustResize" />
         <!--</editor-fold>-->
     </application>
 

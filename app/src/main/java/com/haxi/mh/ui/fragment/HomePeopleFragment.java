@@ -14,7 +14,7 @@ import android.os.RemoteException;
 import com.haxi.mh.R;
 import com.haxi.mh.aidl.MessengerService;
 import com.haxi.mh.base.BaseFragment;
-import com.haxi.mh.ui.activity.pay.alipay.PayActivity;
+import com.haxi.mh.ui.activity.pay.PayActivity;
 import com.haxi.mh.utils.model.LogUtils;
 
 import butterknife.OnClick;
