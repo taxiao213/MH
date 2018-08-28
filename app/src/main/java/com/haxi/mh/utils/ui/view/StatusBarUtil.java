@@ -32,7 +32,7 @@ public class StatusBarUtil {
     public static float DEFAULT_ALPHA = 0;//Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP ? 0.2f : 0.3f;
     public static final int MIN_API = 19;
 
-    //<editor-fold desc="沉侵">
+    //<editor-fold desc="沉浸式状态栏">
     public static void immersive(Activity activity) {
         immersive(activity, DEFAULT_COLOR, DEFAULT_ALPHA);
     }
@@ -75,7 +75,7 @@ public class StatusBarUtil {
     }
     //</editor-fold>
 
-    //<editor-fold desc="DarkMode">
+    //<editor-fold desc="DarkMode 状态栏图标变色">
     public static void darkMode(Activity activity, boolean dark) {
         if (isFlyme4Later()) {
             darkModeForFlyme4(activity.getWindow(), dark);
