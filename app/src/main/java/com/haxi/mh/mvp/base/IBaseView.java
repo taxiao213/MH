@@ -8,6 +8,9 @@ package com.haxi.mh.mvp.base;
  * Github:https://github.com/yin13753884368
  */
 public interface IBaseView {
+    /* 加载数据 */
+    void loadingData();
+
     /* 加载中 */
     void loading();
 
