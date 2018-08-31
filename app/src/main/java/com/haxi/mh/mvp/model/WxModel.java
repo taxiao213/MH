@@ -1,7 +1,11 @@
 package com.haxi.mh.mvp.model;
 
 import com.haxi.mh.mvp.base.BaseActivityM;
+import com.haxi.mh.mvp.entity.WxInfoDao;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observable;
@@ -26,7 +30,7 @@ public class WxModel {
         this.onLoadDataListener = onLoadDataListener;
     }
 
-    public void load( ) {
+    public void load() {
         //倒计时
         Observable.interval(1000, 1000, TimeUnit.MILLISECONDS)
                 .subscribeOn(Schedulers.io())
@@ -60,4 +64,29 @@ public class WxModel {
         }
     }
 
+    public void loadAdapterData() {
+
+        Executors.newSingleThreadExecutor().execute(new Runnable() {
+            @Override
+            public void run() {
+                List<WxInfoDao> daoList = new ArrayList<>();
+                for (int i = 0; i < 30; i++) {
+                    WxInfoDao wxModel = new WxInfoDao("李 " + i, i);
+                    daoList.add(wxModel);
+                }
+                baseActivityM.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        onLoadDataListener.success(2, daoList);
+                    }
+                });
+            }
+        });
+    }
+
+    public void destroy() {
+        if (disposable != null && !disposable.isDisposed()) {
+            disposable.dispose();
+        }
+    }
 }

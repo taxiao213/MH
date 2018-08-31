@@ -9,6 +9,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 
+import com.haxi.mh.MyApplication;
 import com.haxi.mh.R;
 import com.haxi.mh.utils.ui.ActivityManager;
 
@@ -51,8 +52,12 @@ public abstract class BaseActivityM extends AppCompatActivity implements IBaseVi
         ActivityManager.getInstances().add(this);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         mActivity = this;
+        initView();
         getData();
+        MyApplication.getRefWatcher().watch(this);
     }
+
+    protected abstract void initView();
 
     protected abstract void getData();
 
@@ -85,7 +90,9 @@ public abstract class BaseActivityM extends AppCompatActivity implements IBaseVi
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        bind.unbind();
+        if (bind != null) {
+            bind.unbind();
+        }
         ActivityManager.getInstances().remove(this);
     }
 }

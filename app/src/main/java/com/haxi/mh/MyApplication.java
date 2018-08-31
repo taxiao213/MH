@@ -25,6 +25,8 @@ import com.haxi.mh.utils.ui.smartrefreshlayout.footer.ClassicsFooter;
 import com.haxi.mh.utils.ui.smartrefreshlayout.header.ClassicsHeader;
 import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.Logger;
+import com.squareup.leakcanary.LeakCanary;
+import com.squareup.leakcanary.RefWatcher;
 import com.tencent.bugly.Bugly;
 import com.tencent.bugly.beta.Beta;
 import com.tencent.bugly.crashreport.CrashReport;
@@ -65,6 +67,8 @@ public class MyApplication extends Application {
     private static Handler mMainThreadHandler = null;
     //统计activity 生命周期
     private int appCount = 0;
+    //leakcanary
+    private RefWatcher watcher;
 
     static {
         //设置全局的Header构建器
@@ -85,6 +89,7 @@ public class MyApplication extends Application {
         });
 
     }
+
 
     @Override
     public void onCreate() {
@@ -210,6 +215,17 @@ public class MyApplication extends Application {
 //                .builder(mContext)
 //                .createInitializationOptions());
 
+        /* LeakCanary */
+        if (LeakCanary.isInAnalyzerProcess(this)) {
+            // This process is dedicated to LeakCanary for heap analysis.
+            // You should not init your app in this process.
+            return;
+        }
+        watcher = LeakCanary.install(this);
+    }
+
+    public static RefWatcher getRefWatcher() {
+        return mContext.watcher;
     }
 
     private void regToWx() {

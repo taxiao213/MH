@@ -1,9 +1,12 @@
 package com.haxi.mh.mvp.present;
 
 import com.haxi.mh.mvp.base.BaseActivityM;
+import com.haxi.mh.mvp.entity.WxInfoDao;
 import com.haxi.mh.mvp.model.OnLoadDataListener;
 import com.haxi.mh.mvp.model.WxModel;
 import com.haxi.mh.mvp.view.IWxView;
+
+import java.util.List;
 
 /**
  * 微信支付 present
@@ -12,7 +15,7 @@ import com.haxi.mh.mvp.view.IWxView;
  * CSDN:http://blog.csdn.net/yin13753884368/article
  * Github:https://github.com/yin13753884368
  */
-public class WxPresent implements OnLoadDataListener<Long> {
+public class WxPresent implements OnLoadDataListener<Object> {
     private WxModel wxModel;
     private BaseActivityM baseActivityM;
     private IWxView iWxView;
@@ -69,14 +72,35 @@ public class WxPresent implements OnLoadDataListener<Long> {
     }
 
     @Override
-    public void success(int type, Long object) {
-        if (type == 1) {
-            iWxView.loadingSuccess();
-            if (object != null) {
-                iWxView.setText(object);
-            }
+    public void success(int type, Object object) {
+        iWxView.loadingSuccess();
+        switch (type) {
+            case 1:
+                if (object != null) {
+                    iWxView.setText((Long) object);
+                }
+                break;
+            case 2:
+                if (object != null) {
+                    List<WxInfoDao> daoList = (List<WxInfoDao>) object;
+                    if (daoList != null && daoList.size() > 0) {
+                        iWxView.setAdapter(daoList);
+                    }
+                }
+                break;
+        }
+
+    }
+
+    @Override
+    public void destroy() {
+        if (wxModel != null) {
+            wxModel.destroy();
         }
     }
 
 
+    public void loadAdapterData() {
+        wxModel.loadAdapterData();
+    }
 }

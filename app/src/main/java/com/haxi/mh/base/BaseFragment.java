@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.haxi.mh.MyApplication;
 import com.haxi.mh.model.MessageEvent;
 
 import org.greenrobot.eventbus.EventBus;
@@ -38,6 +39,7 @@ public abstract class BaseFragment extends Fragment {
         bind = ButterKnife.bind(this, view);
         initView();
         initData();
+        MyApplication.getRefWatcher().watch(this);
         return view;
     }
 

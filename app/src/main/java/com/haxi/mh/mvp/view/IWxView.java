@@ -11,4 +11,6 @@ import com.haxi.mh.mvp.base.IBaseView;
  */
 public interface IWxView extends IBaseView {
     void setText(Long log);
+
+    void setAdapter(Object object);
 }

@@ -36,6 +36,7 @@ import com.haxi.mh.ui.activity.BusinessApprovalActivity;
 import com.haxi.mh.ui.activity.MaterialDesignActivity;
 import com.haxi.mh.utils.model.LogUtils;
 import com.haxi.mh.utils.ui.toast.ToastUtils;
+import com.haxi.mh.utils.ui.view.StatusBarUtil;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -105,6 +106,7 @@ public class HomeCreateTaskFragment extends BaseFragment {
                 return false;
             }
         });
+        StatusBarUtil.setPaddingSmart(mActivity, titleTv);
     }
 
     @Override

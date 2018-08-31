@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.view.MotionEvent;
 import android.view.inputmethod.InputMethodManager;
 
+import com.haxi.mh.MyApplication;
 import com.haxi.mh.model.MessageEvent;
 import com.haxi.mh.utils.ui.ActivityManager;
 import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
@@ -48,7 +49,7 @@ public abstract class BaseActivity extends RxAppCompatActivity {
         //            //透明导航栏
         //            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
         //        }
-
+        MyApplication.getRefWatcher().watch(this);
     }
 
 

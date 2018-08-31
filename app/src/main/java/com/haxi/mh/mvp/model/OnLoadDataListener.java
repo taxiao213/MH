@@ -11,4 +11,6 @@ public interface OnLoadDataListener<T> {
     void error(int type);
 
     void success(int type, T object);
+
+    void destroy();
 }
