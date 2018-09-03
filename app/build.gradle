@@ -32,7 +32,7 @@ android {
     //签名 引用位置
     signingConfigs {
         config {
-            storeFile file("E:\\project\\mh.jks")
+            storeFile file("H:\\Software\\Android\\Git\\MH\\mh.jks")
             storePassword "mh123456"
             keyAlias "key_mh"
             keyPassword "mh123456"
@@ -126,6 +126,14 @@ android {
         productFlavors.all { flavor ->
             flavor.manifestPlaceholders = [UMENG_CHANNEL_VALUE: name]
         }
+    }
+
+    packagingOptions {
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/NOTICE.txt'
     }
 
 }
@@ -286,9 +294,14 @@ dependencies {
     /* leakcanary */
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.6.1'
     releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.6.1'
+
     // Optional, if you use support library fragments:
     debugImplementation 'com.squareup.leakcanary:leakcanary-support-fragment:1.6.1'
+    compile 'com.tencent.mm.opensdk:wechat-sdk-android-with-mta:5.1.6'
+    implementation files('libs/httpclient-4.5.6.jar')
+    implementation files('libs/httpcore-4.4.10.jar')
 }
+
 
 
 walle {

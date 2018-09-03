@@ -20,10 +20,18 @@
         app:layout_constraintTop_toBottomOf="@id/tv_alipay" />
 
     <TextView
+        android:id="@+id/tv_wxpay2"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/text_height"
+        android:gravity="center"
+        android:text="@string/pay_wxpay2"
+        app:layout_constraintTop_toBottomOf="@id/tv_wxpay" />
+
+    <TextView
         android:id="@+id/tv_ylpay"
         android:layout_width="match_parent"
         android:layout_height="@dimen/text_height"
         android:gravity="center"
         android:text="@string/pay_ylpay"
-        app:layout_constraintTop_toBottomOf="@id/tv_wxpay" />
+        app:layout_constraintTop_toBottomOf="@id/tv_wxpay2" />
 </android.support.constraint.ConstraintLayout>

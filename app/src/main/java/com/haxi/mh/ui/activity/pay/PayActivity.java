@@ -6,6 +6,7 @@ import android.view.View;
 import com.haxi.mh.R;
 import com.haxi.mh.base.BaseActivity;
 import com.haxi.mh.ui.activity.pay.alipay.AlipayActivity;
+import com.haxi.mh.ui.activity.pay.wxpay.Wxpay2Activity;
 import com.haxi.mh.ui.activity.pay.wxpay.WxpayActivity;
 import com.haxi.mh.ui.activity.pay.ylpay.YlPayActivity;
 
@@ -31,7 +32,7 @@ public class PayActivity extends BaseActivity {
     }
 
 
-    @OnClick({R.id.tv_alipay, R.id.tv_wxpay, R.id.tv_ylpay})
+    @OnClick({R.id.tv_alipay, R.id.tv_wxpay, R.id.tv_wxpay2, R.id.tv_ylpay})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_alipay:
@@ -39,6 +40,9 @@ public class PayActivity extends BaseActivity {
                 break;
             case R.id.tv_wxpay:
                 startActivity(new Intent(mActivity, WxpayActivity.class));
+                break;
+            case R.id.tv_wxpay2:
+                startActivity(new Intent(mActivity, Wxpay2Activity.class));
                 break;
             case R.id.tv_ylpay:
                 startActivity(new Intent(mActivity, YlPayActivity.class));
