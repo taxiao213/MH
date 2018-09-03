@@ -75,6 +75,7 @@ public class YlPayActivity extends BaseActivity {
      *****************************************************************/
     private final String mMode = "01";
     private static final String TN_URL_01 = "http://101.231.204.84:8091/sim/getacptn";
+//    private static final String TN_URL_01 = "http://192.168.0.42:8081/ACPSample_WuTiaoZhuan/getacptn";
 
 
     @Override
