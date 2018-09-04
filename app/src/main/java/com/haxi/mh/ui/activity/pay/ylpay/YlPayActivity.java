@@ -33,6 +33,19 @@ import static com.haxi.mh.ui.activity.pay.ylpay.RSAUtil.verify;
  */
 public class YlPayActivity extends BaseActivity {
 
+    private ProgressDialog mLoadingDialog = null;
+    public static final int PLUGIN_VALID = 0;
+    public static final int PLUGIN_NOT_INSTALLED = -1;
+    public static final int PLUGIN_NEED_UPGRADE = 2;
+
+    /*****************************************************************
+     * mMode参数解释： "00" - 启动银联正式环境 "01" - 连接银联测试环境
+     *****************************************************************/
+    private final String mMode = "01";
+
+    private static final String TN_URL_01 = "http://101.231.204.84:8091/sim/getacptn";
+//    private static final String TN_URL_01 = "http://192.168.0.42:8081/ACPSample_WuTiaoZhuan/getacptn";
+
     private Handler mHandler = new Handler(Looper.getMainLooper()) {
         @Override
         public void handleMessage(Message msg) {
@@ -64,19 +77,6 @@ public class YlPayActivity extends BaseActivity {
             super.handleMessage(msg);
         }
     };
-    private ProgressDialog mLoadingDialog = null;
-
-    public static final int PLUGIN_VALID = 0;
-    public static final int PLUGIN_NOT_INSTALLED = -1;
-    public static final int PLUGIN_NEED_UPGRADE = 2;
-
-    /*****************************************************************
-     * mMode参数解释： "00" - 启动银联正式环境 "01" - 连接银联测试环境
-     *****************************************************************/
-    private final String mMode = "01";
-    private static final String TN_URL_01 = "http://101.231.204.84:8091/sim/getacptn";
-//    private static final String TN_URL_01 = "http://192.168.0.42:8081/ACPSample_WuTiaoZhuan/getacptn";
-
 
     @Override
     protected int getLayoutRes() {
@@ -137,6 +137,9 @@ public class YlPayActivity extends BaseActivity {
         // 0 - 启动银联正式环境
         // 1 - 连接银联测试环境
         int ret = UPPayAssistEx.startPay(this, null, null, tn, mode);
+        // 返回值ret
+        // UPPayAssistEx.PLUGIN_NOT_FOUND = -1;     // 手机端未安装支付控件，需安装支付控件
+        // UPPayAssistEx.PLUGIN_VALID = 0;          //手机端已经安装支付控件，并启动
         if (ret == PLUGIN_NEED_UPGRADE || ret == PLUGIN_NOT_INSTALLED) {
             // 需要重新安装控件
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
