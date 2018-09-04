@@ -32,7 +32,7 @@ android {
     //签名 引用位置
     signingConfigs {
         config {
-            storeFile file("H:\\Software\\Android\\Git\\MH\\mh.jks")
+            storeFile file("E:\\project\\MH\\mh.jks")
             storePassword "mh123456"
             keyAlias "key_mh"
             keyPassword "mh123456"
@@ -269,14 +269,16 @@ dependencies {
     implementation project(':matisse')
 
     /* 微信支付 */
-    compile 'com.tencent.mm.opensdk:wechat-sdk-android-with-mta:+'
+    compile 'com.tencent.mm.opensdk:wechat-sdk-android-with-mta:5.1.6'
+//    implementation files('libs/httpclient-4.5.6.jar')
+//    implementation files('libs/httpcore-4.4.10.jar')
 
     /* 支付宝支付 */
-    implementation files('libs/alipaySdk-20180601.jar')
+//    implementation files('libs/alipaySdk-20180601.jar')
 
     /* 银联支付 */
-    implementation files('libs/UPPayAssistEx.jar')
-    implementation files('libs/UPPayPluginExPro.jar')
+//    implementation files('libs/UPPayAssistEx.jar')
+//    implementation files('libs/UPPayPluginExPro.jar')
 
     /* 百分比布局 */
     compile 'com.android.support:percent:27.0.2'
@@ -297,9 +299,7 @@ dependencies {
 
     // Optional, if you use support library fragments:
     debugImplementation 'com.squareup.leakcanary:leakcanary-support-fragment:1.6.1'
-    compile 'com.tencent.mm.opensdk:wechat-sdk-android-with-mta:5.1.6'
-    implementation files('libs/httpclient-4.5.6.jar')
-    implementation files('libs/httpcore-4.4.10.jar')
+
 }
 
 
