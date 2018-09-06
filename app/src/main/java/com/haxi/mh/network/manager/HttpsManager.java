@@ -65,7 +65,7 @@ public class HttpsManager {
          */
         OkHttpClient.Builder builder = new OkHttpClient.Builder()
                 .addInterceptor(new AddParameterInterceptor())//http请求拦截器 用来拼装公共参数
-                .connectionPool(new ConnectionPool(100, 10, TimeUnit.MINUTES))//连接池
+                .connectionPool(new ConnectionPool(6, 6, TimeUnit.MINUTES))//连接池
                 .connectTimeout(connectTime, TimeUnit.SECONDS)//请求超时时间
                 .readTimeout(60, TimeUnit.SECONDS)//读取超时时间
                 .writeTimeout(60, TimeUnit.SECONDS);//写入超时时间
