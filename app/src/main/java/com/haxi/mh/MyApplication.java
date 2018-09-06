@@ -6,9 +6,11 @@ import android.app.Application;
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Process;
+import android.os.StrictMode;
 import android.support.annotation.NonNull;
 import android.support.multidex.MultiDex;
 import android.text.TextUtils;
@@ -222,6 +224,13 @@ public class MyApplication extends Application {
             return;
         }
         watcher = LeakCanary.install(this);
+
+        //获取打开相机权限
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
+            StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
+            StrictMode.setVmPolicy(builder.build());
+            builder.detectFileUriExposure();
+        }
     }
 
     public static RefWatcher getRefWatcher() {

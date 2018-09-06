@@ -67,5 +67,6 @@
     <string name="pay_ylpay">银联支付</string>
     <string name="pay_start">发起支付</string>
     <string name="pay_auth_login">支付宝授权登录</string>
-
+    <string name="permissions_refuse_authorization">被永久拒绝授权，请手动授予权限</string>
+    <string name="permissions_rror">获取权限失败</string>
 </resources>

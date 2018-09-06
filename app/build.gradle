@@ -179,8 +179,8 @@ dependencies {
     compile 'com.google.code.gson:gson:2.8.2'
 
     /* Glide */
-    implementation 'com.github.bumptech.glide:glide:4.4.0'
-    annotationProcessor 'com.github.bumptech.glide:compiler:4.4.0'
+    implementation 'com.github.bumptech.glide:glide:4.8.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.8.0'
 
     /* EventBus */
     compile 'org.greenrobot:eventbus:3.1.1'
@@ -299,6 +299,9 @@ dependencies {
 
     // Optional, if you use support library fragments:
     debugImplementation 'com.squareup.leakcanary:leakcanary-support-fragment:1.6.1'
+
+    /* xxpermissions */
+    compile 'com.hjq:xxpermissions:5.0'
 
 }
 

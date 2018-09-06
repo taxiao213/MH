@@ -355,5 +355,9 @@ public static java.lang.String TABLENAME;
 -keep class com.ta.utdid2.** { *;}
 -keep class com.ut.device.** { *;}
 
+
+# XXPermissions混淆
+-dontwarn com.hjq.permissions.**
+
 #---------------------------------------------------------------------
 
