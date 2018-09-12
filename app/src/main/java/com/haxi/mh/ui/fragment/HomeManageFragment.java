@@ -12,13 +12,18 @@ import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.haxi.mh.R;
 import com.haxi.mh.base.BaseFragment;
+import com.haxi.mh.model.db.Person;
 import com.haxi.mh.service.TestService;
+import com.haxi.mh.ui.adapter.HomeManagerAdapter;
+import com.haxi.mh.utils.animation.AnimationUtils;
 import com.haxi.mh.utils.fileselector.FileSelectActivity;
 import com.haxi.mh.utils.fileselector.FileSelectConstant;
 import com.haxi.mh.utils.model.LogUtils;
@@ -54,6 +59,18 @@ public class HomeManageFragment extends BaseFragment implements EasyPermissions.
     ImageView titleBack;
     @BindView(R.id.title_tv)
     TextView titleTv;
+    @BindView(R.id.tv_ceshi)
+    TextView tvCeshi;
+    @BindView(R.id.ry)
+    RecyclerView ry;
+    @BindView(R.id.ry1)
+    RecyclerView ry1;
+    private ArrayList<Person> list;
+    private ArrayList<Person> list1;
+    private HomeManagerAdapter adapter;
+    private HomeManagerAdapter adapter1;
+    private boolean isExpand = false;
+    private int height = 150;
 
     @Override
     protected int getLayoutRes() {
@@ -64,7 +81,24 @@ public class HomeManageFragment extends BaseFragment implements EasyPermissions.
     protected void initView() {
         titleBack.setVisibility(View.GONE);
         titleTv.setText(R.string.homemanage_name);
-        //DataBinding
+        list = new ArrayList<>();
+        list1 = new ArrayList<>();
+        for (int i = 0; i < 10; i++) {
+            Person person = new Person();
+            person.setName(i + "");
+            list1.add(person);
+        }
+
+
+        adapter = new HomeManagerAdapter(mActivity, list);
+        ry.setLayoutManager(new LinearLayoutManager(mActivity));
+        ry.setAdapter(adapter);
+
+
+        adapter1 = new HomeManagerAdapter(mActivity, list1);
+        ry1.setLayoutManager(new LinearLayoutManager(mActivity));
+        ry1.setAdapter(adapter1);
+
     }
 
     @Override
@@ -73,26 +107,36 @@ public class HomeManageFragment extends BaseFragment implements EasyPermissions.
     }
 
 
-    @OnClick({R.id.select_pic, R.id.select_camera, R.id.select_file})
+    @OnClick({R.id.select_pic, R.id.select_camera, R.id.select_file, R.id.tv_ceshi})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.select_pic:
                 select();
                 break;
             case R.id.select_camera:
-//                openCamera();  com.tencent.mm   com.hr.deanoffice
-//                doStartApplicationWithPackageName("com.tencent.mm");
                 mActivity.startService(new Intent(mActivity, TestService.class));
                 break;
             case R.id.select_file:
                 selectFile();
                 break;
+            case R.id.tv_ceshi:
+                animation();
+                break;
         }
-
     }
+
+    private void animation() {
+        list.clear();
+        list.addAll(list1);
+        adapter.notifyDataSetChanged();
+        isExpand = !isExpand;
+        AnimationUtils.startAnimation(ry,height*list.size(),isExpand);
+    }
+
 
     /**
      * 唤起其他APP
+     *
      * @param packagename
      */
     private void doStartApplicationWithPackageName(String packagename) {
@@ -136,7 +180,6 @@ public class HomeManageFragment extends BaseFragment implements EasyPermissions.
     }
 
 
-
     /**
      * 选择文件
      */
@@ -149,7 +192,6 @@ public class HomeManageFragment extends BaseFragment implements EasyPermissions.
         startActivityForResult(intent, FILE_SELECT_CODE);
 
     }
-
 
 
     @Override

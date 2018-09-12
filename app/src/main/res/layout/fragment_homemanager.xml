@@ -1,33 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:orientation="vertical">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-    <include layout="@layout/common_title"/>
+    <include layout="@layout/common_title" />
 
     <Button
         android:id="@+id/select_pic"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:text="调用相册"/>
+        android:text="调用相册" />
 
     <Button
         android:id="@+id/select_camera"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:text="打开相机"/>
+        android:text="打开相机" />
+
     <Button
         android:id="@+id/select_file"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:text="选择文件"/>
-    <fragment
-        android:id="@+id/frag"
-        android:name="com.haxi.mh.ui.fragment.HomeCreateTaskFragment"
+        android:text="选择文件" />
+
+    <TextView
+        android:id="@+id/tv_ceshi"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="40dp"
+        android:gravity="center"
+        android:text="测试" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/ry"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/ry1"
+        android:background="@color/chart_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 </LinearLayout>
