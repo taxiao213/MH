@@ -32,7 +32,7 @@ android {
     //签名 引用位置
     signingConfigs {
         config {
-            storeFile file("E:\\project\\MH\\mh.jks")
+            storeFile file("H:\\Software\\Android\\Git\\MH\\mh.jks")
             storePassword "mh123456"
             keyAlias "key_mh"
             keyPassword "mh123456"
