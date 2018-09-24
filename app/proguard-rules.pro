@@ -45,6 +45,7 @@
 -keepattributes *Annotation*,InnerClasses #不混淆Annotation
 -keepattributes Signature #不混淆泛型
 -keepattributes SourceFile,LineNumberTable #抛出异常时保留代码行号
+-ignorewarnings #忽略警告类
 #----------------------------------------------------------------------------
 
 
@@ -137,6 +138,10 @@
 
 
 #---------------------------------3.第三方包-------------------------------
+
+# XmlResourceParser异常
+-keep class org.xmlpull.v1.** { *;}
+-dontwarn org.xmlpull.v1.**
 
 # butterknife混淆脚本 ----
 -dontwarn butterknife.internal.**
