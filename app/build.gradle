@@ -3,7 +3,7 @@ apply plugin: 'org.greenrobot.greendao' // apply plugin
 apply plugin: 'walle'
 android {
     compileSdkVersion 27
-    buildToolsVersion "26.0.2"
+    buildToolsVersion "27.0.2"
     defaultConfig {
         applicationId "com.haxi.mh"
         minSdkVersion 16
@@ -158,18 +158,16 @@ greendao {
 }
 
 dependencies {
-    implementation fileTree(include: ['*.jar'], dir: 'libs')
-    implementation 'com.android.support:appcompat-v7:27.0.2'
-    implementation 'com.android.support:design:27.0.2'
-    implementation 'com.android.support.constraint:constraint-layout:1.0.2'
-    testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'com.android.support.test:runner:1.0.1'
-    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
-    compile 'com.android.support:recyclerview-v7:27.0.2'
-    implementation 'com.android.support:cardview-v7:27.0.2'
-
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile 'com.android.support.constraint:constraint-layout:1.0.2'
+    compile 'junit:junit:4.12'
+    // compile 'com.android.support.test:runner:1.0.1'
+    compile 'com.android.support.test.espresso:espresso-core:3.0.1'
+    /* 百分比布局 */
+    compile 'com.android.support:percent:27.1.1'
     /* multidex兼容包，配合AndroidStudio实现了一个APK包含多个dex的功能 */
     compile 'com.android.support:multidex:1.0.2'
+
 
     /* butterKnife */
     compile 'com.jakewharton:butterknife:8.8.1'
@@ -179,8 +177,8 @@ dependencies {
     compile 'com.google.code.gson:gson:2.8.2'
 
     /* Glide */
-    implementation 'com.github.bumptech.glide:glide:4.8.0'
-    annotationProcessor 'com.github.bumptech.glide:compiler:4.8.0'
+//    implementation 'com.github.bumptech.glide:glide:4.8.0'
+//    annotationProcessor 'com.github.bumptech.glide:compiler:4.8.0'
 
     /* EventBus */
     compile 'org.greenrobot:eventbus:3.1.1'
@@ -205,7 +203,6 @@ dependencies {
     compile 'com.squareup.okhttp3:logging-interceptor:3.9.1'
 
     //okhttp3拦截器
-
     /* RxAndroid: Reactive Extensions for Android */
     compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
 
@@ -221,27 +218,16 @@ dependencies {
     compile 'com.orhanobut:logger:2.1.1'
 
     //运行时权限
-
     /* easypermissions */
     implementation 'pub.devrel:easypermissions:1.1.0'
-
-    /* PermissionsDispatcher */
-
-    //        compile('com.github.hotchemi:permissionsdispatcher:3.0.1') {
-
-    //            exclude module: "support-v13"
-
-    //        }
-
-    //        annotationProcessor "com.github.hotchemi:permissionsdispatcher-processor:3.0.1"
 
     /* bugly收集错误日志 */
 
     //其中latest.release指代最新Bugly NDK版本号，也可以指定明确的版本号，例如3.0
-    compile 'com.tencent.bugly:nativecrashreport:latest.release'
+    compile 'com.tencent.bugly:nativecrashreport:3.3.1'
 
     //其中latest.release指代最新版本号，也可以指定明确的版本号，例如1.3.4 包括crashreport
-    compile 'com.tencent.bugly:crashreport_upgrade:latest.release'
+    compile 'com.tencent.bugly:crashreport_upgrade:1.3.5'
 
     /* debug 在线查看app数据库 */
     debugCompile 'com.amitshekhar.android:debug-db:1.0.1'
@@ -256,7 +242,7 @@ dependencies {
     compile 'com.meituan.android.walle:library:1.1.5'
 
     /* 友盟推送 统计 */
-    compile 'com.umeng.analytics:analytics:latest.integration'
+    compile 'com.umeng.analytics:analytics:6.1.4'
     implementation project(':PushSDK')
 
     /* 小米推送 */
@@ -279,9 +265,6 @@ dependencies {
     /* 银联支付 */
 //    implementation files('libs/UPPayAssistEx.jar')
 //    implementation files('libs/UPPayPluginExPro.jar')
-
-    /* 百分比布局 */
-    compile 'com.android.support:percent:27.0.2'
 
     /* sqlcipher 加密数据库 */
     compile 'net.zetetic:android-database-sqlcipher:3.5.9@aar'
