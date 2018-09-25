@@ -360,9 +360,21 @@ public static java.lang.String TABLENAME;
 -keep class com.ta.utdid2.** { *;}
 -keep class com.ut.device.** { *;}
 
+# UPPayAssistEx.jar
+-dontwarn com.unionpay.**
+-keep class com.unionpay.** {*;}
+
+# UPPayPluginExPro.jar
+-dontwarn cn.gov.pbc.tsm.client.mobile.android.bank.service.**
+-keep class cn.gov.pbc.tsm.client.mobile.android.bank.service.** {*;}
+-dontwarn com.**
+-keep class com.** {*;}
 
 # XXPermissions混淆
 -dontwarn com.hjq.permissions.**
+
+# dagger2
+-dontwarn dagger.**
 
 #---------------------------------------------------------------------
 
