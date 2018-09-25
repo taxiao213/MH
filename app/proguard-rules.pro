@@ -188,7 +188,6 @@ public static java.lang.String TABLENAME;
 -dontwarn retrofit2.converter.gson.**
 -dontwarn retrofit2.converter.scalars.**
 -dontwarn retrofit2.adapter.rxjava2.**
--dontwarn retrofit2.Platform$Java8
 -keep public class retrofit2.**{*;}
 
 # 项目中报错所以要忽略掉
@@ -208,7 +207,7 @@ public static java.lang.String TABLENAME;
 
 # Gson混淆脚本 ----
 -keep class com.google.gson.stream.**{*;}
--keep class com.youyou.uuelectric.renter.Network.user.**{*;}
+
 
 # Bugly ----
 -dontwarn com.tencent.bugly.**
