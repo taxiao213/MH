@@ -4,7 +4,7 @@ import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
-import android.view.Window;
+import android.view.View;
 import android.widget.TextView;
 
 import com.haxi.mh.R;
@@ -39,8 +39,8 @@ public class MaterialDesignActivity extends BaseActivity {
 
     @Override
     protected void getData() {
-        Window window = this.getWindow();
-        window.addFlags(Window.FEATURE_ACTIVITY_TRANSITIONS);
+//        Window window = this.getWindow();
+//        window.addFlags(Window.FEATURE_ACTIVITY_TRANSITIONS);
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
@@ -48,16 +48,16 @@ public class MaterialDesignActivity extends BaseActivity {
         }
         collapsingtoolbar.setTitle("水果");
         StringBuilder builder = new StringBuilder();
-        for (int i = 0; i < 50; i++) {
+        for (int i = 0; i < 10; i++) {
             builder.append("水果哈哈哈。。。。");
             builder.append("水果哈哈哈。。。。");
         }
         tvContent.setText(builder.toString());
-    }
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        finish();
+        toolbar.setNavigationOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
 }
