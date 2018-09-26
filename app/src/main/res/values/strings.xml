@@ -69,4 +69,10 @@
     <string name="pay_auth_login">支付宝授权登录</string>
     <string name="permissions_refuse_authorization">被永久拒绝授权，请手动授予权限</string>
     <string name="permissions_rror">获取权限失败</string>
+    <string name="pay_dense">加密解密</string>
+    <string name="pay_dense_test1">生成公钥和私钥</string>
+    <string name="pay_dense_test2">加密请求内容</string>
+    <string name="pay_dense_test3">解密请求内容</string>
+    <string name="pay_dense_test4">服务器加密响应给APP的内容</string>
+    <string name="pay_dense_test5">APP解密服务器的响应内容</string>
 </resources>

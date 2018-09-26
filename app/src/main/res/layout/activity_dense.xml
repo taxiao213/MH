@@ -5,41 +5,41 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/tv_alipay"
+        android:id="@+id/tv_dense_test1"
         android:layout_width="match_parent"
         android:layout_height="@dimen/text_height"
         android:gravity="center"
-        android:text="@string/pay_alipay" />
+        android:text="@string/pay_dense_test1" />
 
     <TextView
-        android:id="@+id/tv_wxpay"
+        android:id="@+id/tv_dense_test2"
         android:layout_width="match_parent"
         android:layout_height="@dimen/text_height"
         android:gravity="center"
-        android:text="@string/pay_wxpay"
-        app:layout_constraintTop_toBottomOf="@id/tv_alipay" />
+        android:text="@string/pay_dense_test2"
+        app:layout_constraintTop_toBottomOf="@id/tv_dense_test1" />
 
     <TextView
-        android:id="@+id/tv_wxpay2"
+        android:id="@+id/tv_dense_test3"
         android:layout_width="match_parent"
         android:layout_height="@dimen/text_height"
         android:gravity="center"
-        android:text="@string/pay_wxpay2"
-        app:layout_constraintTop_toBottomOf="@id/tv_wxpay" />
+        android:text="@string/pay_dense_test3"
+        app:layout_constraintTop_toBottomOf="@id/tv_dense_test2" />
 
     <TextView
-        android:id="@+id/tv_ylpay"
+        android:id="@+id/tv_dense_test4"
         android:layout_width="match_parent"
         android:layout_height="@dimen/text_height"
         android:gravity="center"
-        android:text="@string/pay_ylpay"
-        app:layout_constraintTop_toBottomOf="@id/tv_wxpay2" />
+        android:text="@string/pay_dense_test4"
+        app:layout_constraintTop_toBottomOf="@id/tv_dense_test3" />
 
     <TextView
-        android:id="@+id/tv_dense"
+        android:id="@+id/tv_dense_test5"
         android:layout_width="match_parent"
         android:layout_height="@dimen/text_height"
         android:gravity="center"
-        android:text="@string/pay_dense"
-        app:layout_constraintTop_toBottomOf="@id/tv_ylpay" />
+        android:text="@string/pay_dense_test5"
+        app:layout_constraintTop_toBottomOf="@id/tv_dense_test4" />
 </android.support.constraint.ConstraintLayout>
