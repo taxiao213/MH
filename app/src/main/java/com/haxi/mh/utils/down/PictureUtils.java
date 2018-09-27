@@ -227,6 +227,23 @@ public class PictureUtils {
     }
 
     /**
+     * 加载Url图片 有缓存
+     *
+     * @param mContext
+     * @param url
+     * @param mImageView
+     */
+    public static void loadUrlPic(Context mContext,String url, int holderIcon, ImageView mImageView) {
+        GlideApp.with(mContext)
+                .load(url)
+                .placeholder(holderIcon)
+                .error(holderIcon)
+                .fitCenter()
+                .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
+                .into(mImageView);
+    }
+
+    /**
      * 加载本地图片 不做缓存处理
      *
      * @param mContext
@@ -269,7 +286,7 @@ public class PictureUtils {
      */
     private static void loadIcon(Context mContext, ImageView mImageView) {
         if (NetUtils.isNetworkConnected(mContext)) {
-            String userPhoto = "";
+            String userPhoto = HConstants.USERPHOTO;
             if (!TextUtils.isEmpty(userPhoto)) {
                 PictureUtils.loadUrlPic(mContext, userPhoto, mImageView);
             } else {
@@ -288,7 +305,7 @@ public class PictureUtils {
      */
     private static void loadLocalPersonIcon(Context mContext, ImageView mImageView) {
         if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())) {
-            File file = new File(HConstants.FILE_COMPRESS_NAME, HConstants.NAME_SIGN + " " + HConstants.PIC_SIGN);
+            File file = new File(HConstants.FILE_COMPRESS_NAME, HConstants.NAME_SIGN + HConstants.ACCOUNT + HConstants.PIC_SIGN);
             if (file != null && file.exists()) {
                 PictureUtils.loadFilePic(mContext, file, mImageView);
             } else {
@@ -308,7 +325,8 @@ public class PictureUtils {
      */
     public static void loadLocalError(Context mContext, ImageView mImageView) {
         GlideApp.with(mContext)
-                .load(R.drawable.webview_error)
+                .load(R.drawable.kong)
+                .placeholder(R.drawable.kong)
                 .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .skipMemoryCache(true)
                 .into(mImageView);

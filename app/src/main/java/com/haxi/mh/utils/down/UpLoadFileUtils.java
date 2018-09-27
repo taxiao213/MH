@@ -2,6 +2,7 @@ package com.haxi.mh.utils.down;
 
 import android.text.TextUtils;
 
+import com.haxi.mh.constant.HConstants;
 import com.haxi.mh.utils.ui.toast.ToastUtils;
 
 import org.json.JSONObject;
@@ -25,7 +26,7 @@ import okhttp3.Response;
  */
 public class UpLoadFileUtils {
 
-    private final static String baseUrl ="http://ww.baidu.com";
+    private final static String baseUrl = HConstants.baseUrl;
     /* 上传我的头像action */
     private final static String myPicaction = "savePicAction/saveMyPic.action";
 
@@ -110,6 +111,7 @@ public class UpLoadFileUtils {
                 }
             }
             builder.addFormDataPart("imgType", flieType);
+            builder.addFormDataPart("loginAccount", HConstants.ACCOUNT);
         }
         Request request = new Request.Builder()
                 .url(url)

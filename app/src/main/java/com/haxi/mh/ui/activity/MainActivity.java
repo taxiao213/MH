@@ -123,7 +123,6 @@ public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedCh
      * 开启服务
      */
     private void startService() {
-        LogUtils.e("mh-->>MainActivity--->>startService()");
         if (!UIUtil.isServiceRunning(mActivity, PlayMusicService.class.getName())) {
             mActivity.startService(new Intent(mActivity, PlayMusicService.class));
             LogUtils.e("mh-->>MainActivity--->>startService()开启");
@@ -265,7 +264,6 @@ public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedCh
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
-        LogUtils.e("-----------hasFocus==" + hasFocus);
         if (hasFocus && BackgroundUtils.getApplicationValue(MyApplication.getMyApplication())) {
             //showForcePOP("v1.0.1", "1.大家好，今天是星期四###2.你是谁啊，我是风儿你是沙###3.今天好高兴，杀了一个程序员祭天", "http://img2.imgtn.bdimg.com");
         }

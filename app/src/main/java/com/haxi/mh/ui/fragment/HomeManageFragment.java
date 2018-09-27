@@ -1,33 +1,42 @@
 package com.haxi.mh.ui.fragment;
 
 import android.Manifest;
-import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.graphics.Bitmap;
 import android.net.Uri;
-import android.os.Environment;
-import android.provider.MediaStore;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.haxi.mh.R;
 import com.haxi.mh.base.BaseFragment;
+import com.haxi.mh.constant.HConstants;
 import com.haxi.mh.model.db.Person;
 import com.haxi.mh.service.TestService;
 import com.haxi.mh.ui.adapter.HomeManagerAdapter;
 import com.haxi.mh.utils.animation.AnimationUtils;
+import com.haxi.mh.utils.down.CameraUtils;
+import com.haxi.mh.utils.down.DownLoadFileUtils;
+import com.haxi.mh.utils.down.Function;
+import com.haxi.mh.utils.down.PictureUtils;
+import com.haxi.mh.utils.down.UpLoadFileUtils;
+import com.haxi.mh.utils.down.XXPermissionsUtils;
 import com.haxi.mh.utils.fileselector.FileSelectActivity;
 import com.haxi.mh.utils.fileselector.FileSelectConstant;
 import com.haxi.mh.utils.model.LogUtils;
+import com.haxi.mh.utils.net.NetUtils;
 import com.haxi.mh.utils.ui.UIUtil;
+import com.haxi.mh.utils.ui.toast.ToastUtils;
 import com.zhihu.matisse.Matisse;
 import com.zhihu.matisse.MimeType;
 import com.zhihu.matisse.engine.impl.GlideEngine;
@@ -41,6 +50,8 @@ import butterknife.OnClick;
 import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.EasyPermissions;
 
+import static android.app.Activity.RESULT_OK;
+
 /**
  * 发现
  * Created by Han on 2017/12/27
@@ -50,11 +61,7 @@ import pub.devrel.easypermissions.EasyPermissions;
  */
 
 public class HomeManageFragment extends BaseFragment implements EasyPermissions.PermissionCallbacks {
-    private static final int REQUEST_CODE_CHOOSE = 0x0001;
-    private static final int REQUEST_CHOOSE = 0x0002;
-    private static final int RC_CAMERA_PERM = 0x0003;
-    private static final int RC_CAMERA_CHOOSE = 0x0004;
-    private static final int FILE_SELECT_CODE = 0x101;
+
     @BindView(R.id.title_back)
     ImageView titleBack;
     @BindView(R.id.title_tv)
@@ -71,6 +78,21 @@ public class HomeManageFragment extends BaseFragment implements EasyPermissions.
     private HomeManagerAdapter adapter1;
     private boolean isExpand = false;
     private int height = 150;
+
+
+    private static final int REQUEST_CODE_CHOOSE = 0x0001;
+    private static final int REQUEST_CHOOSE = 0x0002;
+    private static final int FILE_SELECT_CODE = 0x105;
+
+    // 照相机
+    private static final int ACTION_IMAGE_CAPTURE = 0x107;
+    // 图库
+    private static final int ACTION_IMAGE_GALLERY = 0X108;
+    // 剪切图片
+    private static final int ROUNDCUTRESULT = 0X109;
+    private Uri uriTempFile;
+    // 存储用的bitmap
+    private Bitmap bitmap;
 
     @Override
     protected int getLayoutRes() {
@@ -107,17 +129,45 @@ public class HomeManageFragment extends BaseFragment implements EasyPermissions.
     }
 
 
-    @OnClick({R.id.select_pic, R.id.select_camera, R.id.select_file, R.id.tv_ceshi})
+    @OnClick({R.id.select_pic1, R.id.select_pic, R.id.select_camera, R.id.select_file, R.id.tv_ceshi})
     public void onViewClicked(View view) {
         switch (view.getId()) {
-            case R.id.select_pic:
+            case R.id.select_pic1:
                 select();
                 break;
+            case R.id.select_pic:
+                XXPermissionsUtils instance = XXPermissionsUtils.getInstances(mActivity);
+                instance.hasReadAndwritePermission(new Function<Boolean>() {
+                    @Override
+                    public void action(Boolean var) {
+                        if (var != null && var) {
+                            CameraUtils.JumpGallery(mActivity, ACTION_IMAGE_GALLERY);
+                        }
+                    }
+                });
+                break;
             case R.id.select_camera:
+                XXPermissionsUtils instances = XXPermissionsUtils.getInstances(mActivity);
+                instances.hasCameraPermission(new Function<Boolean>() {
+                    @Override
+                    public void action(Boolean var) {
+                        if (var != null && var) {
+                            CameraUtils.JumpCamera(mActivity, ACTION_IMAGE_CAPTURE);
+                        }
+                    }
+                });
                 mActivity.startService(new Intent(mActivity, TestService.class));
                 break;
             case R.id.select_file:
-                selectFile();
+                XXPermissionsUtils instan = XXPermissionsUtils.getInstances(mActivity);
+                instan.hasReadAndwritePermission(new Function<Boolean>() {
+                    @Override
+                    public void action(Boolean var) {
+                        if (var != null && var) {
+                            selectFile();
+                        }
+                    }
+                });
                 break;
             case R.id.tv_ceshi:
                 animation();
@@ -130,7 +180,7 @@ public class HomeManageFragment extends BaseFragment implements EasyPermissions.
         list.addAll(list1);
         adapter.notifyDataSetChanged();
         isExpand = !isExpand;
-        AnimationUtils.startAnimation(ry,height*list.size(),isExpand);
+        AnimationUtils.startAnimation(ry, height * list.size(), isExpand);
     }
 
 
@@ -184,32 +234,107 @@ public class HomeManageFragment extends BaseFragment implements EasyPermissions.
      * 选择文件
      */
     private void selectFile() {
-
-
         Intent intent = new Intent(mActivity, FileSelectActivity.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.putExtra(FileSelectConstant.SELECTOR_REQUEST_CODE_KEY, FileSelectConstant.SELECTOR_MODE_FILE);
         intent.putExtra(FileSelectConstant.SELECTOR_IS_MULTIPLE, true);
         startActivityForResult(intent, FILE_SELECT_CODE);
-
     }
 
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_CODE_CHOOSE) {
-            LogUtils.e(REQUEST_CODE_CHOOSE + "....." + Matisse.obtainResult(data).toString());
-        }
-        if (requestCode == RC_CAMERA_PERM) {
-            LogUtils.e(RC_CAMERA_PERM + "");
-        }
-        if (requestCode == FILE_SELECT_CODE) {
-            if (resultCode == Activity.RESULT_OK) {
-                final ArrayList<String> uris = data.getStringArrayListExtra(FileSelectConstant.SELECTOR_BUNDLE_PATHS);
-                LogUtils.e(FILE_SELECT_CODE + uris.toString());
+        if (resultCode == RESULT_OK) {
+            switch (requestCode) {
+                case ACTION_IMAGE_CAPTURE:
+                    PictureUtils.galleryAddPic(mActivity, PictureUtils.mCurrentPhotoPath);
+                    // 图片裁剪
+                    File file = new File(PictureUtils.mCurrentPhotoPath);
+                    if (!file.exists()) {
+                        file.mkdirs();
+                    }
+                    uriTempFile = CameraUtils.startPhotoZoom(Uri.fromFile(file), mActivity, ROUNDCUTRESULT);
+                    break;
+                case ACTION_IMAGE_GALLERY:
+                    if (data != null && !"".equals(data)) {
+                        Uri imageuri = data.getData();
+                        uriTempFile = CameraUtils.startPhotoZoom(imageuri, mActivity, ROUNDCUTRESULT);
+                    }
+                    break;
+                case ROUNDCUTRESULT:
+                    Bundle bundle = data.getExtras();
+                    if (bundle != null) {
+                        bitmap = bundle.getParcelable("data");
+                        UploadPic();
+                    } else {
+                        try {
+                            if (uriTempFile == null) {
+                                return;
+                            }
+                            UploadPic();
+                        } catch (Exception e) {
+                        }
+                    }
+                    break;
+
+                case FILE_SELECT_CODE:
+                    final ArrayList<String> uris = data.getStringArrayListExtra(FileSelectConstant.SELECTOR_BUNDLE_PATHS);
+                    LogUtils.e(FILE_SELECT_CODE + uris.toString());
+                    break;
+                case REQUEST_CODE_CHOOSE:
+                    List<Uri> mSelected = Matisse.obtainResult(data);
+                    LogUtils.e(FILE_SELECT_CODE + mSelected.toString());
+                    break;
             }
         }
+    }
 
+    /**
+     * 上传图片
+     */
+    private void UploadPic() {
+        if (uriTempFile != null) {
+            String picPath = PictureUtils.getPicPath(mActivity, uriTempFile);
+            if (!TextUtils.isEmpty(picPath)) {
+                if (!NetUtils.isNetworkConnected(mActivity)) {
+                    ToastUtils.showShortToast(getString(R.string.net_error));
+                    return;
+                }
+
+                UpLoadFileUtils.updateLoadFile(picPath, 1, new Function<String>() {
+                    @Override
+                    public void action(final String url) {
+                        if (!TextUtils.isEmpty(url) && url.startsWith("http")) {
+                            String account = HConstants.ACCOUNT;
+                            DownLoadFileUtils.getInstance().saveFile(url, HConstants.NAME_SIGN + account, 1, true);
+//                            PictureUtils.loadPersonIcon(mActivity, ivAvatar);
+                        }
+                        if (TextUtils.equals(url, "0")) {
+                            ToastUtils.showShortToast(getString(R.string.net_error));
+                        }
+                        mActivity.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+
+                            }
+                        });
+                    }
+                });
+            } else {
+                uploadError(getString(R.string.upload_pic_error));
+            }
+        } else {
+            uploadError(getString(R.string.upload_pic_error));
+        }
+    }
+
+
+    /**
+     * 上传提示语
+     *
+     * @param string
+     */
+    private void uploadError(String string) {
+        ToastUtils.showShortToast(string);
     }
 
 
@@ -229,30 +354,6 @@ public class HomeManageFragment extends BaseFragment implements EasyPermissions.
                     .forResult(REQUEST_CODE_CHOOSE);
         } else {
             EasyPermissions.requestPermissions(this, "请允许权限读取图片", REQUEST_CHOOSE, perms);
-        }
-    }
-
-    /**
-     * 开启相机
-     */
-    @AfterPermissionGranted(RC_CAMERA_PERM)
-    public void openCamera() {
-        String[] perms = {Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA};
-        if (EasyPermissions.hasPermissions(this.getContext(), perms)) {
-            String path = Environment.getExternalStorageDirectory().toString() + "/picture";
-            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-            File dir = new File(path);
-            if (!dir.exists()) {
-                dir.mkdirs();
-            }
-            String capturePath = path + "/" + System.currentTimeMillis() + ".jpg";
-            intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(new File(capturePath)));
-            intent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 1);
-            startActivityForResult(intent, RC_CAMERA_CHOOSE);
-
-        } else {
-            // Ask for one permission
-            EasyPermissions.requestPermissions(this, getString(R.string.open_camera), RC_CAMERA_PERM, perms);
         }
     }
 

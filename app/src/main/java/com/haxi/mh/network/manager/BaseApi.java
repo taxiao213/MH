@@ -1,5 +1,7 @@
 package com.haxi.mh.network.manager;
 
+import com.haxi.mh.constant.HConstants;
+
 import io.reactivex.Observable;
 import retrofit2.Retrofit;
 
@@ -19,7 +21,7 @@ public abstract class BaseApi {
 //    private int cookieNoNetWorkTime = 24 * 60 * 60 * 30;
     private int cookieNoNetWorkTime = 60;
     /*baseUrl*/
-    private String baseUrl;
+    private String baseUrl = HConstants.baseUrl;
     /*方法-如果需要缓存必须设置这个参数；保证唯一,不需要不用設置*/
     private String method = "";
     /*设置是否显示加载框,默认显示*/
