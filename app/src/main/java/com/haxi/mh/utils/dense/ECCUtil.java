@@ -1,9 +1,8 @@
 package com.haxi.mh.utils.dense;
 
-import com.haxi.mh.utils.model.LogUtils;
-
 import org.bouncycastle.jce.interfaces.ECPrivateKey;
 import org.bouncycastle.jce.interfaces.ECPublicKey;
+import org.bouncycastle.jce.provider.BouncyCastleProvider;
 
 import java.security.KeyFactory;
 import java.security.KeyPair;
@@ -18,6 +17,13 @@ import java.security.spec.X509EncodedKeySpec;
 import javax.crypto.Cipher;
 
 /**
+ * ECC加密工具类
+ * EC和RSA的优缺点：
+ * RSA的优点：JDK自己支持。不需要第三方库。同时支持RSA的开发库也很多（最典型的就是OpenSSL）
+ * EC的缺点：需要第三方库，支持的广度比不上RSA
+ * EC的优点：1.在达到相同加密程度下，EC需要的秘钥长度比RSA要短得多
+ *           2.bouncycastle实现的EC加密算法，对密文长度的限制比较松。在下面的测试程序中构造了一个长字符串加密，没有报错。
+ * RSA的加密则是有限制的，必须分片。不过我不知道是不是bouncycastle自己事先做了分片
  * Created by Han on 2018/9/26
  * Email:yin13753884368@163.com
  * CSDN:http://blog.csdn.net/yin13753884368/article
@@ -25,10 +31,15 @@ import javax.crypto.Cipher;
  */
 public class ECCUtil {
     static {
-        Security.addProvider(new org.bouncycastle.jce.provider.BouncyCastleProvider());
+        Security.addProvider(new BouncyCastleProvider());
     }
 
-    //生成秘钥对
+    /**
+     * 生成ECC秘钥对
+     *
+     * @return 秘钥对
+     * @throws Exception
+     */
     public static KeyPair getKeyPair() throws Exception {
         KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("EC", "BC");
         keyPairGenerator.initialize(256, new SecureRandom());
@@ -36,40 +47,73 @@ public class ECCUtil {
         return keyPair;
     }
 
-    //获取公钥(Base64编码)
+
+    /**
+     * 获取ECC公钥(Base64编码)
+     *
+     * @param keyPair 秘钥对
+     * @return
+     */
     public static String getPublicKey(KeyPair keyPair) {
         ECPublicKey publicKey = (ECPublicKey) keyPair.getPublic();
         byte[] bytes = publicKey.getEncoded();
-        return AESUtil.byte2Base64(bytes);
+        return Base64Util.byte2Base64(bytes);
     }
 
-    //获取私钥(Base64编码)
+
+    /**
+     * 获取ECC私钥(Base64编码)
+     *
+     * @param keyPair 秘钥对
+     * @return
+     */
     public static String getPrivateKey(KeyPair keyPair) {
         ECPrivateKey privateKey = (ECPrivateKey) keyPair.getPrivate();
         byte[] bytes = privateKey.getEncoded();
-        return AESUtil.byte2Base64(bytes);
+        return Base64Util.byte2Base64(bytes);
     }
 
-    //将Base64编码后的公钥转换成PublicKey对象
+
+    /**
+     * 将Base64编码后的公钥转换成ECPublicKey对象
+     *
+     * @param pubStr Base64编码后的公钥
+     * @return ECPublicKey对象
+     * @throws Exception
+     */
     public static ECPublicKey string2PublicKey(String pubStr) throws Exception {
-        byte[] keyBytes = AESUtil.base642Byte(pubStr);
+        byte[] keyBytes = Base64Util.base642Byte(pubStr);
         X509EncodedKeySpec keySpec = new X509EncodedKeySpec(keyBytes);
         KeyFactory keyFactory = KeyFactory.getInstance("EC", "BC");
         ECPublicKey publicKey = (ECPublicKey) keyFactory.generatePublic(keySpec);
         return publicKey;
     }
 
-    //将Base64编码后的私钥转换成PrivateKey对象
-    public static ECPrivateKey string2PrivateKey(String priStr) throws Exception {
-        byte[] keyBytes = AESUtil.base642Byte(priStr);
 
+    /**
+     * 将Base64编码后的私钥转换成ECPrivateKey对象
+     *
+     * @param priStr Base64编码后的私钥
+     * @return ECPrivateKey对象
+     * @throws Exception
+     */
+    public static ECPrivateKey string2PrivateKey(String priStr) throws Exception {
+        byte[] keyBytes = Base64Util.base642Byte(priStr);
         PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(keyBytes);
         KeyFactory keyFactory = KeyFactory.getInstance("EC", "BC");
         ECPrivateKey privateKey = (ECPrivateKey) keyFactory.generatePrivate(keySpec);
         return privateKey;
     }
 
-    //公钥加密
+
+    /**
+     * ECC公钥加密
+     *
+     * @param content   内容
+     * @param publicKey PublicKey对象
+     * @return 字节数组
+     * @throws Exception
+     */
     public static byte[] publicEncrypt(byte[] content, PublicKey publicKey) throws Exception {
         Cipher cipher = Cipher.getInstance("ECIES", "BC");
         cipher.init(Cipher.ENCRYPT_MODE, publicKey);
@@ -77,26 +121,20 @@ public class ECCUtil {
         return bytes;
     }
 
-    //私钥解密
+
+    /**
+     * ECC私钥解密
+     *
+     * @param content    内容
+     * @param privateKey PrivateKey对象
+     * @return 字节数组
+     * @throws Exception
+     */
     public static byte[] privateDecrypt(byte[] content, PrivateKey privateKey) throws Exception {
         Cipher cipher = Cipher.getInstance("ECIES", "BC");
         cipher.init(Cipher.DECRYPT_MODE, privateKey);
         byte[] bytes = cipher.doFinal(content);
         return bytes;
     }
-
-    public static void main(String[] args) throws Exception {
-        KeyPair keyPair = ECCUtil.getKeyPair();
-        String publicKeyStr = ECCUtil.getPublicKey(keyPair);
-        String privateKeyStr = ECCUtil.getPrivateKey(keyPair);
-        LogUtils.e("ECC公钥Base64编码:" + publicKeyStr);
-        LogUtils.e("ECC私钥Base64编码:" + privateKeyStr);
-        ECPublicKey publicKey = string2PublicKey(publicKeyStr);
-        ECPrivateKey privateKey = string2PrivateKey(privateKeyStr);
-        byte[] publicEncrypt = publicEncrypt("hello world".getBytes(), publicKey);
-        byte[] privateDecrypt = privateDecrypt(publicEncrypt, privateKey);
-        LogUtils.e(new String(privateDecrypt));
-    }
-
 
 }

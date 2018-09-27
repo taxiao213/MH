@@ -47,7 +47,7 @@ public class DenseActivity extends BaseActivity {
             case R.id.tv_dense_test2:
                 if (testHttpEncrypt != null) {
                     try {
-                        testHttpEncrypt.testAppEncrypt();
+                        testHttpEncrypt.testAppEncrypt1();
                     } catch (Exception e) {
                         LogUtils.e("-----e---" + e.getMessage());
                     }
@@ -56,7 +56,7 @@ public class DenseActivity extends BaseActivity {
             case R.id.tv_dense_test3:
                 if (testHttpEncrypt != null) {
                     try {
-                        testHttpEncrypt.testServerDecrypt();
+                        testHttpEncrypt.testServerDecrypt1();
                     } catch (Exception e) {
                         LogUtils.e("-----e---" + e.getMessage());
                     }
@@ -65,7 +65,7 @@ public class DenseActivity extends BaseActivity {
             case R.id.tv_dense_test4:
                 if (testHttpEncrypt != null) {
                     try {
-                        testHttpEncrypt.testserverEncrypt();
+                        testHttpEncrypt.testserverEncrypt1();
                     } catch (Exception e) {
                         LogUtils.e("-----e---" + e.getMessage());
                     }
@@ -74,7 +74,7 @@ public class DenseActivity extends BaseActivity {
             case R.id.tv_dense_test5:
                 if (testHttpEncrypt != null) {
                     try {
-                        testHttpEncrypt.testAppDecrypt();
+                        testHttpEncrypt.testAppDecrypt1();
                     } catch (Exception e) {
                         LogUtils.e("-----e---" + e.getMessage());
                     }
