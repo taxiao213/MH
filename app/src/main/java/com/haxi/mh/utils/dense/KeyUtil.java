@@ -40,14 +40,14 @@ public class KeyUtil {
             "Jk2FDqkbn/p0jeTvN7zJzlasY0icQy572Simxe+fy3OamlH1ODYUmKB4Sc0tJEETIg==";
 
     //APP端的RSA公钥(Base64编码)
-    public final static String APP_PUBLIC_KEY ="MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA0D4HCd8mI" +
+    public final static String APP_PUBLIC_KEY = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA0D4HCd8mI" +
             "NdUYfsgdynKRmb3Z5AKxUGiH3jl7bqG8WcabSImGKkwAY+KqW9iVAtpJUuBAnfy2kF8mwwptlUfPyAso0YNI/VjX" +
             "cVXyiFcLBJse4oFO589ImB7cKmnxNsTOhMtoTItxy6jAeEf3GBWDGIFmqxEVAhmXOF0UIH1TNhUsWp1RFn75CnR1" +
             "jwl+cPz5v9IWYoitxsh09TL9ePQi1DYh+3CHxgmnfJHLpl+ceWcxHN+BFwS16m2wyFlTKISNwLT0Oj+SO551HIBS" +
             "mKaKQqdRKFdsR+JDXudhY0vuSC7aLjGtKLXn2gnZS8Oduv15mM5aTdOu2XvoEw+quHRHQIDAQAB";
 
     //APP端的RSA私钥(Base64编码)
-    public final static String APP_PRIVATE_KEY ="MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDQ" +
+    public final static String APP_PRIVATE_KEY = "MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDQ" +
             "PgcJ3yYg11Rh+yB3KcpGZvdnkArFQaIfeOXtuobxZxptIiYYqTABj4qpb2JUC2klS4ECd/LaQXybDCm2VR8/ICyj" +
             "Rg0j9WNdxVfKIVwsEmx7igU7nz0iYHtwqafE2xM6Ey2hMi3HLqMB4R/cYFYMYgWarERUCGZc4XRQgfVM2FSxanVE" +
             "WfvkKdHWPCX5w/Pm/0hZiiK3GyHT1Mv149CLUNiH7cIfGCad8kcumX5x5ZzEc34EXBLXqbbDIWVMohI3AtPQ6P5I" +
@@ -66,4 +66,9 @@ public class KeyUtil {
             "UbsTwnyXsNUB/q/Deegc+lVM+ev9O4gsXsPF3niMbNj0ozwQjjYPPBpj2SeIUITrlEbZhZfpSZ75AoGAD9HMqKCj" +
             "GkgouC1DjBHpDCzhNCqOAx788Diop1ZbG37f/nQZY7zJNYUK3KhkJyvNE/gkRHmFUlQ3YRKNBWw5vF/WwLBvUxSG" +
             "5Jxx0FMhe21ilNZFuUIu/BV4/zYSJGJdJfSKuisr//V44gFb9HU7BKkKTqXBlT31XGamx1TuBac=";
+
+    public static final String CONTENT = "{\n" +
+            "    \"ak\": \"qOPxtsB1WaxZsaPSEIO13tgQ4qYoFEcWqliMfKsn/kDGHFCeBmZaGuL91Cjhm0F6Y/OOwpb5Fr5kl0DcvMiqOzKSABrpS2wKxa1P4yD+S1uyW3222X7gHUEOUbCuPrVLqgemphp8QsIQg5qQMDWlFPxZce3AtjNpKOFxkPmK7qTh3RNeFuEiGvKIuWAFm0tzHAqefIR8Nxs9K0kS958hoBo9rxmpPv4uqqB2Mgb5L68hUJNKVnY9o3dL8lWcKPEND0oN4lmQnWWyOc0jW2KKiQBxLLo6NHFq1nI+55YPGZ8deNcax//W891RB1c2lPZ0ie2rNDRkf9rrtMlhRKF/TA==\",\n" +
+            "    \"ct\": \"GCiH9NoMFmX5W8geF5Hpzg==\"\n" +
+            "}";
 }

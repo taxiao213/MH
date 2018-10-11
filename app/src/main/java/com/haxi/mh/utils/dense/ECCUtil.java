@@ -1,7 +1,5 @@
 package com.haxi.mh.utils.dense;
 
-import org.bouncycastle.jce.interfaces.ECPrivateKey;
-import org.bouncycastle.jce.interfaces.ECPublicKey;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 
 import java.security.KeyFactory;
@@ -55,7 +53,7 @@ public class ECCUtil {
      * @return
      */
     public static String getPublicKey(KeyPair keyPair) {
-        ECPublicKey publicKey = (ECPublicKey) keyPair.getPublic();
+        PublicKey publicKey = keyPair.getPublic();
         byte[] bytes = publicKey.getEncoded();
         return Base64Util.byte2Base64(bytes);
     }
@@ -68,7 +66,7 @@ public class ECCUtil {
      * @return
      */
     public static String getPrivateKey(KeyPair keyPair) {
-        ECPrivateKey privateKey = (ECPrivateKey) keyPair.getPrivate();
+        PrivateKey privateKey = keyPair.getPrivate();
         byte[] bytes = privateKey.getEncoded();
         return Base64Util.byte2Base64(bytes);
     }
@@ -81,11 +79,11 @@ public class ECCUtil {
      * @return ECPublicKey对象
      * @throws Exception
      */
-    public static ECPublicKey string2PublicKey(String pubStr) throws Exception {
+    public static PublicKey string2PublicKey(String pubStr) throws Exception {
         byte[] keyBytes = Base64Util.base642Byte(pubStr);
         X509EncodedKeySpec keySpec = new X509EncodedKeySpec(keyBytes);
         KeyFactory keyFactory = KeyFactory.getInstance("EC", "BC");
-        ECPublicKey publicKey = (ECPublicKey) keyFactory.generatePublic(keySpec);
+        PublicKey publicKey = keyFactory.generatePublic(keySpec);
         return publicKey;
     }
 
@@ -97,11 +95,11 @@ public class ECCUtil {
      * @return ECPrivateKey对象
      * @throws Exception
      */
-    public static ECPrivateKey string2PrivateKey(String priStr) throws Exception {
+    public static PrivateKey string2PrivateKey(String priStr) throws Exception {
         byte[] keyBytes = Base64Util.base642Byte(priStr);
         PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(keyBytes);
         KeyFactory keyFactory = KeyFactory.getInstance("EC", "BC");
-        ECPrivateKey privateKey = (ECPrivateKey) keyFactory.generatePrivate(keySpec);
+        PrivateKey privateKey = keyFactory.generatePrivate(keySpec);
         return privateKey;
     }
 

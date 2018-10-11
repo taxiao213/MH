@@ -4,6 +4,8 @@ import android.view.View;
 
 import com.haxi.mh.R;
 import com.haxi.mh.base.BaseActivity;
+import com.haxi.mh.utils.dense.HttpEncryptUtil;
+import com.haxi.mh.utils.dense.KeyUtil;
 import com.haxi.mh.utils.dense.TestHttpEncrypt;
 import com.haxi.mh.utils.model.LogUtils;
 
@@ -35,19 +37,19 @@ public class DenseActivity extends BaseActivity {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_dense_test1:
-                if (testHttpEncrypt != null) {
-                    try {
-                        testHttpEncrypt.testGenerateKeyPair();
-                    } catch (Exception e) {
-                        LogUtils.e("-----e---" + e.getMessage());
-                    }
+                try {
+                    String appEncrypt1 = HttpEncryptUtil.appEncrypt1("123456");
+                    HttpEncryptUtil.appDecrypt1(appEncrypt1);
+                    HttpEncryptUtil.appDecrypt1(KeyUtil.CONTENT.replaceAll("\n",""));
+                } catch (Exception e) {
+                    LogUtils.e("-----e---" + e.getMessage());
                 }
 
                 break;
             case R.id.tv_dense_test2:
                 if (testHttpEncrypt != null) {
                     try {
-                        testHttpEncrypt.testAppEncrypt1();
+
                     } catch (Exception e) {
                         LogUtils.e("-----e---" + e.getMessage());
                     }

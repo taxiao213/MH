@@ -51,8 +51,6 @@ public class TestHttpEncrypt {
         String serverPublicKey = KeyUtil.SERVER_PUBLIC_KEY.replaceAll("\r\n", "");
         //请求的实际内容
         String content = "{\"tenantid\":\"1\", \"account\":\"13015929018\", \"pwd\":\"123456\"}";
-        String result = HttpEncryptUtil.appEncrypt1(serverPublicKey, content);
-        LogUtils.e(result);
     }
 
 
@@ -85,7 +83,6 @@ public class TestHttpEncrypt {
     public void testAppDecrypt1() throws Exception {
         String serverPrivateKey = KeyUtil.SERVER_PRIVATE_KEY.replaceAll("\r\n", "");
         String content = "{\"ak\":\"mRBa005mea+6QIaFhTHrfCTBBFL+sy1uHI1iSN6LUK5/VQK/Bt9JZ+5/e2TQYMiD8U6KXBzZgHOl4RL8AErno9K4bbC+4Ke5Bl/IIGZ6kPJB4OjzbqBwxmmA+zJrcS3TlzIsVGpuIzGMQzIT0rlJl+BsQj6N9F3jfCeXBXH+JoTPEaTZqzQ9odgfPooP8jvuBOneqAiTmIgNzcVJwr7EB1tB65FjYPWFJqC0xrmLlrvev0KrD/XnKkzL1wGHc/eXeYzRXHuz4tbTHQV0mrZNz+tITXPVorRb0Tl0mglUafiqTkUBsXUv4abUvz2JImlF1nSAmQfKWfMNd7Fwag480g==\",\"ct\":\"DPMIYZaJL5e7Jvs2Vsy6jgnEPWBYFgjb1K1yf7gcWUCVyAfBPkLGK93onQkvLl8urp2yTwEsxzP6o1om0mqjkEU4oPpYf4NJC+QPQRQ2YTo=\"}";
-        LogUtils.e(HttpEncryptUtil.appDecrypt1(serverPrivateKey, content));
     }
 
 

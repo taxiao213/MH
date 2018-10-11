@@ -1,7 +1,7 @@
 package com.haxi.mh.utils.dense;
 
-import org.bouncycastle.jce.interfaces.ECPrivateKey;
-import org.bouncycastle.jce.interfaces.ECPublicKey;
+import com.haxi.mh.utils.model.LogUtils;
+
 import org.json.JSONObject;
 
 import java.security.PrivateKey;
@@ -21,62 +21,66 @@ public class HttpEncryptUtil {
 
     /**
      * APP加密请求内容
-     * @param appPublicKeyStr   公钥
-     * @param content           加密内容
+     *
+     * @param content 加密内容
      * @return
      * @throws Exception
      */
-    public static String appEncrypt1(String appPublicKeyStr, String content) throws Exception {
+    public static String appEncrypt1(String content) throws Exception {
         //将Base64编码后的Server公钥转换成PublicKey对象
-        PublicKey serverPublicKey = RSAUtil.string2PublicKey(appPublicKeyStr);
+        PublicKey serverPublicKey = RSAUtil.string2PublicKey(KeyUtil.APP_PUBLIC_KEY);
         //每次都随机生成AES秘钥
         String aesKeyStr = AESUtil.genKeyAES();
         SecretKey aesKey = AESUtil.loadKeyAES(aesKeyStr);
         //用Server公钥加密AES秘钥
         byte[] encryptAesKey = RSAUtil.publicEncrypt(aesKeyStr.getBytes(), serverPublicKey);
-        //用AES秘钥加密APP公钥
-        byte[] encryptAppPublicKey = AESUtil.encryptAES(appPublicKeyStr.getBytes(), aesKey);
         //用AES秘钥加密请求内容
-        byte[] encryptRequest = AESUtil.encryptAES(content.getBytes(), aesKey);
-
+        byte[] encryptContentRequest = AESUtil.encryptAES(content.getBytes(), aesKey);
         JSONObject result = new JSONObject();
-        result.put("ak", Base64Util.byte2Base64(encryptAesKey).replaceAll("\r\n", ""));
-        result.put("apk", Base64Util.byte2Base64(encryptAppPublicKey).replaceAll("\r\n", ""));
-        result.put("ct", Base64Util.byte2Base64(encryptRequest).replaceAll("\r\n", ""));
+        String value = Base64Util.byte2Base64(encryptAesKey).replaceAll("\r\n", "");
+        result.put("ak", value);
+        String value1 = Base64Util.byte2Base64(encryptContentRequest).replaceAll("\r\n", "");
+        result.put("ct", value1);
+
+        LogUtils.e("---加密 AESKEY===" + aesKeyStr);
+        LogUtils.e("---加密 ak===" + value);
+        LogUtils.e("---加密 ct===" + value1);
         return result.toString();
     }
 
 
     /**
      * APP解密服务器的响应内容
-     * @param appPrivateKeyStr
+     *
      * @param content
      * @return
      * @throws Exception
      */
-    public static String appDecrypt1(String appPrivateKeyStr, String content) throws Exception {
+    public static String appDecrypt1(String content) throws Exception {
         JSONObject result = new JSONObject(content);
         String encryptAesKeyStr = (String) result.get("ak");
         String encryptContent = (String) result.get("ct");
-
         //将Base64编码后的APP私钥转换成PrivateKey对象
-        PrivateKey appPrivateKey = RSAUtil.string2PrivateKey(appPrivateKeyStr);
+        PrivateKey appPrivateKey = RSAUtil.string2PrivateKey(KeyUtil.APP_PRIVATE_KEY);
         //用APP私钥解密AES秘钥
         byte[] aesKeyBytes = RSAUtil.privateDecrypt(Base64Util.base642Byte(encryptAesKeyStr), appPrivateKey);
         //用AES秘钥解密请求内容
-        SecretKey aesKey = AESUtil.loadKeyAES(new String(aesKeyBytes));
+        String base64Key = new String(aesKeyBytes);
+        SecretKey aesKey = AESUtil.loadKeyAES(base64Key);
         byte[] response = AESUtil.decryptAES(Base64Util.base642Byte(encryptContent), aesKey);
-
-        return new String(response);
+        String s = new String(response);
+        LogUtils.e("---解密 AESKEY===" + base64Key);
+        LogUtils.e("---解密 ct===" + s);
+        return s;
     }
 
 
     /**
      * 服务器加密响应给APP的内容
      *
-     * @param appPublicKeyStr  Base64编码后的APP公钥
-     * @param aesKeyStr        Base64编码后的AES秘钥
-     * @param content          需要加密的内容
+     * @param appPublicKeyStr Base64编码后的APP公钥
+     * @param aesKeyStr       Base64编码后的AES秘钥
+     * @param content         需要加密的内容
      * @return
      * @throws Exception
      */
@@ -92,13 +96,14 @@ public class HttpEncryptUtil {
 
         JSONObject result = new JSONObject();
         result.put("ak", Base64Util.byte2Base64(encryptAesKey).replaceAll("\r\n", ""));
-        result.put("ct",Base64Util.byte2Base64(encryptContent).replaceAll("\r\n", ""));
+        result.put("ct", Base64Util.byte2Base64(encryptContent).replaceAll("\r\n", ""));
         return result.toString();
     }
 
 
     /**
      * 服务器解密APP的请求内容
+     *
      * @param content
      * @return
      * @throws Exception
@@ -131,7 +136,7 @@ public class HttpEncryptUtil {
     //APP加密请求内容
     public static String appEncrypt(String appPublicKeyStr, String content) throws Exception {
         //将Base64编码后的Server公钥转换成PublicKey对象
-        ECPublicKey serverPublicKey = ECCUtil.string2PublicKey(KeyUtil.SERVER_PUBLIC_KEY.replaceAll("\r\n", ""));
+        PublicKey serverPublicKey = ECCUtil.string2PublicKey(KeyUtil.SERVER_PUBLIC_KEY.replaceAll("\r\n", ""));
         //每次都随机生成AES秘钥
         String aesKeyStr = AESUtil.genKeyAES();
         SecretKey aesKey = AESUtil.loadKeyAES(aesKeyStr);
@@ -156,7 +161,7 @@ public class HttpEncryptUtil {
         String encryptContent = result.optString("ct");
 
         //将Base64编码后的APP私钥转换成PrivateKey对象
-        ECPrivateKey appPrivateKey = ECCUtil.string2PrivateKey(appPrivateKeyStr);
+        PrivateKey appPrivateKey = ECCUtil.string2PrivateKey(appPrivateKeyStr);
         //用APP私钥解密AES秘钥
         byte[] aesKeyBytes = ECCUtil.privateDecrypt(Base64Util.base642Byte(encryptAesKeyStr), appPrivateKey);
         //用AES秘钥解密请求内容
@@ -169,7 +174,7 @@ public class HttpEncryptUtil {
     //服务器加密响应给APP的内容
     public static String serverEncrypt(String appPublicKeyStr, String aesKeyStr, String content) throws Exception {
         //将Base64编码后的APP公钥转换成PublicKey对象
-        ECPublicKey appPublicKey = ECCUtil.string2PublicKey(appPublicKeyStr);
+        PublicKey appPublicKey = ECCUtil.string2PublicKey(appPublicKeyStr);
         //将Base64编码后的AES秘钥转换成SecretKey对象
         SecretKey aesKey = AESUtil.loadKeyAES(aesKeyStr);
         //用APP公钥加密AES秘钥
@@ -191,7 +196,7 @@ public class HttpEncryptUtil {
         String encryptContent = result.optString("ct");
 
         //将Base64编码后的Server私钥转换成PrivateKey对象
-        ECPrivateKey serverPrivateKey = ECCUtil.string2PrivateKey(KeyUtil.SERVER_PRIVATE_KEY.replaceAll("\r\n", ""));
+        PrivateKey serverPrivateKey = ECCUtil.string2PrivateKey(KeyUtil.SERVER_PRIVATE_KEY.replaceAll("\r\n", ""));
         //用Server私钥解密AES秘钥
         byte[] aesKeyBytes = ECCUtil.privateDecrypt(Base64Util.base642Byte(encryptAesKeyStr), serverPrivateKey);
         //用AES秘钥解密APP公钥
