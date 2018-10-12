@@ -2,6 +2,7 @@ package com.haxi.mh.network.manager;
 
 import android.text.TextUtils;
 
+import com.haxi.mh.MyApplication;
 import com.haxi.mh.network.exception.ExceptionFunction;
 import com.haxi.mh.network.exception.ResulteFunction;
 import com.haxi.mh.network.exception.RetryNetworkException;
@@ -9,7 +10,17 @@ import com.haxi.mh.network.listener.HttpOnNextListener;
 import com.haxi.mh.utils.model.LogUtils;
 import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
 
+import java.io.InputStream;
+import java.security.KeyStore;
+import java.security.SecureRandom;
+import java.security.cert.CertificateFactory;
 import java.util.concurrent.TimeUnit;
+
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSession;
+import javax.net.ssl.SSLSocketFactory;
+import javax.net.ssl.TrustManagerFactory;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -70,6 +81,16 @@ public class HttpsManager {
                 .readTimeout(60, TimeUnit.SECONDS)//读取超时时间
                 .writeTimeout(60, TimeUnit.SECONDS);//写入超时时间
 
+        SSLSocketFactory socketFactory = getSocketFactory();
+        if (socketFactory != null) {
+            builder.sslSocketFactory(socketFactory);
+            builder.hostnameVerifier(new HostnameVerifier() {
+                @Override
+                public boolean verify(String hostname, SSLSession session) {
+                    return true;
+                }
+            });
+        }
         //请求接口返回数据拦截器
         if (RxRetrofitApp.isDebug()) {
             builder.addInterceptor(getHttpLoggingInterceptor());
@@ -151,5 +172,30 @@ public class HttpsManager {
         });
         loggingInterceptor.setLevel(level);
         return loggingInterceptor;
+    }
+
+
+    /**
+     * 添加证书 支持https请求
+     */
+    public static SSLSocketFactory getSocketFactory() {
+        try {
+            CertificateFactory certificateFactory = CertificateFactory.getInstance("X.509", "BC");
+            KeyStore keyStore = KeyStore.getInstance(KeyStore.getDefaultType());
+            keyStore.load(null);
+            InputStream is = MyApplication.getMyApplication().getAssets().open("ca.crt");
+            keyStore.setCertificateEntry("0", certificateFactory.generateCertificate(is));
+            if (is != null) {
+                is.close();
+            }
+            SSLContext sslContext = SSLContext.getInstance("TLS");
+            TrustManagerFactory trustManagerFactory = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
+            trustManagerFactory.init(keyStore);
+            sslContext.init(null, trustManagerFactory.getTrustManagers(), new SecureRandom());
+            return sslContext.getSocketFactory();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }
