@@ -19,27 +19,4 @@
         android:text="@string/pay_dense_test2"
         app:layout_constraintTop_toBottomOf="@id/tv_dense_test1" />
 
-    <TextView
-        android:id="@+id/tv_dense_test3"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/text_height"
-        android:gravity="center"
-        android:text="@string/pay_dense_test3"
-        app:layout_constraintTop_toBottomOf="@id/tv_dense_test2" />
-
-    <TextView
-        android:id="@+id/tv_dense_test4"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/text_height"
-        android:gravity="center"
-        android:text="@string/pay_dense_test4"
-        app:layout_constraintTop_toBottomOf="@id/tv_dense_test3" />
-
-    <TextView
-        android:id="@+id/tv_dense_test5"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/text_height"
-        android:gravity="center"
-        android:text="@string/pay_dense_test5"
-        app:layout_constraintTop_toBottomOf="@id/tv_dense_test4" />
 </android.support.constraint.ConstraintLayout>

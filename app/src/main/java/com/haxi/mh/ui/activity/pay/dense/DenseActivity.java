@@ -4,8 +4,6 @@ import android.view.View;
 
 import com.haxi.mh.R;
 import com.haxi.mh.base.BaseActivity;
-import com.haxi.mh.utils.dense.HttpEncryptUtil;
-import com.haxi.mh.utils.dense.KeyUtil;
 import com.haxi.mh.utils.dense.TestHttpEncrypt;
 import com.haxi.mh.utils.model.LogUtils;
 
@@ -33,55 +31,28 @@ public class DenseActivity extends BaseActivity {
     }
 
 
-    @OnClick({R.id.tv_dense_test1, R.id.tv_dense_test2, R.id.tv_dense_test3, R.id.tv_dense_test4, R.id.tv_dense_test5})
+    @OnClick({R.id.tv_dense_test1, R.id.tv_dense_test2})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_dense_test1:
-                try {
-                    String appEncrypt1 = HttpEncryptUtil.appEncrypt1("123456");
-                    HttpEncryptUtil.appDecrypt1(appEncrypt1);
-                    HttpEncryptUtil.appDecrypt1(KeyUtil.CONTENT.replaceAll("\n",""));
-                } catch (Exception e) {
-                    LogUtils.e("-----e---" + e.getMessage());
+                if (testHttpEncrypt != null) {
+                    try {
+                        testHttpEncrypt.generateKeyPair();
+                    } catch (Exception e) {
+                        LogUtils.e("-----e---" + e.getMessage());
+                    }
                 }
-
                 break;
             case R.id.tv_dense_test2:
                 if (testHttpEncrypt != null) {
                     try {
+                        testHttpEncrypt.appTest();
+                    } catch (Exception e) {
+                        LogUtils.e("-----e---" + e.getMessage());
+                    }
+                }
+                break;
 
-                    } catch (Exception e) {
-                        LogUtils.e("-----e---" + e.getMessage());
-                    }
-                }
-                break;
-            case R.id.tv_dense_test3:
-                if (testHttpEncrypt != null) {
-                    try {
-                        testHttpEncrypt.testServerDecrypt1();
-                    } catch (Exception e) {
-                        LogUtils.e("-----e---" + e.getMessage());
-                    }
-                }
-                break;
-            case R.id.tv_dense_test4:
-                if (testHttpEncrypt != null) {
-                    try {
-                        testHttpEncrypt.testserverEncrypt1();
-                    } catch (Exception e) {
-                        LogUtils.e("-----e---" + e.getMessage());
-                    }
-                }
-                break;
-            case R.id.tv_dense_test5:
-                if (testHttpEncrypt != null) {
-                    try {
-                        testHttpEncrypt.testAppDecrypt1();
-                    } catch (Exception e) {
-                        LogUtils.e("-----e---" + e.getMessage());
-                    }
-                }
-                break;
         }
     }
 }

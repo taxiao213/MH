@@ -71,10 +71,7 @@
     <string name="permissions_rror">获取权限失败</string>
     <string name="pay_dense">加密解密</string>
     <string name="pay_dense_test1">生成公钥和私钥</string>
-    <string name="pay_dense_test2">加密请求内容</string>
-    <string name="pay_dense_test3">解密请求内容</string>
-    <string name="pay_dense_test4">服务器加密响应给APP的内容</string>
-    <string name="pay_dense_test5">APP解密服务器的响应内容</string>
+    <string name="pay_dense_test2">加密请求内容 解密请求内容</string>
     <string name="upload_pic_error">上传失败，请稍后再试</string>
     <string name="net_error">网络异常，请稍后再试</string>
 </resources>

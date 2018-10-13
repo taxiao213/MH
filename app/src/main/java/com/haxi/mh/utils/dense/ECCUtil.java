@@ -22,6 +22,7 @@ import javax.crypto.Cipher;
  * EC的优点：1.在达到相同加密程度下，EC需要的秘钥长度比RSA要短得多
  *           2.bouncycastle实现的EC加密算法，对密文长度的限制比较松。在下面的测试程序中构造了一个长字符串加密，没有报错。
  * RSA的加密则是有限制的，必须分片。不过我不知道是不是bouncycastle自己事先做了分片
+ * 在Android客户端无法使用
  * Created by Han on 2018/9/26
  * Email:yin13753884368@163.com
  * CSDN:http://blog.csdn.net/yin13753884368/article

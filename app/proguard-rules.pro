@@ -375,5 +375,9 @@ public static java.lang.String TABLENAME;
 # dagger2
 -dontwarn dagger.**
 
+# bcprov-jdk15on-1.56.jar ----
+-dontwarn org.bouncycastle.**
+-keep public class org.bouncycastle.**{*;}
+
 #---------------------------------------------------------------------
 
