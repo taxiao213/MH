@@ -22,16 +22,15 @@ public class XXPermissionsUtils {
     private String[] readOrReadPermission = new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE};
     private String[] cameraPermission = new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA};
 
-    public XXPermissionsUtils(Context context) {
-        this.context = context;
+    public XXPermissionsUtils() {
+
     }
 
-    public static XXPermissionsUtils getInstances(Context context) {
-
+    public static XXPermissionsUtils getInstances() {
         if (xxPermissionsUtils == null) {
             synchronized (XXPermissionsUtils.class) {
                 if (xxPermissionsUtils == null) {
-                    xxPermissionsUtils = new XXPermissionsUtils(context);
+                    xxPermissionsUtils = new XXPermissionsUtils();
                 }
             }
         }
@@ -43,7 +42,8 @@ public class XXPermissionsUtils {
      *
      * @return
      */
-    public void hasCameraPermission(Function<Boolean> booleanFunction) {
+    public void hasCameraPermission(Function<Boolean> booleanFunction, Context context) {
+        this.context = context;
         if (XXPermissions.isHasPermission(context, cameraPermission)) {
             booleanFunction.action(true);
         } else {
@@ -56,7 +56,8 @@ public class XXPermissionsUtils {
      *
      * @return
      */
-    public void hasReadAndwritePermission(Function<Boolean> booleanFunction) {
+    public void hasReadAndwritePermission(Function<Boolean> booleanFunction, Context context) {
+        this.context = context;
         if (XXPermissions.isHasPermission(context, readOrReadPermission)) {
             booleanFunction.action(true);
         } else {
@@ -65,7 +66,9 @@ public class XXPermissionsUtils {
     }
 
     private void requestPermission(String[] permission, final Function<Boolean> booleanFunction) {
-        XXPermissions.with((Activity) context)
+        Activity context = (Activity) this.context;
+        if (context == null || context.isFinishing()) return;
+        XXPermissions.with(context)
                 //.constantRequest() //可设置被拒绝后继续申请，直到用户授权或者永久拒绝
                 //.permission(Permission.SYSTEM_ALERT_WINDOW, Permission.REQUEST_INSTALL_PACKAGES) //支持请求6.0悬浮窗权限8.0请求安装权限
                 .permission(permission) //不指定权限则自动获取清单中的危险权限
