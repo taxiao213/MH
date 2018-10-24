@@ -308,7 +308,7 @@ public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedCh
 
 
     /**
-     * 初始化华为服务
+     * 初始化华为服务 华为推送下载地址 https://obs.cn-north-2.myhwclouds.com/hms-ds-wf/sdk/HMS_SDK_2.6.0.301.zip
      */
     private HuaweiApiClient client = null;
 

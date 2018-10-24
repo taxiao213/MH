@@ -136,7 +136,7 @@ public class HomeManageFragment extends BaseFragment implements EasyPermissions.
                 select();
                 break;
             case R.id.select_pic:
-                XXPermissionsUtils instance = XXPermissionsUtils.getInstances(mActivity);
+                XXPermissionsUtils instance = XXPermissionsUtils.getInstances();
                 instance.hasReadAndwritePermission(new Function<Boolean>() {
                     @Override
                     public void action(Boolean var) {
@@ -144,10 +144,10 @@ public class HomeManageFragment extends BaseFragment implements EasyPermissions.
                             CameraUtils.JumpGallery(mActivity, ACTION_IMAGE_GALLERY);
                         }
                     }
-                });
+                }, mActivity);
                 break;
             case R.id.select_camera:
-                XXPermissionsUtils instances = XXPermissionsUtils.getInstances(mActivity);
+                XXPermissionsUtils instances = XXPermissionsUtils.getInstances();
                 instances.hasCameraPermission(new Function<Boolean>() {
                     @Override
                     public void action(Boolean var) {
@@ -155,11 +155,11 @@ public class HomeManageFragment extends BaseFragment implements EasyPermissions.
                             CameraUtils.JumpCamera(mActivity, ACTION_IMAGE_CAPTURE);
                         }
                     }
-                });
+                }, mActivity);
                 mActivity.startService(new Intent(mActivity, TestService.class));
                 break;
             case R.id.select_file:
-                XXPermissionsUtils instan = XXPermissionsUtils.getInstances(mActivity);
+                XXPermissionsUtils instan = XXPermissionsUtils.getInstances();
                 instan.hasReadAndwritePermission(new Function<Boolean>() {
                     @Override
                     public void action(Boolean var) {
@@ -167,7 +167,7 @@ public class HomeManageFragment extends BaseFragment implements EasyPermissions.
                             selectFile();
                         }
                     }
-                });
+                }, mActivity);
                 break;
             case R.id.tv_ceshi:
                 animation();
