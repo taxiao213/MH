@@ -32,7 +32,7 @@ android {
     //签名 引用位置
     signingConfigs {
         config {
-            storeFile file("H:\\Software\\Android\\Git\\MH\\mh.jks")
+            storeFile file("F:\\project\\MH\\mh.jks")
             storePassword "mh123456"
             keyAlias "key_mh"
             keyPassword "mh123456"
@@ -248,7 +248,7 @@ dependencies {
     /* 小米推送 */
     implementation files('libs/MiPush_SDK_Client_3_6_2.jar')
 
-    /* 华为推送 */
+    /* 华为推送 下载地址 https://obs.cn-north-2.myhwclouds.com/hms-ds-wf/sdk/HMS_SDK_2.6.0.301.zip*/
     compile 'com.huawei.android.hms:push:2.6.0.301'
 
     /* 相册 */

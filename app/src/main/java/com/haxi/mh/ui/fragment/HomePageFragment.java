@@ -73,10 +73,10 @@ public class HomePageFragment extends BaseFragment {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.bt_01:
-                Notification.getInstances(mActivity).showNotice("测试。。", "2018-01-15 19:39", 22);
+                Notification.getInstance().showNotice("测试。。", "2018-01-15 19:39", 22, "测试。。");
                 break;
             case R.id.bt_02:
-                Notification.getInstances(mActivity).CancelNotification(22);
+                Notification.getInstance().CancelNotification(22);
                 //                String rootPath = Environment.getExternalStorageDirectory().getAbsolutePath();
                 //                File file1 = new File(rootPath + "/hrchat/personIcon");
                 //                File file = null;
