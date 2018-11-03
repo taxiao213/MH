@@ -381,3 +381,12 @@ public static java.lang.String TABLENAME;
 
 #---------------------------------------------------------------------
 
+# for push sdk
+-keep class com.meizu.cloud.pushsdk.** { *; }
+-dontwarn  com.meizu.cloud.pushsdk.**
+
+-keep class com.meizu.nebula.** { *; }
+-dontwarn com.meizu.nebula.**
+
+-keep class com.meizu.push.** { *; }
+-dontwarn com.meizu.push.**

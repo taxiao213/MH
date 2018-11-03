@@ -25,6 +25,8 @@ import com.haxi.mh.utils.ui.smartrefreshlayout.api.RefreshHeader;
 import com.haxi.mh.utils.ui.smartrefreshlayout.api.RefreshLayout;
 import com.haxi.mh.utils.ui.smartrefreshlayout.footer.ClassicsFooter;
 import com.haxi.mh.utils.ui.smartrefreshlayout.header.ClassicsHeader;
+import com.meizu.cloud.pushsdk.PushManager;
+import com.meizu.cloud.pushsdk.util.MzSystemUtils;
 import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.Logger;
 import com.squareup.leakcanary.LeakCanary;
@@ -71,6 +73,8 @@ public class MyApplication extends Application {
     private int appCount = 0;
     //leakcanary
     private RefWatcher watcher;
+    private static final String APP_ID = "";
+    private static final String APP_KEY = "";
 
     static {
         //设置全局的Header构建器
@@ -163,6 +167,12 @@ public class MyApplication extends Application {
 
         com.xiaomi.mipush.sdk.Logger.setLogger(this, newLogger);
         /*小米推送 end*/
+
+        /*魅族推送 start*/
+        if(MzSystemUtils.isBrandMeizu(this)){
+            PushManager.register(this, APP_ID, APP_KEY);
+        }
+        /*魅族推送 end*/
 
         String processName = this.getProcessName();
 

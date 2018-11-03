@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
@@ -45,6 +47,7 @@ import com.huawei.hms.support.api.client.PendingResult;
 import com.huawei.hms.support.api.client.ResultCallback;
 import com.huawei.hms.support.api.push.HuaweiPush;
 import com.huawei.hms.support.api.push.TokenResult;
+import com.meizu.cloud.pushinternal.DebugLogger;
 import com.xiaomi.mipush.sdk.MiPushClient;
 
 import butterknife.BindView;
@@ -401,4 +404,30 @@ public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedCh
             }
         }
     }
+
+    private String getAppKey(String tag) {
+        String appKey = null;
+        try {
+            ApplicationInfo appInfo = this.getPackageManager().getApplicationInfo(getPackageName(), PackageManager.GET_META_DATA);
+            appKey = appInfo.metaData.getString(tag);
+            DebugLogger.e("push", tag + "=" + appKey);
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        return appKey;
+    }
+
+
+    private String getAppId(String tag){
+        int appId = 0;
+        try {
+            ApplicationInfo appInfo = this.getPackageManager().getApplicationInfo(getPackageName(), PackageManager.GET_META_DATA);
+            appId = appInfo.metaData.getInt(tag);
+            DebugLogger.e("push", tag + "=" + appId);
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        return String.valueOf(appId);
+    }
+
 }

@@ -285,6 +285,8 @@ dependencies {
 
     /* xxpermissions */
     compile 'com.hjq:xxpermissions:5.0'
+    /* 魅族推送 */
+    compile(group: 'com.meizu.flyme.internet', name: 'push-internal', version: '3.8.1', ext: 'aar')
 
 }
 
