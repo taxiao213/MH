@@ -129,7 +129,7 @@
 #-keep class com.demo.login.bean.** { *; }
 
 #保持某个类不被混淆
-#-keep class com.hr.deanoffice.bean.ApprovedBean{*;}
+-keep class com.haxi.mh.utils.jsbridge.Message{*;}
 
 #-------------------------------------------------------------------------
 
