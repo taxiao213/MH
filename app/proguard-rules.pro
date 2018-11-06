@@ -247,6 +247,90 @@ public static java.lang.String TABLENAME;
 -keep public class net.sourceforge.pinyin4j.**{*;}
 -keep public class com.hp.hpl.sparta.**{*;}
 
+# picasso
+-dontwarn com.squareup.picasso.**
+
+# matisse 第三方jar包屏蔽
+-dontwarn com.zhihu.matisse.**
+-keep class com.zhihu.matisse.** {*;}
+
+# sqlcipher加密数据库 keep 不加public
+-dontwarn net.sqlcipher.**
+-keep class net.sqlcipher.** {*;}
+-keep class net.sqlcipher.database.** {*;}
+
+# webRtc混淆
+-dontwarn org.webrtc.**
+-keep class org.webrtc.** {*;}
+
+# 状态栏控制
+-keep class android.support.v8.renderscript.** { *; }
+
+
+# UPPayAssistEx.jar
+-dontwarn com.unionpay.**
+-keep class com.unionpay.** {*;}
+
+# UPPayPluginExPro.jar
+-dontwarn cn.gov.pbc.tsm.client.mobile.android.bank.service.**
+-keep class cn.gov.pbc.tsm.client.mobile.android.bank.service.** {*;}
+-dontwarn com.**
+-keep class com.** {*;}
+
+# XXPermissions混淆
+-dontwarn com.hjq.permissions.**
+
+# dagger2
+-dontwarn dagger.**
+
+# bcprov-jdk15on-1.56.jar ----
+-dontwarn org.bouncycastle.**
+-keep public class org.bouncycastle.**{*;}
+
+
+#------------------------------------------- openfire 即时通讯 start--------------------------------------
+
+# jxmpp-core-0.4.1.jar ----
+-dontwarn org.jxmpp.**
+-keep public class org.jxmpp.** {*;}
+
+# jxmpp-util-cache-0.4.1.jar ----
+-dontwarn org.jxmpp.util.cache.**
+-keep public class org.jxmpp.util.cache.** {*;}
+
+# smack-android-4.1.3.jar ----
+-dontwarn org.jivesoftware.**
+-keep public class org.jivesoftware.** {*;}
+
+# smack-android-extensions-4.1.3.jar ----
+-dontwarn org.jivesoftware.smackx.ping.android.**
+-keep public class org.jivesoftware.smackx.ping.android.** {*;}
+
+# smack-core-4.1.3.jar ----
+-dontwarn org.jivesoftware.smack.**
+-keep public class org.jivesoftware.smack.** {*;}
+
+# smack-extensions-4.1.3.jar ----
+-dontwarn org.jivesoftware.**
+-keep public class org.jivesoftware.** {*;}
+-dontwarn org.jivesoftware.smack.extensions.**
+-keep public class org.jivesoftware.smack.extensions.** {*;}
+
+# smack-im-4.1.3.jar ----
+-dontwarn org.jivesoftware.smack.**
+-keep public class org.jivesoftware.smack.** {*;}
+-dontwarn org.jivesoftware.smack.im.**
+-keep public class org.jivesoftware.smack.im.** {*;}
+
+# smack-tcp-4.1.3.jar ----
+-dontwarn org.jivesoftware.smack.tcp.**
+-keep public class org.jivesoftware.smack.tcp.** {*;}
+
+
+#------------------------------------------- openfire 即时通讯 end-------------------------------
+
+#---------------------------------------------- 第三方推送 start---------------------------------
+
 # 友盟统计
 -keep class com.umeng.analytics.** {*;}
 -keepclassmembers class * {
@@ -306,7 +390,6 @@ public static java.lang.String TABLENAME;
 -keep interface com.huawei.android.hms.agent.common.INoProguard {*;}
 -keep class * extends com.huawei.android.hms.agent.common.INoProguard {*;}
 
-
 #（可选）避免Log打印输出
 -assumenosideeffects class android.util.Log {
    public static *** v(...);
@@ -315,28 +398,19 @@ public static java.lang.String TABLENAME;
    public static *** w(...);
  }
 
-# picasso
--dontwarn com.squareup.picasso.**
+ # 魅族推送
+ -keep class com.meizu.cloud.pushsdk.** { *; }
+ -dontwarn  com.meizu.cloud.pushsdk.**
 
-# matisse 第三方jar包屏蔽
--dontwarn com.zhihu.matisse.**
--keep class com.zhihu.matisse.** {*;}
+ -keep class com.meizu.nebula.** { *; }
+ -dontwarn com.meizu.nebula.**
 
-# 腾讯支付
--dontwarn com.tencent.mm.opensdk.**
--keep class com.tencent.mm.opensdk.** {*;}
+ -keep class com.meizu.push.** { *; }
+ -dontwarn com.meizu.push.**
 
-# sqlcipher加密数据库 keep 不加public
--dontwarn net.sqlcipher.**
--keep class net.sqlcipher.** {*;}
--keep class net.sqlcipher.database.** {*;}
+#---------------------------------------------- 第三方推送 end--------------------------------
 
-# webRtc混淆
--dontwarn org.webrtc.**
--keep class org.webrtc.** {*;}
-
-# 状态栏控制
--keep class android.support.v8.renderscript.** { *; }
+#---------------------------------------------- 支付 start-----------------------------------
 
 # aliPay 支付宝支付
 -keep class com.alipay.android.app.IAlixPay{*;}
@@ -359,34 +433,18 @@ public static java.lang.String TABLENAME;
 -keep class com.ta.utdid2.** { *;}
 -keep class com.ut.device.** { *;}
 
-# UPPayAssistEx.jar
--dontwarn com.unionpay.**
--keep class com.unionpay.** {*;}
+-dontwarn com.alipay.**
+-dontwarn com.ta.utdid2.**
+-dontwarn com.ut.device.**
+-dontwarn org.json.alipay.**
 
-# UPPayPluginExPro.jar
--dontwarn cn.gov.pbc.tsm.client.mobile.android.bank.service.**
--keep class cn.gov.pbc.tsm.client.mobile.android.bank.service.** {*;}
--dontwarn com.**
--keep class com.** {*;}
+# 微信支付
+-keep class com.tencent.mm.opensdk.** {*;}
+-keep class com.tencent.wxop.** {*;}
+-keep class com.tencent.mm.sdk.** {*;}
+#---------------------------------------------- 支付 end-------------------------------------
 
-# XXPermissions混淆
--dontwarn com.hjq.permissions.**
 
-# dagger2
--dontwarn dagger.**
 
-# bcprov-jdk15on-1.56.jar ----
--dontwarn org.bouncycastle.**
--keep public class org.bouncycastle.**{*;}
 
-#---------------------------------------------------------------------
 
-# for push sdk
--keep class com.meizu.cloud.pushsdk.** { *; }
--dontwarn  com.meizu.cloud.pushsdk.**
-
--keep class com.meizu.nebula.** { *; }
--dontwarn com.meizu.nebula.**
-
--keep class com.meizu.push.** { *; }
--dontwarn com.meizu.push.**
