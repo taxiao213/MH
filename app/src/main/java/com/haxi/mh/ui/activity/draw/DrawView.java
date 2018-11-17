@@ -86,9 +86,7 @@ public class DrawView extends View {
             canvas.drawCircle(100, 100, 100, paint);
             canvas.restore();
         }*/
-
-//        canvas.drawPath(path, paint);
-        canvas.drawPoint(startx, starty, paint);
+        canvas.drawPath(path, paint);
     }
 
     public void setClear(boolean isClear) {
