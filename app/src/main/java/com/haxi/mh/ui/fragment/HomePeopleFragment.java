@@ -10,10 +10,14 @@ import android.os.IBinder;
 import android.os.Message;
 import android.os.Messenger;
 import android.os.RemoteException;
+import android.support.annotation.StringRes;
+import android.view.View;
+import android.view.autofill.AutofillManager;
 
 import com.haxi.mh.R;
 import com.haxi.mh.aidl.MessengerService;
 import com.haxi.mh.base.BaseFragment;
+import com.haxi.mh.ui.activity.draw.DrawActivity;
 import com.haxi.mh.ui.activity.pay.PayActivity;
 import com.haxi.mh.utils.model.LogUtils;
 
@@ -84,9 +88,16 @@ public class HomePeopleFragment extends BaseFragment {
     }
 
 
-    @OnClick(R.id.pay)
-    public void onViewClicked() {
-        startActivity(new Intent(mActivity, PayActivity.class));
+    @OnClick({R.id.pay, R.id.draw})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.pay:
+                startActivity(new Intent(mActivity, PayActivity.class));
+                break;
+            case R.id.draw:
+                startActivity(new Intent(mActivity, DrawActivity.class));
+                break;
+        }
     }
 
 
@@ -95,4 +106,10 @@ public class HomePeopleFragment extends BaseFragment {
         super.onDestroy();
         mActivity.unbindService(serviceConnection);
     }
+
+    public @StringRes
+    int getTitleResID() {
+        return 0;
+    }
+
 }

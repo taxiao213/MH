@@ -203,6 +203,23 @@ public class UIUtil {
     }
 
     /**
+     * 获取状态栏高度
+     *
+     * @param context
+     * @return
+     */
+    public int getStateBarHeight(Context context) {
+        int result = 0;
+        int resourceId = context.getResources().getIdentifier("status_bar_height", "dimen", "android");
+        if (resourceId > 0) {
+            result = context.getResources().getDimensionPixelSize(resourceId);
+        } else {
+            result = (int) Math.ceil(20 * context.getResources().getDisplayMetrics().density);
+        }
+        return result;
+    }
+
+    /**
      * 延时在主线程执行runnable
      */
     public static boolean postDelayed(Runnable runnable, long delayMillis) {
@@ -540,7 +557,7 @@ public class UIUtil {
      * 唤起其他APP  "com.tencent.mm"
      *
      * @param packagename 包名
-     * @param context 上下文
+     * @param context     上下文
      */
     private void doStartApplicationWithPackageName(String packagename, Context context) {
 

@@ -33,4 +33,12 @@
         android:layout_gravity="center"
         android:gravity="center"
         android:text="@string/pay" />
+
+    <TextView
+        android:id="@+id/draw"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/text_height"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:text="画板" />
 </LinearLayout>
