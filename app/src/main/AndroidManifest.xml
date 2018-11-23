@@ -188,6 +188,11 @@
             android:name="com.haxi.mh.aidl.BookManagerService"
             android:process=":roots" />
 
+        <receiver android:name=".utils.im.IMNetworkReceiver" />
+        <receiver android:name=".utils.im.IMNoticeReceiver" />
+        <receiver android:name=".utils.im.IMXiaoMiReceiver" />
+        <receiver android:name=".utils.im.IMHuaWeiReceiver" />
+        <service android:name=".utils.im.IMService" />
         <!-- < 推 送 >  -->
 
         <!--<editor-fold desc="友盟推送">-->
