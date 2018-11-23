@@ -107,6 +107,72 @@ public class HttpEncryptUtil {
         return result.toString();
     }
 
+    /**
+     * APP端加密请求内容
+     * Android Java iOS 三端共用
+     * AES密钥和偏移量自己生成
+     * 不调用 KeyGenerator keyGen = KeyGenerator.getInstance("AES");
+     * keyGen.init(128);
+     * SecretKey key = keyGen.generateKey();
+     *
+     * @param content 需要加密的内容
+     * @return 返回map
+     * @throws Exception
+     */
+    public static Map<String, String> appEncrypt1(String content) throws Exception {
+        LinkedHashMap<String, String> map = new LinkedHashMap<>();
+        //将Base64编码后的(server端)公钥转换成PublicKey对象
+        PublicKey serverPublicKey = RSAUtil.string2PublicKey(KeyUtil.SERVER_PUBLIC_KEY.replaceAll("\n", ""));
+        //AES秘钥 AES偏移量
+        String aesKeyStr = AESUtil2.CRYPT_KEY;
+        String ivKeyStr = AESUtil2.IV_STRING;
+        //用(server端)公钥加密AES秘钥 AES偏移量
+        byte[] encryptAesKey = RSAUtil.publicEncrypt(aesKeyStr.getBytes("utf-8"), serverPublicKey);
+        byte[] encryptAesIvKey = RSAUtil.publicEncrypt(ivKeyStr.getBytes("utf-8"), serverPublicKey);
+        //用AES秘钥加密请求内容
+        String encryptContentRequest = AESUtil2.encrypt(aesKeyStr, ivKeyStr, content);
+        map.put("ak", Base64Util.byte2Base64(encryptAesKey));//加密后的aesKey
+        map.put("iv", Base64Util.byte2Base64(encryptAesIvKey));//加密后的AES偏移量
+        map.put("data", encryptContentRequest);//加密内容
+        LogUtils.e("----AES加密秘钥 ----" + aesKeyStr);
+        LogUtils.e("----AES加密秘钥偏移量 ----" + ivKeyStr);
+        LogUtils.e("----AES加密数据 ---- ak==" + Base64Util.byte2Base64(encryptAesKey));
+        LogUtils.e("----AES加密数据 ---- iv==" + Base64Util.byte2Base64(encryptAesIvKey));
+        LogUtils.e("----AES加密数据 ---- data==" + encryptContentRequest);
+        return map;
+    }
+
+
+    /**
+     * APP解密服务器的响应内容
+     * Android Java iOS 三端共用
+     * AES密钥和偏移量自己生成
+     * 不调用 KeyGenerator keyGen = KeyGenerator.getInstance("AES");
+     * keyGen.init(128);
+     * SecretKey key = keyGen.generateKey();
+     *
+     * @param content 需要解密的内容
+     * @return 明文
+     * @throws Exception
+     */
+    public static String appDecrypt1(String content) throws Exception {
+        JSONObject result = new JSONObject(content);
+        String decryptAesKey = (String) result.get("ak");//加密后的aesKey
+        String decryptAesIvKey = (String) result.get("iv");//加密后的AES偏移量
+        String decryptContent = (String) result.get("data");//内容
+        //将Base64编码后的APP私钥转换成PrivateKey对象
+        PrivateKey appPrivateKey = RSAUtil.string2PrivateKey(KeyUtil.APP_PRIVATE_KEY.replace("\n", ""));
+        //用APP私钥解密AES秘钥 AES偏移量
+        byte[] aesKeyBytes = RSAUtil.privateDecrypt(Base64Util.base642Byte(decryptAesKey), appPrivateKey);
+        byte[] aesIvKeyBytes = RSAUtil.privateDecrypt(Base64Util.base642Byte(decryptAesIvKey), appPrivateKey);
+        //用AES秘钥解密请求内容
+        String aesKey = new String(aesKeyBytes);
+        String aesIvKey = new String(aesIvKeyBytes);
+        String response = AESUtil2.decrypt(aesKey, aesIvKey, decryptContent);
+        LogUtils.e("----AES解密秘钥 ----" + aesKey + "--- aesIvKey ---" + aesIvKey + "--- response ---" + response);
+        return response;
+    }
+
 
     //################################双向ECC + AES ##########################
 
