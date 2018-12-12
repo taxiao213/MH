@@ -41,4 +41,13 @@
         android:layout_gravity="center"
         android:gravity="center"
         android:text="画板" />
+
+    <TextView
+        android:id="@+id/scan"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/text_height"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:text="扫一扫" />
+
 </LinearLayout>

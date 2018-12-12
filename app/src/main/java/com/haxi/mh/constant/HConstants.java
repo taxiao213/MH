@@ -20,5 +20,7 @@ public class HConstants {
     public static String ACCOUNT = "000000232";
     public static String USERPHOTO = "000000232";
 
+    /*扫一扫*/
+    public static final int REQUEST_CODE_SCAN = 0x110;//打开扫一扫
 
 }

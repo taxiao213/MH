@@ -123,6 +123,9 @@
         <activity
             android:name=".ui.activity.draw.DrawActivity"
             android:configChanges="orientation|keyboardHidden|navigation" />
+        <activity
+            android:name=".utils.zxingutil.android.CaptureActivity"
+            android:configChanges="orientation|keyboardHidden|navigation" />
 
         <receiver android:name=".utils.ui.view.test.AppWidget">
             <meta-data

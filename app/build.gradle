@@ -6,7 +6,7 @@ android {
     buildToolsVersion "27.0.2"
     defaultConfig {
         applicationId "com.haxi.mh"
-        minSdkVersion 16
+        minSdkVersion 17
         targetSdkVersion 27
         versionCode 3
         versionName "1.0.3"
@@ -32,7 +32,7 @@ android {
     //签名 引用位置
     signingConfigs {
         config {
-            storeFile file("F:\\project\\MH\\mh.jks")
+            storeFile file("E:\\project\\MH\\mh\\mh.jks")
             storePassword "mh123456"
             keyAlias "key_mh"
             keyPassword "mh123456"
