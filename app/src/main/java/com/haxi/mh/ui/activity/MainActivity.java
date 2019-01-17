@@ -738,7 +738,7 @@ public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedCh
         Executors.newSingleThreadExecutor().execute(new Runnable() {
             @Override
             public void run() {
-                List<DBMsgTipDoInfo> doInfos = DBMsgTipUtil.getInstance().queryNoReadMessage();
+               /* List<DBMsgTipDoInfo> doInfos = DBMsgTipUtil.getInstance().queryNoReadMessage();
                 if (doInfos != null && doInfos.size() > 0) {
                     if (TextUtils.equals(current_tag, "")) {
                         for (DBMsgTipDoInfo info : doInfos) {
@@ -757,7 +757,7 @@ public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedCh
                         });
                         return;
                     }
-                }
+                }*/
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
