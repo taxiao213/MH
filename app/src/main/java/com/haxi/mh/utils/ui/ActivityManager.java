@@ -2,6 +2,7 @@ package com.haxi.mh.utils.ui;
 
 import android.app.Activity;
 
+import java.lang.ref.WeakReference;
 import java.util.ListIterator;
 import java.util.Stack;
 
@@ -16,7 +17,7 @@ import java.util.Stack;
 public class ActivityManager {
 
     public static ActivityManager manager;
-    private static Stack<Activity> activityStack = null;
+    private Stack<Activity> activityStack = null;
 
     public static ActivityManager getInstances() {
         if (manager == null) {
@@ -55,7 +56,7 @@ public class ActivityManager {
      * @param activity
      */
     public void remove(Activity activity) {
-        if (!activityStack.empty()) {
+        if (activityStack != null && !activityStack.empty()) {
             activityStack.remove(activity);
             activity.finish();
         }
@@ -119,5 +120,9 @@ public class ActivityManager {
             count = activityStack.size();
         }
         return count;
+    }
+
+    public void removeActivityManager() {
+        if (manager != null) manager = null;
     }
 }

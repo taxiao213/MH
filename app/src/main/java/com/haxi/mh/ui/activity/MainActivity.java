@@ -49,6 +49,7 @@ import com.haxi.mh.utils.im.IMNoticeReceiver;
 import com.haxi.mh.utils.im.IMUtils;
 import com.haxi.mh.utils.model.LogUtils;
 import com.haxi.mh.utils.net.DownFileService;
+import com.haxi.mh.utils.ui.ActivityManager;
 import com.haxi.mh.utils.ui.UIUtil;
 import com.huawei.hms.api.ConnectionResult;
 import com.huawei.hms.api.HuaweiApiAvailability;
@@ -717,6 +718,7 @@ public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedCh
         if (noticeBroad != null) {
             unregisterReceiver(noticeBroad);
         }
+        ActivityManager.getInstances().removeActivityManager();
         super.onDestroy();
     }
 

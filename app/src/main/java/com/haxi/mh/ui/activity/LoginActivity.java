@@ -51,7 +51,7 @@ public class LoginActivity extends BaseActivity {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_DONE) {
-                    startActivity(new Intent(mActivity, MainActivity.class));
+                    startActivity(new Intent(getApplicationContext(), MainActivity.class));
                     finish();
                     return true;
                 }
@@ -77,7 +77,7 @@ public class LoginActivity extends BaseActivity {
      * 注册
      */
     private void register() {
-        startActivityForResult(new Intent(mActivity, RegisterActivity.class), REGISTER_CODE);
+        startActivityForResult(new Intent(getApplicationContext(), RegisterActivity.class), REGISTER_CODE);
     }
 
     /**
@@ -99,7 +99,7 @@ public class LoginActivity extends BaseActivity {
 
         //通过接口请求
         ToastUtils.showShortToast("登录成功");
-        startActivity(new Intent(mActivity, MainActivity.class));
+        startActivity(new Intent(getApplicationContext(), MainActivity.class));
         finish();
     }
 

@@ -34,7 +34,6 @@ public abstract class BaseFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mActivity = (BaseActivity) getActivity();
-        EventBus.getDefault().register(this);
         View view = inflater.inflate(getLayoutRes(), container, false);
         bind = ButterKnife.bind(this, view);
         initView();
@@ -70,6 +69,5 @@ public abstract class BaseFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         bind.unbind();
-        EventBus.getDefault().unregister(this);
     }
 }

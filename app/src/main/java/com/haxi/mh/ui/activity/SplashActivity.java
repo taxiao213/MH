@@ -67,7 +67,7 @@ public class SplashActivity extends BaseActivity {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
                 if (position == list.size() - 1) {
-                    startActivity(new Intent(mActivity, LoginActivity.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+                    startActivity(new Intent(getApplicationContext(), LoginActivity.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
                     finish();
                 }
             }
@@ -86,7 +86,7 @@ public class SplashActivity extends BaseActivity {
             }
         });
 
-        ViewPagerAdapter adapter = new ViewPagerAdapter(mActivity, imageViews);
+        ViewPagerAdapter adapter = new ViewPagerAdapter(getApplicationContext(), imageViews);
         viewpager.setAdapter(adapter);
 
     }

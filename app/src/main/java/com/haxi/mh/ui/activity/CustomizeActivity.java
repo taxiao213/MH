@@ -76,6 +76,7 @@ public class CustomizeActivity extends BaseActivity implements View.OnTouchListe
         layoutParams.height = WindowManager.LayoutParams.WRAP_CONTENT;
         layoutParams.x = 100;
         layoutParams.y = 300;
+        layoutParams.type = WindowManager.LayoutParams.TYPE_SYSTEM_OVERLAY;
         button = new Button(this);
         button.setText("click me");
         button.setOnTouchListener(this);
