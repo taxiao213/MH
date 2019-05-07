@@ -212,7 +212,6 @@ public class AlipayActivity extends BaseActivity {
     /**
      * 支付宝账户授权业务
      *
-     * @param v
      */
     public void authV2() {
         if (TextUtils.isEmpty(PID) || TextUtils.isEmpty(APPID)

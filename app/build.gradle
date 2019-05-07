@@ -137,6 +137,12 @@ greendao {
 
 }
 
+repositories {
+    flatDir {
+        dirs 'libs'
+    }
+}
+
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
@@ -230,8 +236,7 @@ dependencies {
 //    implementation files('libs/httpcore-4.4.10.jar')
 
     /* 支付宝支付 */
-//    implementation files('libs/alipaySdk-20180601.jar')
-
+    implementation (name: 'alipaySdk-15.6.2-20190416165036', ext: 'aar')
     /* 银联支付 */
 //    implementation files('libs/UPPayAssistEx.jar')
 //    implementation files('libs/UPPayPluginExPro.jar')
