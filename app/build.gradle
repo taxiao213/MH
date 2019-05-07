@@ -1,6 +1,5 @@
 apply plugin: 'com.android.application'
 apply plugin: 'org.greenrobot.greendao' // apply plugin
-apply plugin: 'walle'
 android {
     compileSdkVersion 27
     buildToolsVersion "27.0.2"
@@ -32,7 +31,7 @@ android {
     //签名 引用位置
     signingConfigs {
         config {
-            storeFile file("E:\\project\\MH\\mh\\mh.jks")
+            storeFile file("H:\\Software\\Android\\Git\\MH\\MH\\mh\\mh.jks")
             storePassword "mh123456"
             keyAlias "key_mh"
             keyPassword "mh123456"
@@ -76,20 +75,6 @@ android {
                         outputFile = new File(outputFile.parent, fileName)
                     }
                 }
-
-//                variant.outputs.each { output ->
-//                    def outputFile = output.outputFile
-//                    if (outputFile != null && outputFile.name.endsWith('.apk')) {
-//                        def versionName = variant.versionName
-//                        def flavor = variant.productFlavors[0].name
-//                        def date = new Date()
-//                        def name = variant.buildType.name
-//                        def currentDate = date.format('yyyy_MM_dd_HH_mm')
-//                        // 输出apk名称为app_honry_debug_v1.4.7_2018_01_17_16_22.apk
-//                        def fileName = name + "_" + flavor + versionName + "_" + currentDate + ".apk"
-//                        outputFile = new File(outputFile.parent, fileName)
-//                    }
-//                }
             }
         }
 
@@ -140,18 +125,13 @@ android {
 
 /* 针对greenDao的一些配置 */
 greendao {
-
     schemaVersion 1 //数据库版本
     //The current version of the database schema. This is used by the *OpenHelpers classes to migrate between schema versions. If you change your entity/database schema, this value has to be increased. Defaults to 1.
-
     daoPackage 'com.haxi.mh'
     // The package name for generated DAOs, DaoMaster, and DaoSession. Defaults to the package name of your source entities
-
     //targetGenDir  //生成的根目录
     //The location where generated sources should be stored at. Defaults to the generated source folder inside the build directory ( build/generated/source/greendao).
-
     generateTests true // Set to true to automatically generate unit tests. 是否进行单元测试
-
 //    targetGenDirTests //生成的单元测试根目录
 // The base directory where generated unit tests should be stored at. Defaults to src/androidTest/java.
 
@@ -163,11 +143,8 @@ dependencies {
     compile 'junit:junit:4.12'
     // compile 'com.android.support.test:runner:1.0.1'
     compile 'com.android.support.test.espresso:espresso-core:3.0.1'
-    /* 百分比布局 */
-    compile 'com.android.support:percent:27.1.1'
     /* multidex兼容包，配合AndroidStudio实现了一个APK包含多个dex的功能 */
     compile 'com.android.support:multidex:1.0.2'
-
 
     /* butterKnife */
     compile 'com.jakewharton:butterknife:8.8.1'
@@ -238,13 +215,6 @@ dependencies {
     /* 格式化拼音 */
     compile 'com.belerweb:pinyin4j:2.5.1'
 
-    /* Walle（瓦力）：Android Signature V2 Scheme签名下的新一代渠道包打包神器 */
-    compile 'com.meituan.android.walle:library:1.1.5'
-
-    /* 友盟推送 统计 */
-    compile 'com.umeng.analytics:analytics:6.1.4'
-    implementation project(':PushSDK')
-
     /* 小米推送 */
     implementation files('libs/MiPush_SDK_Client_3_6_2.jar')
 
@@ -288,16 +258,12 @@ dependencies {
     /* 魅族推送 */
     compile(group: 'com.meizu.flyme.internet', name: 'push-internal', version: '3.8.1', ext: 'aar')
 
-}
+    /* 友盟推送 统计 */
+    //PushSDK必须依赖基础组件库，所以需要加入对应依赖
+    implementation 'com.umeng.umsdk:common:1.5.4'
+    //PushSDK必须依赖utdid库，所以需要加入对应依赖
+    implementation 'com.umeng.umsdk:utdid:1.1.5.3'
+    //PushSDK
+    implementation 'com.umeng.umsdk:push:5.0.2'
 
-
-
-walle {
-    // 指定渠道包的输出路径
-    apkOutputFolder = new File("${project.buildDir}/outputs/channels")
-    // 定制渠道包的APK的文件名称
-//    apkFileNameFormat = '${appName}-${packageName}-${channel}-${buildType}-v${versionName}-${versionCode}-${buildTime}.apk'
-    apkFileNameFormat = '${appName}-${channel}-${buildType}.apk'
-    // 渠道配置文件
-    channelFile = new File("${project.getProjectDir()}/channel")
 }

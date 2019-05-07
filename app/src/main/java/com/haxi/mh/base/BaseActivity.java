@@ -10,8 +10,9 @@ import com.haxi.mh.MyApplication;
 import com.haxi.mh.model.MessageEvent;
 import com.haxi.mh.utils.ui.ActivityManager;
 import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
-import com.umeng.analytics.MobclickAgent;
+import com.umeng.message.PushAgent;
 
+import org.bouncycastle.jcajce.provider.symmetric.ARC4;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -50,6 +51,7 @@ public abstract class BaseActivity extends RxAppCompatActivity {
         //            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
         //        }
         MyApplication.getRefWatcher().watch(this);
+        PushAgent.getInstance(BaseActivity.this).onAppStart();
     }
 
 
@@ -87,17 +89,6 @@ public abstract class BaseActivity extends RxAppCompatActivity {
         return super.onTouchEvent(event);
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        MobclickAgent.onResume(this);
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        MobclickAgent.onPause(this);
-    }
 
     @Override
     protected void onDestroy() {

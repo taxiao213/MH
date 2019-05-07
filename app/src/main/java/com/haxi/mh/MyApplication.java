@@ -36,7 +36,7 @@ import com.tencent.bugly.beta.Beta;
 import com.tencent.bugly.crashreport.CrashReport;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
-import com.umeng.analytics.MobclickAgent;
+import com.umeng.commonsdk.UMConfigure;
 import com.umeng.message.IUmengRegisterCallback;
 import com.umeng.message.PushAgent;
 import com.xiaomi.channel.commonutils.logger.LoggerInterface;
@@ -75,6 +75,10 @@ public class MyApplication extends Application {
     private RefWatcher watcher;
     private static final String APP_ID = "";
     private static final String APP_KEY = "";
+
+    private String UMENG_APPKEY = "5a3cf80fa40fa30d2200000e";
+    private String UMENG_MESSAGE_SECRET = "762ddec636c570e9559a67accf4564ef";
+    private String UMENG_CHANNEL = "UMENG";
 
     static {
         //设置全局的Header构建器
@@ -126,7 +130,7 @@ public class MyApplication extends Application {
         RxRetrofitApp.getInstances().setDebug();
 
         //友盟统计
-        MobclickAgent.setScenarioType(mContext, MobclickAgent.EScenarioType.E_UM_NORMAL);
+        UMConfigure.init(this, UMENG_APPKEY, UMENG_CHANNEL, UMConfigure.DEVICE_TYPE_PHONE, UMENG_MESSAGE_SECRET);
 
         PushAgent mPushAgent = PushAgent.getInstance(this);
         //注册推送服务，每次调用register方法都会回调该接口
@@ -169,7 +173,7 @@ public class MyApplication extends Application {
         /*小米推送 end*/
 
         /*魅族推送 start*/
-        if(MzSystemUtils.isBrandMeizu(this)){
+        if (MzSystemUtils.isBrandMeizu(this)) {
             PushManager.register(this, APP_ID, APP_KEY);
         }
         /*魅族推送 end*/

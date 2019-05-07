@@ -15,8 +15,8 @@ import com.haxi.mh.R;
 import com.haxi.mh.ServiceUtils;
 import com.haxi.mh.model.db.DBMsgTipDoInfo;
 import com.haxi.mh.utils.StringUtils;
+import com.haxi.mh.utils.background.BackgroundUtils;
 import com.haxi.mh.utils.dbutil.DBMsgTipUtil;
-import com.haxi.mh.utils.im.utils.BackgroundUtils;
 import com.haxi.mh.utils.net.NetUtils;
 
 import java.io.File;

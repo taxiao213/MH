@@ -65,7 +65,8 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/mh_icon"
         android:supportsRtl="true"
-        android:theme="@style/noActionBarTheme">
+        android:theme="@style/noActionBarTheme"
+        tools:ignore="AllowBackup,GoogleAppIndexingWarning">
 
 
         <activity
@@ -197,19 +198,6 @@
         <receiver android:name=".utils.im.IMHuaWeiReceiver" />
         <service android:name=".utils.im.IMService" />
         <!-- < 推 送 >  -->
-
-        <!--<editor-fold desc="友盟推送">-->
-        <meta-data
-            android:name="UMENG_APPKEY"
-            android:value="5a3cf80fa40fa30d2200000e" />
-        <meta-data
-            android:name="UMENG_MESSAGE_SECRET"
-            android:value="762ddec636c570e9559a67accf4564ef" />
-        <meta-data
-            android:name="UMENG_CHANNEL"
-            android:value="${UMENG_CHANNEL_VALUE}" />
-        <!--</editor-fold>-->
-
 
         <!--<editor-fold desc="小米推送">-->
         <service
