@@ -2,7 +2,7 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/risk_pop_root_ll"
-    android:layout_width="@dimen/x270"
+    android:layout_width="300dp"
     android:layout_height="wrap_content"
     android:layout_centerInParent="true"
     android:layout_gravity="center"
@@ -26,7 +26,7 @@
     <RelativeLayout
         android:id="@+id/risk_pop_rl"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/y80">
+        android:layout_height="100dp">
 
         <EditText
             android:id="@+id/risk_pop_et"

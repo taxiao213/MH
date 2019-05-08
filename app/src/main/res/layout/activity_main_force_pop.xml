@@ -5,7 +5,7 @@
     android:layout_height="match_parent">
 
     <RelativeLayout
-        android:layout_width="@dimen/x270"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:background="@drawable/main_force_shape">
@@ -13,7 +13,7 @@
         <RelativeLayout
             android:id="@+id/rl_mian_title"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/y52"
+            android:layout_height="60dp"
             android:background="@drawable/main_force_pop">
 
             <LinearLayout
@@ -21,7 +21,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:orientation="vertical"
-                android:paddingBottom="@dimen/y6">
+                android:paddingBottom="6dp">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -36,7 +36,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="@dimen/y3"
+                    android:layout_marginTop="3dp"
                     android:textColor="@color/white"
                     android:textSize="14dp"/>
             </LinearLayout>
@@ -51,8 +51,8 @@
             android:layout_alignParentStart="true"
             android:layout_below="@id/rl_mian_title"
             android:layout_centerHorizontal="true"
-            android:layout_marginLeft="@dimen/x19"
-            android:layout_marginTop="@dimen/y5"
+            android:layout_marginLeft="19dp"
+            android:layout_marginTop="5dp"
             android:text="更新内容："
             android:textColor="@color/grey_33"
             android:textSize="15dp"
@@ -67,22 +67,22 @@
             android:layout_below="@id/tv_main_update"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="5dp"
-            android:layout_marginLeft="@dimen/x19"
-            android:layout_marginRight="@dimen/x19"
-            android:layout_marginTop="@dimen/y5"
-            android:lineSpacingExtra="@dimen/y7"
+            android:layout_marginLeft="19dp"
+            android:layout_marginRight="19dp"
+            android:layout_marginTop="5dp"
+            android:lineSpacingExtra="7dp"
             android:textColor="@color/grey_33"
             android:textSize="15dp"
             android:textStyle="normal"/>
 
         <TextView
             android:id="@+id/tv_main_bt"
-            android:layout_width="@dimen/x231"
-            android:layout_height="@dimen/y29"
+            android:layout_width="240dp"
+            android:layout_height="40dp"
             android:layout_below="@id/tv_main_content"
             android:layout_centerHorizontal="true"
-            android:layout_marginBottom="@dimen/y11"
-            android:layout_marginTop="@dimen/y5"
+            android:layout_marginBottom="11dp"
+            android:layout_marginTop="5dp"
             android:background="@drawable/main_but_shape"
             android:gravity="center"
             android:text="立即升级"
