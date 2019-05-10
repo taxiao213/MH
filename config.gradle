@@ -1,0 +1,82 @@
+ext {
+    // Sdk and tools
+    minSdkVersion = 19
+    targetSdkVersion = 27
+    compileSdkVersion = 27
+    buildToolsVersion = '27.0.2'
+    versionCode = 1
+    versionName = '1.0.0_Beta'
+    //打包2018.08.30 (45 1.5.5 ||新版本 2018.10.23 46 1.5.6 || 2019.01.03 47 1.5.7 || 2019.03.21 49 1.5.9 ||2019.03.30 50 1.6.0)
+
+    // App dependencies
+    supportLibraryVersion = '27.1.1'
+    multidexVersion = '1.0.0'
+    mockitoVersion = '1.9.5'
+    junitVersion = '4.12'
+    gsonVersion = '2.8.0'
+    percentSupportVersion = '1.0.1'
+    orhanobutLoggerVersion = '2.1.1'
+    constraintLayoutVersion = '1.0.2'
+    multidexVersion = '1.0.2' /* multidex兼容包，配合AndroidStudio实现了一个APK包含多个dex的功能 */
+
+    //rxjava retrofit2
+    retrofit2ConverterScalarsVersion = '2.3.0'
+    retrofit2ConverterGsonVersion = '2.3.0'
+    retrofit2RetrofitVersion = '2.3.0'
+    okhttp3InterceptorVersion = '3.9.1'
+    rxlifecycleVersion = '2.2.1'
+    rxjavaVersion = '2.3.0'
+    rxjava2Version = '2.1.7'
+
+    /* debug facebook.stetho 在线查看app数据库 */
+    debugDbVersion = '1.0.1'
+    stethoVersion = '1.5.0'
+
+    //database
+    databaseSqlcipherVersion = '3.5.9@aar'
+    greendaoVersion = '3.2.2'
+    eventbusVersion = '3.0.0'
+    pinyin4jVersion = '2.5.1'
+    leakcanaryVersion = '1.6.1'
+
+    //dagger
+    daggerVersion = '2.16'
+
+    //Permission
+    xxpermissionsVersion = '5.0'
+
+    //push
+    hmsPushVersion = '2.6.0.301'
+
+    //zxing
+    zxingCoreVersion = '3.3.0'
+
+    //html
+    htmlCleanerVersion = '2.16'
+
+    //view
+    expandableRecyclerviewVersion = '1.3'
+    circleimageviewVersion = '2.0.0'
+    circleProgressVersion = '1.2.1'
+    butterknifeVersion = '8.8.1'
+    photoviewVersion = '1.2.4'
+    imagezoomVersion = '1.0.4'
+    picassoVersion = '2.5.2'
+    glideVersion = '4.8.0'
+
+    //bugly
+    buglyVersion = 'latest.release'
+
+    //微信支付
+    wxPayVersion = '5.1.6'
+
+    //webrtc
+    webrtcVersion = '1.0.+'
+    //socket.io
+    socketIoVersion = '1.0.0'
+
+    //umeng
+    umengCommonVersion = '1.5.4'
+    umengUtdidVersion = '1.1.5.3'
+    umengPushVersion = '5.0.2'
+}

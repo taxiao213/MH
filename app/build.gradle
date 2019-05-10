@@ -1,14 +1,14 @@
 apply plugin: 'com.android.application'
-apply plugin: 'org.greenrobot.greendao' // apply plugin
+apply plugin: 'org.greenrobot.greendao'
 android {
-    compileSdkVersion 27
-    buildToolsVersion "27.0.2"
+    compileSdkVersion rootProject.ext.compileSdkVersion
+    buildToolsVersion rootProject.ext.buildToolsVersion
     defaultConfig {
         applicationId "com.haxi.mh"
-        minSdkVersion 17
-        targetSdkVersion 27
-        versionCode 3
-        versionName "1.0.3"
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
+        versionCode rootProject.ext.versionCode
+        versionName rootProject.ext.versionName
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         // dex突破65535的限制
         multiDexEnabled true
@@ -17,7 +17,6 @@ android {
             abiFilters 'armeabi', 'x86' //, 'x86', 'armeabi-v7a', 'x86_64', 'arm64-v8a'
         }
     }
-
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -27,7 +26,6 @@ android {
         javaMaxHeapSize "4g"
         jumboMode = true
     }
-
     //签名 引用位置
     signingConfigs {
         config {
@@ -38,7 +36,6 @@ android {
             v2SigningEnabled true
         }
     }
-
     sourceSets {
         main {
             manifest.srcFile 'src/main/AndroidManifest.xml'
@@ -49,9 +46,7 @@ android {
             assets.srcDirs = ['src/main/assets']
         }
     }
-
     buildTypes {
-
         release {
             //混淆
             minifyEnabled true
@@ -77,24 +72,14 @@ android {
                 }
             }
         }
-
         debug {
             signingConfig signingConfigs.config
         }
-
-        debug { //在线查看app数据库 amitshekhar.android:debug
+        debug {
+            //在线查看app数据库 amitshekhar.android:debug
             resValue("string", "PORT_NUMBER", "9000")
         }
     }
-
-//传统打包
-//    flavorDimensions "fruit"
-//    productFlavors{
-//        mh{
-//           dimension "fruit"
-//        }
-//    }
-
     flavorDimensions "fruit"
     productFlavors {
         wandoujia {}
@@ -103,7 +88,6 @@ android {
         uc {}
         myapp {}
     }
-
     packagingOptions {
         exclude 'META-INF/DEPENDENCIES'
         exclude 'META-INF/NOTICE'
@@ -111,21 +95,15 @@ android {
         exclude 'META-INF/LICENSE.txt'
         exclude 'META-INF/NOTICE.txt'
     }
-
 }
 
 /* 针对greenDao的一些配置 */
 greendao {
     schemaVersion 1 //数据库版本
-    //The current version of the database schema. This is used by the *OpenHelpers classes to migrate between schema versions. If you change your entity/database schema, this value has to be increased. Defaults to 1.
     daoPackage 'com.haxi.mh'
-    // The package name for generated DAOs, DaoMaster, and DaoSession. Defaults to the package name of your source entities
-    //targetGenDir  //生成的根目录
-    //The location where generated sources should be stored at. Defaults to the generated source folder inside the build directory ( build/generated/source/greendao).
+    //targetGenDir  //生成的根目录 directory ( build/generated/source/greendao).
     generateTests true // Set to true to automatically generate unit tests. 是否进行单元测试
-//    targetGenDirTests //生成的单元测试根目录
-// The base directory where generated unit tests should be stored at. Defaults to src/androidTest/java.
-
+    //targetGenDirTests //生成的单元测试根目录 Defaults to src/androidTest/java.
 }
 
 repositories {
@@ -136,130 +114,90 @@ repositories {
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile 'com.android.support.constraint:constraint-layout:1.0.2'
-    compile 'junit:junit:4.12'
-    // compile 'com.android.support.test:runner:1.0.1'
-    compile 'com.android.support.test.espresso:espresso-core:3.0.1'
-    /* multidex兼容包，配合AndroidStudio实现了一个APK包含多个dex的功能 */
-    compile 'com.android.support:multidex:1.0.2'
+    compile "com.android.support:cardview-v7:$rootProject.supportLibraryVersion"
+    compile "com.android.support:design:$rootProject.supportLibraryVersion"
+    compile "com.android.support.constraint:constraint-layout:$rootProject.constraintLayoutVersion"
+    compile "com.android.support:multidex:$rootProject.multidexVersion"
+    compile "com.google.code.gson:gson:$rootProject.gsonVersion"
+    compile "junit:junit:$rootProject.junitVersion"
 
     /* butterKnife */
-    compile 'com.jakewharton:butterknife:8.8.1'
-    annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
+    compile "com.jakewharton:butterknife:$rootProject.butterknifeVersion"
+    annotationProcessor "com.jakewharton:butterknife-compiler:$rootProject.butterknifeVersion"
 
-    /* gson */
-    compile 'com.google.code.gson:gson:2.8.2'
+    /*greendao*/
+    compile "org.greenrobot:greendao:$rootProject.greendaoVersion"
+    compile "org.greenrobot:eventbus:$rootProject.eventbusVersion"
+    compile "net.zetetic:android-database-sqlcipher:$rootProject.databaseSqlcipherVersion"
 
-    /* Glide */
-//    implementation 'com.github.bumptech.glide:glide:4.8.0'
-//    annotationProcessor 'com.github.bumptech.glide:compiler:4.8.0'
-
-    /* EventBus */
-    compile 'org.greenrobot:eventbus:3.1.1'
-
-    /* greendao */
-    compile 'org.greenrobot:greendao:3.2.2'
-
-    /* rxjava2 */
-    compile 'io.reactivex.rxjava2:rxjava:2.1.7'
-
-    /* retrofit */
-    compile 'com.squareup.retrofit2:retrofit:2.3.0'
-    compile 'com.squareup.retrofit2:converter-gson:2.3.0'
-
-    //增加返回值为Gson的支持(以实体类返回)
-    compile 'com.squareup.retrofit2:converter-scalars:2.3.0'
-
-    //增加返回值为String的支持
-    compile 'com.squareup.retrofit2:adapter-rxjava2:2.3.0'
-
-    //增加返回值为Oservable<T>的支持
-    compile 'com.squareup.okhttp3:logging-interceptor:3.9.1'
-
-    //okhttp3拦截器
-    /* RxAndroid: Reactive Extensions for Android */
+    /*rotrofit*/
+    compile "com.squareup.retrofit2:adapter-rxjava:$rootProject.rxjavaVersion"
+    compile "com.squareup.retrofit2:retrofit:$rootProject.retrofit2RetrofitVersion"
+    compile "com.squareup.retrofit2:converter-scalars:$rootProject.retrofit2ConverterScalarsVersion"
+    compile "com.squareup.retrofit2:converter-gson:$rootProject.retrofit2ConverterGsonVersion"
+    compile "com.trello:rxlifecycle:$rootProject.rxlifecycleVersion"
+    compile "com.trello:rxlifecycle-components:$rootProject.rxlifecycleVersion"
+    compile "com.squareup.okhttp3:logging-interceptor:$rootProject.okhttp3InterceptorVersion"
+    compile "com.orhanobut:logger:$rootProject.orhanobutLoggerVersion"
     compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
+    compile "io.reactivex.rxjava2:rxjava:$rootProject.rxjava2Version"
 
-    // explicitly depend on RxJava's latest version for bug fixes and new features.
-
-    /* rxlifecycle2 */
-    compile 'com.trello.rxlifecycle2:rxlifecycle:2.2.1'
-    compile 'com.trello.rxlifecycle2:rxlifecycle-components:2.2.1'
-
-    // If you want pre-written Activities and Fragments you can subclass as providers
-
-    /* logger */
-    compile 'com.orhanobut:logger:2.1.1'
-
-    //运行时权限
-    /* easypermissions */
-    implementation 'pub.devrel:easypermissions:1.1.0'
-
-    /* bugly收集错误日志 */
-
+    /*bugly*/
+    compile "com.tencent.bugly:crashreport:$rootProject.buglyVersion"
+    //其中latest.release指代最新Bugly SDK版本号，也可以指定明确的版本号，例如2.1.9
+    compile "com.tencent.bugly:nativecrashreport:$rootProject.buglyVersion"
     //其中latest.release指代最新Bugly NDK版本号，也可以指定明确的版本号，例如3.0
-    compile 'com.tencent.bugly:nativecrashreport:3.3.1'
-
-    //其中latest.release指代最新版本号，也可以指定明确的版本号，例如1.3.4 包括crashreport
-    compile 'com.tencent.bugly:crashreport_upgrade:1.3.5'
 
     /* debug 在线查看app数据库 */
-    debugCompile 'com.amitshekhar.android:debug-db:1.0.1'
+    debugCompile "com.amitshekhar.android:debug-db:$rootProject.debugDbVersion"
 
     /* facebook.stetho 查看数据库 拦截网络请求 */
-    compile 'com.facebook.stetho:stetho:1.5.0'
+    compile "com.facebook.stetho:stetho:$rootProject.stethoVersion"
 
-    /* 格式化拼音 */
-    compile 'com.belerweb:pinyin4j:2.5.1'
-
-    /* 小米推送 */
-    implementation files('libs/MiPush_SDK_Client_3_6_2.jar')
-
-    /* 华为推送 下载地址 https://obs.cn-north-2.myhwclouds.com/hms-ds-wf/sdk/HMS_SDK_2.6.0.301.zip*/
-    compile 'com.huawei.android.hms:push:2.6.0.301'
-
-    /* 相册 */
-    implementation project(':matisse')
-
-    /* 微信支付 */
-    compile 'com.tencent.mm.opensdk:wechat-sdk-android-with-mta:5.1.6'
-//    implementation files('libs/httpclient-4.5.6.jar')
-//    implementation files('libs/httpcore-4.4.10.jar')
-
-    /* 支付宝支付 */
-    implementation (name: 'alipaySdk-15.6.2-20190416165036', ext: 'aar')
-    /* 银联支付 */
-//    implementation files('libs/UPPayAssistEx.jar')
-//    implementation files('libs/UPPayPluginExPro.jar')
-
-    /* sqlcipher 加密数据库 */
-    compile 'net.zetetic:android-database-sqlcipher:3.5.9@aar'
+    /*pinyin*/
+    compile "com.belerweb:pinyin4j:$rootProject.pinyin4jVersion"
 
     /* webrtc */
-    implementation 'org.webrtc:google-webrtc:1.0.+'
+    implementation "org.webrtc:google-webrtc:$rootProject.webrtcVersion"
 
-    /* dagger2 */
-    compile 'com.google.dagger:dagger:2.17'
-    annotationProcessor 'com.google.dagger:dagger-compiler:2.17'
+    //dagger
+    implementation "com.google.dagger:dagger:$rootProject.daggerVersion"
+    annotationProcessor "com.google.dagger:dagger-compiler:$rootProject.daggerVersion"
+    implementation "com.google.dagger:dagger-android:$rootProject.daggerVersion"
+    implementation "com.google.dagger:dagger-android-support:$rootProject.daggerVersion"
+    annotationProcessor "com.google.dagger:dagger-android-processor:$rootProject.daggerVersion"
 
     /* leakcanary */
-    debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.6.1'
-    releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.6.1'
+    debugImplementation "com.squareup.leakcanary:leakcanary-android:$rootProject.leakcanaryVersion"
+    releaseImplementation "com.squareup.leakcanary:leakcanary-android-no-op:$rootProject.leakcanaryVersion"
+    debugImplementation "com.squareup.leakcanary:leakcanary-support-fragment:$rootProject.leakcanaryVersion"
 
-    // Optional, if you use support library fragments:
-    debugImplementation 'com.squareup.leakcanary:leakcanary-support-fragment:1.6.1'
+    /*permission*/
+    compile "com.hjq:xxpermissions:$rootProject.xxpermissionsVersion"
 
-    /* xxpermissions */
-    compile 'com.hjq:xxpermissions:5.0'
+    //-------------------------------------------- 推送 -----------------------------------------
     /* 魅族推送 */
     compile(group: 'com.meizu.flyme.internet', name: 'push-internal', version: '3.8.1', ext: 'aar')
 
+    /*华为push 下载地址 https://obs.cn-north-2.myhwclouds.com/hms-ds-wf/sdk/HMS_SDK_2.6.0.301.zip*/
+    compile "com.huawei.android.hms:push:$rootProject.hmsPushVersion"
+
     /* 友盟推送 统计 */
     //PushSDK必须依赖基础组件库，所以需要加入对应依赖
-    implementation 'com.umeng.umsdk:common:1.5.4'
-    //PushSDK必须依赖utdid库，所以需要加入对应依赖 支付宝中包含utdid
-//    implementation 'com.umeng.umsdk:utdid:1.1.5.3'
+    compile "com.umeng.umsdk:common:$rootProject.umengCommonVersion"
+    //PushSDK必须依赖utdid库，所以需要加入对应依赖
+    compile "com.umeng.umsdk:utdid:$rootProject.umengUtdidVersion"
     //PushSDK
-    implementation 'com.umeng.umsdk:push:5.0.2'
+    compile "com.umeng.umsdk:push:$rootProject.umengPushVersion"
 
+    //-------------------------------------------- 支付 -----------------------------------------
+    /* 微信支付 */
+    compile "com.tencent.mm.opensdk:wechat-sdk-android-with-mta:$rootProject.wxPayVersion"
+
+    /* 支付宝支付 */
+    implementation(name: 'alipaySdk-15.6.2-20190416165100-noUtdid', ext: 'aar')
+
+    //-------------------------------------------- 第三方依赖 -----------------------------------------
+    /* 相册 */
+    implementation project(':matisse')
 }
