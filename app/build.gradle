@@ -135,8 +135,8 @@ dependencies {
     compile "com.squareup.retrofit2:retrofit:$rootProject.retrofit2RetrofitVersion"
     compile "com.squareup.retrofit2:converter-scalars:$rootProject.retrofit2ConverterScalarsVersion"
     compile "com.squareup.retrofit2:converter-gson:$rootProject.retrofit2ConverterGsonVersion"
-    compile "com.trello:rxlifecycle:$rootProject.rxlifecycleVersion"
-    compile "com.trello:rxlifecycle-components:$rootProject.rxlifecycleVersion"
+    compile "com.trello.rxlifecycle2:rxlifecycle:$rootProject.rxlifecycleVersion"
+    compile "com.trello.rxlifecycle2:rxlifecycle-components:$rootProject.rxlifecycleVersion"
     compile "com.squareup.okhttp3:logging-interceptor:$rootProject.okhttp3InterceptorVersion"
     compile "com.orhanobut:logger:$rootProject.orhanobutLoggerVersion"
     compile 'io.reactivex.rxjava2:rxandroid:2.0.1'

@@ -47,8 +47,6 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-import pub.devrel.easypermissions.AfterPermissionGranted;
-import pub.devrel.easypermissions.EasyPermissions;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -60,7 +58,7 @@ import static android.app.Activity.RESULT_OK;
  * Github:https://github.com/yin13753884368
  */
 
-public class HomeManageFragment extends BaseFragment implements EasyPermissions.PermissionCallbacks {
+public class HomeManageFragment extends BaseFragment {
 
     @BindView(R.id.title_back)
     ImageView titleBack;
@@ -338,33 +336,18 @@ public class HomeManageFragment extends BaseFragment implements EasyPermissions.
     }
 
 
-    @AfterPermissionGranted(REQUEST_CHOOSE)
     private void select() {
         String[] perms = {Manifest.permission.WRITE_EXTERNAL_STORAGE};
-        if (EasyPermissions.hasPermissions(mActivity, perms)) {
-            Matisse.from(this)
-                    .choose(MimeType.ofImage())
-                    .countable(false)
-                    .maxSelectable(9)//最大可以选择数
-                    .gridExpectedSize(UIUtil.getScreenWidth() / 3)//一行展示的个数
-                    .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED)
-                    .thumbnailScale(1.0f)
-                    .theme(R.style.Matisse_Dracula)
-                    .imageEngine(new GlideEngine())
-                    .forResult(REQUEST_CODE_CHOOSE);
-        } else {
-            EasyPermissions.requestPermissions(this, "请允许权限读取图片", REQUEST_CHOOSE, perms);
-        }
-    }
 
-
-    @Override
-    public void onPermissionsGranted(int requestCode, @NonNull List<String> perms) {
-
-    }
-
-    @Override
-    public void onPermissionsDenied(int requestCode, @NonNull List<String> perms) {
-
+        Matisse.from(this)
+                .choose(MimeType.ofImage())
+                .countable(false)
+                .maxSelectable(9)//最大可以选择数
+                .gridExpectedSize(UIUtil.getScreenWidth() / 3)//一行展示的个数
+                .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED)
+                .thumbnailScale(1.0f)
+                .theme(R.style.Matisse_Dracula)
+                .imageEngine(new GlideEngine())
+                .forResult(REQUEST_CODE_CHOOSE);
     }
 }

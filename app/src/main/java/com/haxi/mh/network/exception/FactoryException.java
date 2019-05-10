@@ -8,7 +8,7 @@ import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
 import java.text.ParseException;
 
-import retrofit2.adapter.rxjava2.HttpException;
+import retrofit2.HttpException;
 
 
 /**

@@ -27,8 +27,6 @@ import java.util.concurrent.Executors;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-import pub.devrel.easypermissions.AfterPermissionGranted;
-import pub.devrel.easypermissions.EasyPermissions;
 
 /**
  * 加载H5界面
@@ -37,7 +35,7 @@ import pub.devrel.easypermissions.EasyPermissions;
  * CSDN:http://blog.csdn.net/yin13753884368/article
  * Github:https://github.com/yin13753884368
  */
-public class WebActivity extends BaseActivity implements EasyPermissions.PermissionCallbacks {
+public class WebActivity extends BaseActivity   {
 
     private static final int FILE_SELECT_CODE = 101;
     private static final int RC_REQUEST_DOWM = 105;//下载
@@ -289,27 +287,5 @@ public class WebActivity extends BaseActivity implements EasyPermissions.Permiss
     public void onViewClicked() {
         onBack(2);
     }
-
-
-    @AfterPermissionGranted(RC_REQUEST_DOWM)
-    public void down(String downUrl, String fileName) {
-        String[] perms = {Manifest.permission.INTERNET, Manifest.permission.WRITE_EXTERNAL_STORAGE};
-        if (EasyPermissions.hasPermissions(this, perms)) {
-
-        } else {
-            EasyPermissions.requestPermissions(this, "请允许权限进行下载", RC_REQUEST_DOWM, perms);
-        }
-    }
-
-    @Override
-    public void onPermissionsGranted(int requestCode, List<String> perms) {
-
-    }
-
-    @Override
-    public void onPermissionsDenied(int requestCode, List<String> perms) {
-
-    }
-
 
 }

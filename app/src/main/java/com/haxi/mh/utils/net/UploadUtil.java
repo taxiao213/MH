@@ -30,7 +30,7 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
-import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
+import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.scalars.ScalarsConverterFactory;
 
 /**
@@ -91,7 +91,7 @@ public class UploadUtil {
         Retrofit retrofit = new Retrofit.Builder()
                 .client(builder.build())
                 //增加返回值为Oservable<T>的支持
-                .addCallAdapterFactory(RxJava2CallAdapterFactory.createWithScheduler(Schedulers.io()))
+                .addCallAdapterFactory(RxJavaCallAdapterFactory.createWithScheduler(rx.schedulers.Schedulers.io()))
                 //增加返回值为String的支持
                 .addConverterFactory(ScalarsConverterFactory.create())
                 .baseUrl(Constant.BASE_URL)
